@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB - PROFIL{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+
+  <div id="menu">
+  
+    <div id="setts">
+      
+      <div class="przycisk {% if app.request.pathinfo == "/myservices" %}clicked{% endif %}">USŁUGI</div>
+      <div class="przycisk">WIADOMOŚCI</div>
+      <div class="przycisk">OCENY</div>
+      <a href="{{path('app_profile')}}"><div class="przycisk">DANE</div></a>
+      <div class="przycisk">USTAWIENIA</div>
+
+    </div>
+  
+  </div>
+
+  <div id="info">
+
+    <div id="all">
+  
+
+
+    </div>
+  
+  </div>
+    
+
+{% endblock %}

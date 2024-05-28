@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}ServiceHUB - ZALOGUJ{% endblock %}</title>
+
+        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}"/>
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    
+    </head>
+    <body>
+
+        <div id="container">
+            
+            <div id="logo"><a href="{{path('app_main')}}">ServiceHUB</a></div>
+
+            <div id="loginbox">
+                
+                <div id="buttons">
+                    <div id="btnlogin">ZALOGUJ</div>
+                    <a href="{{path('app_register')}}"><div id="btnregister">ZAREJESTRUJ</div></a>
+                </div>
+
+                <div id="kreska"></div>
+
+                {% for flash_error in app.flashes('success') %}
+                    <div class="success">{{ flash_error }}</div>
+                {% endfor %}
+                
+                <form action="{{ path('app_login') }}" method="POST">
+
+                    <div class="name mt">E-MAIL:</div>
+                    <input type="text" name="_username" value="{{lastUsername}}" class="logininput" placeholder="WPISZ SWÓJ E-MAIL">
+
+                    <div class="name mtpswd">HASŁO:</div>
+                    <input type="password" name="_password" class="logininput" placeholder="WPISZ SWOJE HASŁO">
+
+                    <input type="hidden" name="_target_path" value="/skills_list" />
+
+                    <a href="{{path('app_email_verify')}}"><div class="name rem">NIE PAMIĘTASZ HASŁA?</div></a>
+
+                    <button type="submit" id="btnzaloguj">ZALOGUJ</button>
+
+                </form>
+
+            </div>
+
+        </div>
+        
+    </body>
+
+</html>

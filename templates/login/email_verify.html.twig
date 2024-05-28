@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}ServiceHUB - RESET{% endblock %}</title>
+
+        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}"/>
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    
+    </head>
+    <body>
+
+        <div id="container">
+            
+            <div id="logo"><a href="{{path('app_main')}}">ServiceHUB</a></div>
+
+            <div id="emailbox">
+
+                <a href="{{path('app_login')}}"><div id="back"><img src="{{asset('images/back.png')}}"></div></a>                
+
+                {% for flash_error in app.flashes('success') %}
+                    <div class="success">{{ flash_error }}</div>
+                {% endfor %}
+
+                {% for flash_error in app.flashes('error') %}
+                    <div class="error">{{ flash_error }}</div>
+                {% endfor %}
+                
+                <form action="{{ path('app_send_email') }}" method="POST">
+
+                    <div class="name mt">E-MAIL:</div>
+                    <input type="text" name="email" class="logininput" placeholder="WPISZ SWÓJ E-MAIL">
+
+                    <input type="hidden" name="_target_path" value="/login">
+
+                    <button type="submit" id="btnzaloguj">WYŚLIJ WIADOMOŚĆ</button>
+
+                </form>
+
+            </div>
+
+        </div>
+        
+    </body>
+
+</html>

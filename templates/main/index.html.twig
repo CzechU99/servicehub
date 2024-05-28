@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+{% endblock %}
+
+
+{% block body %}
+
+  <div id="main">
+  
+    <div id="opis">
+      <div id="opispierwszy">
+        Miejsce, gdzie możesz ogłaszać usługi, dzielić talentami i odkrywać nowe możliwości
+      </div>
+      <div id="opisdrugi">
+        Dołącz do nas i skorzystaj z bogactwa naszej społeczności!
+      </div>
+    </div>
+
+    <div id="handshake">
+      <img class="hand animate__animated animate__tada" src="{{ asset('images/hand_final.png') }}">
+    </div>
+
+  </div>
+
+  <div id="search">
+  
+    <div id="wyszukaj">
+    
+      <form action="{{ path('app_skills_list') }}" method="post">
+        <input type="text" id="inputwyszukaj" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
+        <div id="btnwyszukaj" onclick="javascript:document.forms[0].submit();">WYSZUKAJ</div>
+      </form>
+    
+    </div>
+
+    <div id="kreska"></div>
+
+    <div id="promowanenapis">PROMOWANE USŁUGI</div>
+  
+  </div>
+
+  <div id="promowaneuslugi">
+    
+    <div id="boxlewo">
+      <div class="uslugilewo animate__animated animate__backInLeft">
+      
+        <img class="imgserviceleft" src="{{ asset('images/koszenie.jpg') }}">
+        <div class="serivceopisleft">
+          <div class="serviceopis textleft">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
+          <div class="servicecena textleft">50 PLN/H</div>
+          <div class="servicedata textleft">OPOLE<br>DODANO 14.05.2024</div>   
+        </div>
+      
+      </div>
+
+      <div class="uslugilewo animate__animated animate__backInLeft mgtop">
+      
+        <img class="imgserviceleft" src="{{ asset('images/koszenie.jpg') }}">
+        <div class="serivceopisleft">   
+          <div class="serviceopis textleft">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
+          <div class="servicecena textleft">50 PLN/H</div>
+          <div class="servicedata textleft">OPOLE<br>DODANO 14.05.2024</div> 
+        </div>
+
+      </div>
+    </div>
+
+    <div id="kreskaczarna"></div>
+
+    <div id="boxprawo">
+      <div class="uslugiprawo animate__animated animate__backInRight">
+      
+        <img class="imgserviceright" src="{{ asset('images/koszenie.jpg') }}">
+        <div class="serivceopisright">   
+          <div class="serviceopis textright">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
+          <div class="servicecena textright">50 PLN/H</div>
+          <div class="servicedata textright">OPOLE<br>DODANO 14.05.2024</div>      
+        </div>
+      
+      </div>
+
+      <div class="uslugiprawo animate__animated animate__backInRight mgtop">
+      
+        <img class="imgserviceright" src="{{ asset('images/koszenie.jpg') }}">
+        <div class="serivceopisright">  
+          <div class="serviceopis textright">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
+          <div class="servicecena textright">50 PLN/H</div>
+          <div class="servicedata textright">OPOLE<br>DODANO 14.05.2024</div>   
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div id="statystyki">
+  
+    <div class="stat rt statleft">
+    
+      <div class="circle"><img src="{{ asset('images/klients.png') }}"></div>
+      <div class="statopis">
+        <div class="statnumber">15000</div>
+        <div class="statname">ZADOWOLONYCH UŻYTKOWNIKÓW</div>
+      </div>
+    
+    </div>
+
+    <div class="statkreska rt2"></div>
+
+    <div class="stat2 rt">
+    
+      <div class="circle"><img src="{{ asset('images/calender.png') }}"></div>
+      <div class="statopis">
+        <div class="statnumber">7000</div>
+        <div class="statname">WYKONANYCH REZERWACJI</div>
+      </div>
+    
+    </div>
+
+    <div class="statkreska rt2"></div>
+
+    <div class="stat2">
+    
+      <div class="circle"><img src="{{ asset('images/service.png') }}"></div>
+      <div class="statopis">
+        <div class="statnumber">1200</div>
+        <div class="statname">DOSTĘPNYCH USŁUG</div>
+      </div>
+    
+    </div>
+  
+  </div>
+
+{% endblock %}

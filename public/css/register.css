@@ -1,0 +1,200 @@
+body{
+  padding: 0px;
+  margin: 0px;
+  font-family: Jura;
+  background-color: rgba(16, 17, 16, 1);
+}
+
+a, a:link, #logo a:visited, #logo a:active, #logo a:hover{
+  all: unset;
+}
+
+@font-face {
+  font-family: Jura;
+  src: url(../fonts/Jura/Jura-VariableFont_wght.ttf);
+}
+
+#container{
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(16, 17, 16, 1);
+  background-image: url("../images/s_final.png");
+  background-position: left; 
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-sizing: border-box;
+}
+
+button{
+  all: unset;
+}
+
+#logo{
+  font-weight: bold;
+  font-size: 48px;
+  color: white;
+  float: left;
+  margin-left: 120px;
+  padding-top: 22px;
+  box-sizing: border-box;
+  margin-bottom: 115px;
+}
+
+#logo:hover{
+  cursor: pointer;
+}
+
+#registerbox{
+  width: 450px;
+  height: 550px;
+  background-color: white;
+  margin: auto;
+  clear: both;
+  border-radius: 5px;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+#buttons{
+  width: 375px;
+  height: 45px;
+  margin: 0px auto;
+  text-align: center;
+}
+
+#btnlogin{
+  width: 145px;
+  height: 45px;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+  line-height: 55px;
+  display: inline-block;
+}
+
+#btnlogin:hover{
+  cursor: pointer;
+  border-bottom: 4px solid black;
+}
+
+#btnregister{
+  width: 145px;
+  height: 45px;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+  line-height: 55px;
+  display: inline-block;
+  border-bottom: 3px solid black;
+  margin-left: 25px;
+}
+
+#kreska{
+  width: 375px;
+  background-color: rgba(16, 17, 16, 1);
+  height: 3px;
+  margin: auto;
+  margin-top: 6px;
+}
+
+.name{
+  font-weight: normal;
+  font-size: 20px;
+  width: 375px;
+  height: 25px;
+  margin-left: 67px;
+}
+
+.mt{
+  margin-top: 35px;
+}
+
+.mtpswd{
+  margin-top: 25px;
+}
+
+.logininput{
+  font-weight: bold;
+  font-size: 15px;
+  width: 375px;
+  height: 30px;
+  margin-left: 37px;
+  background-color: white;
+  padding-left: 30px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 2px solid black;
+  font-family: Jura;
+}
+
+.logininput:focus{
+  scale: 1.05;
+}
+
+.check{
+  margin-top: 30px;
+  text-align: left;
+  margin-left: 37px;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 25px;
+}
+
+.rem:hover{
+  cursor: pointer;
+}
+
+#btnzaloguj{
+  width: 260px;
+  height: 45px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 5px solid rgba(46, 83, 229, 1);
+  line-height: 35px;
+  color: rgba(46, 83, 229, 1);
+  text-align: center;
+  font-weight: bold;
+  margin-top: 10px;
+  float: left;
+  clear: both;
+  margin-left: 95px;
+}
+
+#btnzaloguj:hover{
+  cursor: pointer;
+  background-color: rgba(46, 83, 229, 1);
+  color: white;
+}
+
+.checkbox{
+  background-color: rgba(16, 17, 16, 0.2);
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-top: 2.5px;
+}
+
+#accept{
+  line-height: 25px;
+  width: 200px;
+  float: left;
+  margin-left: 10px;
+}
+
+.checkbox:checked{
+  background-color: rgba(46, 83, 229, 1);
+}
+
+.error{
+  width: 375px;
+  height: 30px;
+  margin-left: 37px;
+  color: red;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 30px;
+}

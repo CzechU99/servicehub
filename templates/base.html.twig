@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/sh.png') }}">
+
+        <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}"/>
+        <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
+
+        {% block css %}{% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    
+    </head>
+    <body>
+
+        <div id="container">
+
+            {% block navbar %}
+                <div id="navbar">
+                    <div id="logo"><a href="{{path('app_main')}}">ServiceHUB</a></div>
+                    {% if app.user %}
+                        <a href="{{path('app_add_skill')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
+                        <a href="{{path('app_logout')}}"><div id="zaloguj" class="burst">WYLOGUJ</div></a>
+                        <a href="{{path('app_myservices')}}"><div id="konto" class="burst"><img src="{{asset('images/profil.png')}}"></div></a>
+                    {% else %}
+                        <a href="{{path('app_login')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
+                        <a href="{{path('app_login')}}"><div id="zaloguj" class="burst">ZALOGUJ</div></a>
+                    {% endif %}
+                </div>
+            {% endblock %}
+        
+            {% block body %}
+        
+            {% endblock %}
+
+            {% block footer %}
+                <div id="footer">
+                    <div id="napisfooter">WSZELKIE PRAWA ZASTZREŻONE &copy;</div>
+                </div>
+            {% endblock %}
+
+        </div>
+        
+    </body>
+</html>

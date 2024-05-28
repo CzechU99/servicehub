@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB - PROFIL{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+
+  <div id="menu">
+  
+    <div id="setts">
+      
+      <a href="{{path('app_myservices')}}"><div class="przycisk">USŁUGI</div></a>
+      <div class="przycisk">WIADOMOŚCI</div>
+      <div class="przycisk">OCENY</div>
+      <a href="{{path('app_profile')}}"><div class="przycisk {% if app.request.pathinfo == "/profile" %}clicked{% endif %}">DANE</div></a>
+      <div class="przycisk">USTAWIENIA</div>
+
+    </div>
+  
+  </div>
+
+  <div id="info">
+
+    <div id="all">
+  
+      <form>
+      
+        <div class="box">
+        
+          <div class="opis left pd">IMIE</div>
+          <div class="opis right pd">NAZWISKO</div>
+        
+        </div>
+        <div class="box">
+        
+          <input class="dane left" type="text" name="imie" value="" placeholder="PODAJ NAZWISKO...">
+          <input class="dane right" type="text" name="imie" value="" placeholder="PODAJ NAZWISKO...">
+        
+        </div>
+
+        <div class="box">
+        
+          <div class="opis left pd">MIASTO</div>
+          <div class="opis right pd">KOD POCZTOWY</div>
+        
+        </div>
+        <div class="box">
+        
+          <input class="dane left" type="text" name="imie" value="" placeholder="PODAJ MIASTO...">
+          <input class="dane right" type="text" name="imie" value="" placeholder="PODAJ KOD POCZTOWY...">
+        
+        </div>
+
+        <div class="box">
+        
+          <div class="opis left pd">TELEFON</div>
+        
+        </div>
+        <div class="box">
+        
+          <input class="dane left" type="text" name="imie" value="" placeholder="PODAJ TELEFON...">
+        
+        </div>
+
+        <button type="submit" id="btnzaloguj">ZAPISZ</button>
+      
+      </form>
+
+    </div>
+  
+  </div>
+    
+
+{% endblock %}
