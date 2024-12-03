@@ -64,7 +64,7 @@ class LoginController extends AbstractController
                 ->to($userEmail)
                 ->subject('Zresetuj hasło')
                 ->text('Kliknij w link, aby zresetować hasło')
-                ->html('<a href="http://localhost/skillsplatform/public/index.php/reset_password/'.$user->getId().'">Zresetuj hasło</a>');
+                ->html('<a href="http://localhost/servicehub/public/index.php/reset_password/'.$user->getId().'">Zresetuj hasło</a>');
 
             $mailer->send($email);
             

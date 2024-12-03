@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add skill{% endblock %}
+{% block title %}Add service{% endblock %}
 
 {% block body %}
 
@@ -13,7 +13,7 @@
             {{ form_start(form) }}
 
               <div class="">
-                {{ form_label(form.title, 'Skill title:', {'label_attr': {'class': 'd-block fw-bold mt-5'}}) }}
+                {{ form_label(form.title, 'Service title:', {'label_attr': {'class': 'd-block fw-bold mt-5'}}) }}
                 {{ form_widget(form.title, {'attr': {'class': 'form-control border-1 border-black'}}) }}
                 {{ form_errors(form.title) }}
               </div>
@@ -30,7 +30,7 @@
                 {{ form_errors(form.description) }}
               </div>
 
-              <button type="submit" class="mt-2 btn btn-primary col-lg-12">Add skill!</button> 
+              <button type="submit" class="mt-2 btn btn-primary col-lg-12">Add service!</button> 
 
             {{ form_end(form) }}  
 

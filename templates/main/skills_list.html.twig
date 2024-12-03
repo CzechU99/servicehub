@@ -1,176 +1,86 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}ServiceHUB - USŁUGI{% endblock %}
+
 {% block css %}
   <link rel="stylesheet" href="{{ asset('css/services_list.css') }}">
 {% endblock %}
 
 {% block body %}
-
     <div id="search">
-    
-      <div id="wyszukaj">
-      
-        <form>
-        
-          <input id="nazwa" type="text" name="search" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
-          <div id="kreska_pion"></div>
-          <input id="lokalizacja" type="text" name="city" placeholder="LOKALIZACJA">
-          <input class="done anim" type="submit" value="WYSZUKAJ">
-        
-        </form>
-      
-      </div>
-
-      <div id="filtry">FILTRY</div>
-
-      <div id="sets">
-      
-        <div id="opisy">
-        
-          <div id="kat">KATEGORIA</div>
-          <div id="cena">CENA</div>
-        
+        <div id="wyszukaj">
+            <form>
+                <input id="nazwa" type="text" name="search" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
+                <div id="kreska_pion"></div>
+                <input id="lokalizacja" type="text" name="city" placeholder="LOKALIZACJA">
+                <input class="done anim" type="submit" value="WYSZUKAJ">
+            </form>
         </div>
+        <div id="filtry">FILTRY</div>
+        <div id="sets">
+            <div id="opisy">
+                <div id="kat">KATEGORIA</div>
+                <div id="cena">CENA</div>
+            </div>
+            <div id="inputy">
+                <select id="kat_input">
+                    <option value="0">KATEGORIA</option>
+                    <option value="1">OGRÓD</option>
+                    <option value="2">MECHANIKA</option>
+                    <option value="3">SZKOŁA</option>
+                    <option value="4">INNE</option>
+                </select>
 
-        <div id="inputy">
-        
-          <select id="kat_input">
-            <option value="0">KATEGORIA</option>
-            <option value="1">OGRÓD</option>
-            <option value="2">MECHANIKA</option>
-            <option value="3">SZKOŁA</option>
-            <option value="4">INNE</option>
-          </select>
-          
+                <div id="cena_input">
+                    <input class="price" type="text" name="min" placeholder="MIN">
+                    <input class="price ml" type="text" name="max" placeholder="MAX">
+                </div>
 
-          <div id="cena_input">
-          
-            <input class="price" type="text" name="min" placeholder="MIN">
-            <input class="price ml" type="text" name="max" placeholder="MAX">
-          
-          </div>
-
-          <input class="done reset anim2" type="submit" value="WYCZYŚĆ">
-          
-
+                <input class="done reset anim2" type="submit" value="WYCZYŚĆ">
+            </div>
         </div>
-      
-      </div>
-    
     </div>
 
-    <dvi id="list">
-    
-      <div id="number">ZNALEZIONO X OGŁOSZEŃ</div>
+    <div id="list">
+        <div id="number">ZNALEZIONO {{ uslugi|length }} OGŁOSZEŃ</div>
+        <div id="kreska"></div>
+        <div id="reklama">REKLAMA</div>
+        <div id="okno">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
 
-      <div id="kreska"></div>
+        {% if uslugi|length == 1 %}
 
-      <div id="reklama">REKLAMA</div>
-      <div id="okno">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
+        {% elseif uslugi|length == 2 %}
 
-      <div class="ogloszenie top">
-      
-        <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}">
+        {% endif %}
 
-        <div class="opis">
-        
-          <div class="tytul">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="lokalizacja">OPOLE</div>
-          <div class="data">DODANO 14.05.2024</div>
-        
-        </div>
-
-        <div class="prawo">
-        
-          <div class="cena">50 PLN/H</div>
-        
-        </div>
-          
-      </div>
-
-      <div class="ogloszenie">
-      
-        <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}">
-
-        <div class="opis">
-        
-          <div class="tytul">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="lokalizacja">OPOLE</div>
-          <div class="data">DODANO 14.05.2024</div>
-        
-        </div>
-
-        <div class="prawo">
-        
-          <div class="cena">50 PLN/H</div>
-        
-        </div>
-          
-      </div>
-
-      <div class="ogloszenie">
-      
-        <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}">
-
-        <div class="opis">
-        
-          <div class="tytul">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="lokalizacja">OPOLE</div>
-          <div class="data">DODANO 14.05.2024</div>
-        
-        </div>
-
-        <div class="prawo">
-        
-          <div class="cena">50 PLN/H</div>
-        
-        </div>
-          
-      </div>
-
-      <div class="ogloszenie">
-      
-        <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}">
-
-        <div class="opis">
-        
-          <div class="tytul">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="lokalizacja">OPOLE</div>
-          <div class="data">DODANO 14.05.2024</div>
-        
-        </div>
-
-        <div class="prawo">
-        
-          <div class="cena">50 PLN/H</div>
-        
-        </div>
-          
-      </div>
-
-      <div class="ogloszenie last">
-      
-        <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}">
-
-        <div class="opis">
-        
-          <div class="tytul">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="lokalizacja">OPOLE</div>
-          <div class="data">DODANO 14.05.2024</div>
-        
-        </div>
-
-        <div class="prawo">
-        
-          <div class="cena">50 PLN/H</div>
-        
-        </div>
-          
-      </div>
-    
-    </dvi>
-
-    
+        {% for usluga in uslugi %}
+          <div class="ogloszenie 
+            {% if uslugi|length == 1 %}
+              top last
+            {% elseif loop.first and uslugi|length == 2 %}
+              top
+            {% elseif loop.last and uslugi|length == 2 %}
+              last
+            {% elseif loop.first and uslugi|length >= 3 %}
+              top
+            {% elseif loop.last and uslugi|length >= 3 %}
+              last
+            {% endif %}
+          ">
+            
+            <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}" alt="Usługa zdjęcie">
+            <div class="opis">
+              <div class="tytul">{{ usluga.nazwaUslugi|upper }}</div>
+              <div class="lokalizacja">{{ usluga.uzytkownik.daneUzytkownika.miasto|upper }}</div>
+              <div class="data">DODANO {{ usluga.dataDodania|date('d.m.Y') }}</div>
+            </div>
+            <div class="prawo">
+              <div class="cena">{{ usluga.cena }} PLN/H</div>
+            </div>
+          </div>
+        {% else %}
+            <div>Brak usług do wyświetlenia.</div>
+        {% endfor %}
+    </div>
 
 {% endblock %}

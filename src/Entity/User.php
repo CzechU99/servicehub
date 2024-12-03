@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\DaneUzytkownika;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,12 +32,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(targetEntity: Skill::class, mappedBy: 'user')]
-    private Collection $skills;
+    #[ORM\OneToOne(mappedBy: 'uzytkownik', cascade: ['persist', 'remove'])]
+    private ?DaneUzytkownika $daneUzytkownika = null;
+
+    #[ORM\OneToMany(targetEntity: Uslugi::class, mappedBy: 'uzytkownik', orphanRemoval: true)]
+    private Collection $uslugi;
 
     public function __construct()
     {
-        $this->skills = new ArrayCollection();
+        $this->uslugi = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,33 +113,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection<int, Skill>
-     */
-    public function getSkills(): Collection
+    public function getDaneUzytkownika(): ?DaneUzytkownika
     {
-        return $this->skills;
+        return $this->daneUzytkownika;
     }
 
-    public function addSkill(Skill $skill): static
+    public function setDaneUzytkownika(DaneUzytkownika $daneUzytkownika): static
     {
-        if (!$this->skills->contains($skill)) {
-            $this->skills->add($skill);
-            $skill->setUser($this);
+        // set the owning side of the relation if necessary
+        if ($daneUzytkownika->getUzytkownik() !== $this) {
+            $daneUzytkownika->setUzytkownik($this);
+        }
+
+        $this->daneUzytkownika = $daneUzytkownika;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Uslugi>
+     */
+    public function getUslugi(): Collection
+    {
+        return $this->uslugi;
+    }
+
+    public function addUslugi(Uslugi $uslugi): static
+    {
+        if (!$this->uslugi->contains($uslugi)) {
+            $this->uslugi->add($uslugi);
+            $uslugi->setUzytkownik($this);
         }
 
         return $this;
     }
 
-    public function removeSkill(Skill $skill): static
+    public function removeUslugi(Uslugi $uslugi): static
     {
-        if ($this->skills->removeElement($skill)) {
+        if ($this->uslugi->removeElement($uslugi)) {
             // set the owning side to null (unless already changed)
-            if ($skill->getUser() === $this) {
-                $skill->setUser(null);
+            if ($uslugi->getUzytkownik() === $this) {
+                $uslugi->setUzytkownik(null);
             }
         }
 
         return $this;
     }
+
 }

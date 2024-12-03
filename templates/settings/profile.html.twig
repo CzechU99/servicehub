@@ -23,34 +23,69 @@
 
   <div id="info">
 
+    <div class="errorinfo">
+
+      {% set break = false %}
+      {% for child in daneForm.children %}
+        {% for error in child.vars.errors %}
+          {% if not break %}
+            <div class="error-message">
+                {{ error.message }}
+            </div>
+          {% endif %}
+          {% set break = true %}
+        {% endfor %}
+      {% endfor %}
+    
+    </div>
+
     <div id="all">
-  
-      <form>
-      
+
+      {{ form_start(daneForm) }}
+
+        {{ form_errors(daneForm) }}
+
         <div class="box">
         
           <div class="opis left pd">IMIE</div>
           <div class="opis right pd">NAZWISKO</div>
         
         </div>
+
         <div class="box">
-        
-          <input class="dane left" type="text" name="imie" value="" placeholder="PODAJ NAZWISKO...">
-          <input class="dane right" type="text" name="imie" value="" placeholder="PODAJ NAZWISKO...">
-        
+
+          {{ form_widget(daneForm.imie, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
+
+          {{ form_widget(daneForm.nazwisko, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ NAZWISKO...'}}) }}
+
         </div>
 
         <div class="box">
         
-          <div class="opis left pd">MIASTO</div>
-          <div class="opis right pd">KOD POCZTOWY</div>
+          <div class="opis left pd">ULICA</div>
+          <div class="opis right pd">NUMER DOMU</div>
         
         </div>
+
+        <div class="box">
+
+          {{ form_widget(daneForm.miejscowosc, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
+          {{ form_widget(daneForm.numer_domu, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ NAZWISKO...'}}) }}
+
+        </div>
+
         <div class="box">
         
-          <input class="dane left" type="text" name="imie" value="" placeholder="PODAJ MIASTO...">
-          <input class="dane right" type="text" name="imie" value="" placeholder="PODAJ KOD POCZTOWY...">
+          <div class="opis left pd">KOD POCZTOWY</div>
+          <div class="opis right pd">MIASTO</div>
         
+        </div>
+
+        <div class="box">
+
+          {{ form_widget(daneForm.kod_pocztowy, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
+          {{ form_widget(daneForm.miasto, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ NAZWISKO...'}}) }}
+
         </div>
 
         <div class="box">
@@ -58,15 +93,16 @@
           <div class="opis left pd">TELEFON</div>
         
         </div>
+
         <div class="box">
-        
-          <input class="dane left" type="text" name="imie" value="" placeholder="PODAJ TELEFON...">
-        
+
+          {{ form_widget(daneForm.telefon, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
+
         </div>
 
         <button type="submit" id="btnzaloguj">ZAPISZ</button>
-      
-      </form>
+
+      {{ form_end(daneForm) }}
 
     </div>
   

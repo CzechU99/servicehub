@@ -27,8 +27,8 @@
 
                 <div id="kreska"></div>
 
-                {% for flash_error in app.flashes('success') %}
-                    <div class="success">{{ flash_error }}</div>
+                {% for flash_msg in app.flashes('success') %}
+                    <div class="success">{{ flash_msg }}</div>
                 {% endfor %}
                 
                 <form action="{{ path('app_login') }}" method="POST">
