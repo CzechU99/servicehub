@@ -28,11 +28,18 @@
   <div id="search">
   
     <div id="wyszukaj">
+
+      {{ form_start(szybkieSzukanieForm, {'action': path('app_skills_list')}) }}
+
+        {{ form_widget(szybkieSzukanieForm.nazwaUslugi, {'attr': {'class': 'inputwyszukaj', 'placeholder': 'ZNAJDŹ COŚ, CO CIĘ INTERESUJE'}}) }}
+        <button type="submit" id="btnwyszukaj">WYSZUKAJ</button>
+
+      {{ form_end(szybkieSzukanieForm) }}
     
-      <form action="{{ path('app_skills_list') }}" method="post">
+      {# <form action="{{ path('app_skills_list') }}" method="post">
         <input type="text" id="inputwyszukaj" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
         <div id="btnwyszukaj" onclick="javascript:document.forms[0].submit();">WYSZUKAJ</div>
-      </form>
+      </form> #}
     
     </div>
 
@@ -102,7 +109,7 @@
     
       <div class="circle"><img src="{{ asset('images/klients.png') }}"></div>
       <div class="statopis">
-        <div class="statnumber">15000</div>
+        <div class="statnumber">{{ uzytkownicy|length }}</div>
         <div class="statname">ZADOWOLONYCH UŻYTKOWNIKÓW</div>
       </div>
     
@@ -126,7 +133,7 @@
     
       <div class="circle"><img src="{{ asset('images/service.png') }}"></div>
       <div class="statopis">
-        <div class="statnumber">1200</div>
+        <div class="statnumber">{{ wszystkieUslugi|length }}</div>
         <div class="statname">DOSTĘPNYCH USŁUG</div>
       </div>
     

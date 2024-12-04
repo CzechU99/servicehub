@@ -38,6 +38,12 @@ class DaneUzytkownika
     #[ORM\Column(length: 255)]
     private ?string $telefon = null;
 
+    #[ORM\Column]
+    private ?float $szerokoscGeograficzna = null;
+
+    #[ORM\Column]
+    private ?float $dlugoscGeograficzna = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +141,30 @@ class DaneUzytkownika
     public function setTelefon(string $telefon): static
     {
         $this->telefon = $telefon;
+
+        return $this;
+    }
+
+    public function getSzerokoscGeograficzna(): ?float
+    {
+        return $this->szerokoscGeograficzna;
+    }
+
+    public function setSzerokoscGeograficzna(float $szerokoscGeograficzna): static
+    {
+        $this->szerokoscGeograficzna = $szerokoscGeograficzna;
+
+        return $this;
+    }
+
+    public function getDlugoscGeograficzna(): ?float
+    {
+        return $this->dlugoscGeograficzna;
+    }
+
+    public function setDlugoscGeograficzna(float $dlugoscGeograficzna): static
+    {
+        $this->dlugoscGeograficzna = $dlugoscGeograficzna;
 
         return $this;
     }

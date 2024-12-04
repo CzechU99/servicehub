@@ -10,7 +10,7 @@
     <div id="search">
         <div id="wyszukaj">
             <form>
-                <input id="nazwa" type="text" name="search" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
+                <input id="nazwa" type="text" name="search" placeholder="{{ daneUzytkownika }}">
                 <div id="kreska_pion"></div>
                 <input id="lokalizacja" type="text" name="city" placeholder="LOKALIZACJA">
                 <input class="done anim" type="submit" value="WYSZUKAJ">
@@ -45,13 +45,7 @@
         <div id="number">ZNALEZIONO {{ uslugi|length }} OGŁOSZEŃ</div>
         <div id="kreska"></div>
         <div id="reklama">REKLAMA</div>
-        <div id="okno">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
-
-        {% if uslugi|length == 1 %}
-
-        {% elseif uslugi|length == 2 %}
-
-        {% endif %}
+        <div id="okno" class="last">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
 
         {% for usluga in uslugi %}
           <div class="ogloszenie 
@@ -65,10 +59,11 @@
               top
             {% elseif loop.last and uslugi|length >= 3 %}
               last
-            {% endif %}
-          ">
+            {% endif %}">
             
-            <img class="zdjecie" src="{{ asset('images/koszenie.jpg') }}" alt="Usługa zdjęcie">
+            {% set imagePath = 'zdjeciaUslug/' ~ usluga.uzytkownik.id ~ '/' ~ usluga.id ~ '/' ~ usluga.glowneZdjecie %}
+            <img class="zdjecie" src="{{ asset(imagePath) }}" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!">
+
             <div class="opis">
               <div class="tytul">{{ usluga.nazwaUslugi|upper }}</div>
               <div class="lokalizacja">{{ usluga.uzytkownik.daneUzytkownika.miasto|upper }}</div>
@@ -78,8 +73,6 @@
               <div class="cena">{{ usluga.cena }} PLN/H</div>
             </div>
           </div>
-        {% else %}
-            <div>Brak usług do wyświetlenia.</div>
         {% endfor %}
     </div>
 

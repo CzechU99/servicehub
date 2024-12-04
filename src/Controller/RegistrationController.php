@@ -39,6 +39,13 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $userId = $user->getId();
+            $folderPath = $this->getParameter('kernel.project_dir') . '/public/zdjeciaUslug/' . $userId;
+
+            if (!is_dir($folderPath)) {
+                mkdir($folderPath, 0777, true);
+            }
+
             $this->addFlash('success', 'Zarejestrowano pomyślnie! Możesz się zalogować.');
 
             return $this->redirectToRoute('app_login');

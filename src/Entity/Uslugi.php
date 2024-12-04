@@ -27,6 +27,9 @@ class Uslugi
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dataDodania = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $glowneZdjecie = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Uslugi
     public function setDataDodania(\DateTimeInterface $dataDodania): static
     {
         $this->dataDodania = $dataDodania;
+
+        return $this;
+    }
+
+    public function getGlowneZdjecie(): ?string
+    {
+        return $this->glowneZdjecie;
+    }
+
+    public function setGlowneZdjecie(?string $glowneZdjecie): static
+    {
+        $this->glowneZdjecie = $glowneZdjecie;
 
         return $this;
     }

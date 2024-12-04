@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\DaneFormType;
 use App\Entity\DaneUzytkownika;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\GeocoderService;
 use App\Repository\DaneUzytkownikaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ class SettingsController extends AbstractController
     public function index(
       DaneUzytkownikaRepository $daneUzytkownika,
       Request $request,
+      GeocoderService $geocoderService,
       EntityManagerInterface $entityManager
     ): Response
     {
@@ -34,6 +36,19 @@ class SettingsController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
+        $address = sprintf('%s %s, %s', 
+          $form->get('kod_pocztowy')->getData(),
+          $form->get('miasto')->getData(),
+          'Poland'
+        );
+
+        $coordinates = $geocoderService->geocode($address);
+
+        if ($coordinates) {
+            $dane->setSzerokoscGeograficzna($coordinates['latitude']);
+            $dane->setDlugoscGeograficzna($coordinates['longitude']);
+        }
+        
         $entityManager->persist($dane);
         $entityManager->flush();
 
