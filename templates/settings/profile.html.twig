@@ -23,7 +23,7 @@
 
   <div id="info">
 
-    <div class="errorinfo">
+    <div class="flashinfo">
 
       {% set break = false %}
       {% for child in daneForm.children %}
@@ -35,6 +35,10 @@
           {% endif %}
           {% set break = true %}
         {% endfor %}
+      {% endfor %}
+
+      {% for flash_msg in app.flashes('success') %}
+        <div class="success">{{ flash_msg }}</div>
       {% endfor %}
     
     </div>
@@ -69,8 +73,8 @@
 
         <div class="box">
 
-          {{ form_widget(daneForm.miejscowosc, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
-          {{ form_widget(daneForm.numer_domu, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ NAZWISKO...'}}) }}
+          {{ form_widget(daneForm.miejscowosc, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ ULICE...'}}) }}
+          {{ form_widget(daneForm.numer_domu, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ NUMER DOMU...'}}) }}
 
         </div>
 
@@ -83,8 +87,8 @@
 
         <div class="box">
 
-          {{ form_widget(daneForm.kod_pocztowy, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
-          {{ form_widget(daneForm.miasto, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ NAZWISKO...'}}) }}
+          {{ form_widget(daneForm.kod_pocztowy, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ KOD POCZTOWY...'}}) }}
+          {{ form_widget(daneForm.miasto, {'attr': {'class': 'dane right', 'placeholder': 'PODAJ MISATO...'}}) }}
 
         </div>
 
@@ -96,7 +100,7 @@
 
         <div class="box">
 
-          {{ form_widget(daneForm.telefon, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ IMIE...'}}) }}
+          {{ form_widget(daneForm.telefon, {'attr': {'class': 'dane left', 'placeholder': 'PODAJ TELEFON Z PREFIKSEM...'}}) }}
 
         </div>
 

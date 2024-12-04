@@ -36,23 +36,28 @@ class SettingsController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-        $address = sprintf('%s %s, %s', 
-          $form->get('kod_pocztowy')->getData(),
-          $form->get('miasto')->getData(),
-          'Poland'
-        );
+        
+        if(empty($dane->getDlugoscGeograficzna())){
+        
+          $address = sprintf('%s %s, %s', 
+            $form->get('kod_pocztowy')->getData(),
+            $form->get('miasto')->getData(),
+            'Poland'
+          );
 
-        $coordinates = $geocoderService->geocode($address);
+          $coordinates = $geocoderService->geocode($address);
 
-        if ($coordinates) {
-            $dane->setSzerokoscGeograficzna($coordinates['latitude']);
-            $dane->setDlugoscGeograficzna($coordinates['longitude']);
+          if ($coordinates) {
+              $dane->setSzerokoscGeograficzna($coordinates['latitude']);
+              $dane->setDlugoscGeograficzna($coordinates['longitude']);
+          }
+
         }
         
         $entityManager->persist($dane);
         $entityManager->flush();
 
-        $this->addFlash('success', 'DANE ZOSTAŁY ZAPISANE.');
+        $this->addFlash('success', 'DANE ZOSTAŁY ZAPISANE');
 
         return $this->redirectToRoute('app_profile');
       }

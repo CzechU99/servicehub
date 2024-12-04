@@ -67,7 +67,7 @@ input{
   min-height: 500px;
   width: 650px;
   margin: auto;
-  padding-top: 100px;
+  padding-top: 20px;
 }
 
 #btnzaloguj{
@@ -94,12 +94,21 @@ input{
   color: white;
 }
 
-.errorinfo{
+.flashinfo{
   width: 100%;
-  background-color: red;
-  height: 50px;
-  color: red;
+  height: 70px;
+  line-height: 70px;
   text-align: center;
+  font-weight: bold;
+  color: red;
+}
+
+.success{
+  color: green;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .box{

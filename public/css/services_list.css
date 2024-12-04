@@ -122,6 +122,14 @@ input{
   cursor: pointer;
 }
 
+#km{
+  float: left;
+  width: 250px;
+  height: 25px;
+  font-size: 22px;
+  font-weight: normal;
+}
+
 #cena{
   float: left;
   width: 250px;
@@ -132,7 +140,7 @@ input{
 
 #cena_input{
   float: left;
-  width: 250px;
+  width: 220px;
   height: 50px;
   margin-top: 2px;
   border-radius: none;
@@ -142,6 +150,34 @@ input{
   font-family: Jura;
   margin-left: 40px;
   box-sizing: border-box;
+}
+
+#km_input{
+  float: left;
+  width: 100px;
+  height: 50px;
+  margin-top: 2px;
+  border-radius: none;
+  border: none;
+  font-size: 22px;
+  opacity: 1;
+  font-family: Jura;
+  margin-left: 30px;
+  box-sizing: border-box;
+}
+
+.km{
+  float: left;
+  width: 100px;
+  height: 50px;
+  font-size: 22px;
+  opacity: 1;
+  font-weight: normal;
+  color: black;
+  font-family: Jura;
+  box-sizing: border-box;
+  background-color: white;
+  text-align: center;
 }
 
 .price{
@@ -281,6 +317,25 @@ input{
 
 .top{
   margin-top: 85px;
+}
+
+#suggestions{
+  background-color: white;
+  position: absolute;
+  right: 500px;
+  padding-top: 20px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  top: 210px;
+  min-height: 0px;
+  max-height: 250px;
+  width: 355px;
+  color: black;
+  overflow-y: scroll;
+}
+
+#suggestions::-webkit-scrollbar {
+  display: none;
 }
 
 .last{

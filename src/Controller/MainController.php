@@ -55,13 +55,9 @@ class MainController extends AbstractController
                 ->getQuery()
                 ->getResult();
 
-            if($searchTerm == ""){
-                $searchTerm = "ZNAJDŹ COŚ, CO CIĘ INTERESUJE";
-            }
-
-        }else{
-            $searchTerm = "ZNAJDŹ COŚ, CO CIĘ INTERESUJE";
         }
+
+        $searchTerm = "";
 
         return $this->render('main/skills_list.html.twig', [
             'uslugi' => $filteredUslugi,

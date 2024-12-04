@@ -10,9 +10,10 @@
     <div id="search">
         <div id="wyszukaj">
             <form>
-                <input id="nazwa" type="text" name="search" placeholder="{{ daneUzytkownika }}">
+                <input id="nazwa" type="text" name="search" value="{{ daneUzytkownika }}" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
                 <div id="kreska_pion"></div>
                 <input id="lokalizacja" type="text" name="city" placeholder="LOKALIZACJA">
+                <div id="suggestions"></div>
                 <input class="done anim" type="submit" value="WYSZUKAJ">
             </form>
         </div>
@@ -21,6 +22,7 @@
             <div id="opisy">
                 <div id="kat">KATEGORIA</div>
                 <div id="cena">CENA</div>
+                <div id="km">DYSTANS</div>
             </div>
             <div id="inputy">
                 <select id="kat_input">
@@ -36,16 +38,20 @@
                     <input class="price ml" type="text" name="max" placeholder="MAX">
                 </div>
 
+                <div id="km_input">
+                    <input class="km" type="number" name="km" placeholder="+0KM">
+                </div>
+
                 <input class="done reset anim2" type="submit" value="WYCZYŚĆ">
             </div>
         </div>
     </div>
 
-    <div id="list">
+    <div id="list" class="{% if uslugi|length == 0 %}last{% endif %}">
         <div id="number">ZNALEZIONO {{ uslugi|length }} OGŁOSZEŃ</div>
         <div id="kreska"></div>
         <div id="reklama">REKLAMA</div>
-        <div id="okno" class="last">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
+        <div id="okno">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
 
         {% for usluga in uslugi %}
           <div class="ogloszenie 

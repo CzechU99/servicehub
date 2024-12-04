@@ -5,6 +5,13 @@
   overflow: hidden;
 }
 
+button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
 #search{
   width: 100%;
   height: 350px;
@@ -123,6 +130,7 @@ input {
   float: left;
   line-height: 80px;
   transition: all 0.2s linear;
+  font-family: Jura;
 }
 
 #btnwyszukaj:hover{
