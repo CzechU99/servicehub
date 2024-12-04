@@ -32,7 +32,7 @@ setInterval(changeServices, 7000);
 setInterval(handShake, 10000);
 
 
-const input = document.getElementById('lokalizacja');
+const input = document.getElementById('wyszukiwanie_form_lokalizacja');
 const suggestions = document.getElementById('suggestions');
 
 input.addEventListener('input', function () {
@@ -41,7 +41,6 @@ input.addEventListener('input', function () {
       fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=20&countrycodes=PL&q=${query}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Dane z API:', data); 
             suggestions.innerHTML = '';
 
             data.filter(item => {
@@ -81,7 +80,7 @@ input.addEventListener('input', function () {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-  const inputField = document.getElementById("lokalizacja");
+  const inputField = document.querySelector(".lokalizacja2");
   const suggestionsContainer = document.getElementById("suggestions");
 
   function toggleSuggestions() {
@@ -107,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-  const lokalizacjaInput = document.getElementById("lokalizacja");
+  const lokalizacjaInput = document.querySelector(".lokalizacja2");
   const kmDiv = document.getElementById("km");
   const kmInput = document.querySelector(".km");
 

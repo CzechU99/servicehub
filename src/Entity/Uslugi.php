@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UslugiRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,17 @@ class Uslugi
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $glowneZdjecie = null;
+
+    /**
+     * @var Collection<int, Kategorie>
+     */
+    #[ORM\ManyToMany(targetEntity: Kategorie::class, mappedBy: 'uslugaKategoria')]
+    private Collection $kategorie;
+
+    public function __construct()
+    {
+        $this->kategorie = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,4 +107,32 @@ class Uslugi
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Kategorie>
+     */
+    public function getKategorie(): Collection
+    {
+        return $this->kategorie;
+    }
+
+    public function addKategorie(Kategorie $kategorie): static
+    {
+        if (!$this->kategorie->contains($kategorie)) {
+            $this->kategorie->add($kategorie);
+            $kategorie->addUslugaKategorium($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKategorie(Kategorie $kategorie): static
+    {
+        if ($this->kategorie->removeElement($kategorie)) {
+            $kategorie->removeUslugaKategorium($this);
+        }
+
+        return $this;
+    }
+
 }

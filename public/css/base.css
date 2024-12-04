@@ -4,6 +4,13 @@ body{
   font-family: Jura;
 }
 
+button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
 @font-face {
   font-family: Jura;
   src: url(../fonts/Jura/Jura-VariableFont_wght.ttf);

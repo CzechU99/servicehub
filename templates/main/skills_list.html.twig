@@ -8,15 +8,19 @@
 
 {% block body %}
     <div id="search">
+
+      {{ form_start(wyszukiwanieForm, {'action': path('app_filtrowane_uslugi_list')}) }}
+
         <div id="wyszukaj">
-            <form>
-                <input id="nazwa" type="text" name="search" value="{{ daneUzytkownika }}" placeholder="ZNAJDŹ COŚ, CO CIĘ INTERESUJE">
-                <div id="kreska_pion"></div>
-                <input id="lokalizacja" type="text" name="city" placeholder="LOKALIZACJA">
-                <div id="suggestions"></div>
-                <input class="done anim" type="submit" value="WYSZUKAJ">
-            </form>
+
+          {{ form_widget(wyszukiwanieForm.nazwaUslugi, {'attr': {'class': 'nazwa', 'placeholder': 'ZNAJDŹ COŚ, CO CIĘ INTERESUJE'}}) }}
+          <div id="kreska_pion"></div>
+          {{ form_widget(wyszukiwanieForm.lokalizacja, {'attr': {'class': 'lokalizacja2', 'placeholder': 'LOKALIZACJA'}}) }}
+          <div id="suggestions"></div>
+          <button type="submit" class="done anim">WYSZUKAJ</button>
+
         </div>
+
         <div id="filtry">FILTRY</div>
         <div id="sets">
             <div id="opisy">
@@ -25,26 +29,25 @@
                 <div id="km">DYSTANS</div>
             </div>
             <div id="inputy">
-                <select id="kat_input">
-                    <option value="0">KATEGORIA</option>
-                    <option value="1">OGRÓD</option>
-                    <option value="2">MECHANIKA</option>
-                    <option value="3">SZKOŁA</option>
-                    <option value="4">INNE</option>
-                </select>
+
+              {{ form_widget(wyszukiwanieForm.kategorie, {'attr': {'class': 'kat_input'}}) }}
 
                 <div id="cena_input">
-                    <input class="price" type="text" name="min" placeholder="MIN">
-                    <input class="price ml" type="text" name="max" placeholder="MAX">
+                  {{ form_widget(wyszukiwanieForm.cenaMin, {'attr': {'class': 'price', 'placeholder': 'MIN'}}) }}
+                  {{ form_widget(wyszukiwanieForm.cenaMax, {'attr': {'class': 'price ml', 'placeholder': 'MAX'}}) }}
                 </div>
 
                 <div id="km_input">
-                    <input class="km" type="number" name="km" placeholder="+0KM">
+                  {{ form_widget(wyszukiwanieForm.dystans, {'attr': {'class': 'km', 'placeholder': '+0KM'}}) }}
                 </div>
 
-                <input class="done reset anim2" type="submit" value="WYCZYŚĆ">
+                <a href="{{ path('app_filter_reset') }}"><div class="done reset anim2">WYCZYŚĆ</div></a>
+
             </div>
         </div>
+
+      {{ form_end(wyszukiwanieForm) }}
+
     </div>
 
     <div id="list" class="{% if uslugi|length == 0 %}last{% endif %}">
