@@ -144,7 +144,7 @@ class MainController extends AbstractController
                         $result = $stmt->executeQuery([
                             'longitude' => $coordinates['longitude'],  
                             'latitude' => $coordinates['latitude'],
-                            'distance' => $data['dystans'] * 1000,  
+                            'distance' => ($data['dystans'] * 1000) * 0.80,  
                         ]);
 
                     }

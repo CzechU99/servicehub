@@ -131,6 +131,7 @@ input{
   height: 25px;
   font-size: 22px;
   font-weight: normal;
+  display: none;
 }
 
 #cena{
@@ -181,6 +182,7 @@ input{
   box-sizing: border-box;
   background-color: white;
   text-align: center;
+  display: none;
 }
 
 .price{

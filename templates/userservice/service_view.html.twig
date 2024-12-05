@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB - USŁUGA{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/service_view.css') }}">
+{% endblock %}
+
+{% block body %}
+  <div id="search">
+
+    {{ form_start(szybkieSzukanieForm) }}
+
+      <div id="wyszukaj">
+
+        {{ form_widget(szybkieSzukanieForm.nazwaUslugi, {'attr': {'class': 'inputwyszukaj', 'placeholder': 'ZNAJDŹ COŚ, CO CIĘ INTERESUJE'}}) }}
+        <button type="submit" id="btnwyszukaj">WYSZUKAJ</button>
+
+      </div>
+
+    {{ form_end(szybkieSzukanieForm) }}
+
+    <div class="back"><a href="{{ path('app_skills_list') }}"><div class="backdiv"><span class="backarrow">&#10094;</span>&nbsp;&nbsp;&nbsp;WRÓĆ</div></a></div>
+    
+  </div>
+
+  <div id="serviceinfos">
+  
+    <div class="serviceinfo">
+
+      <div class="photoslider">
+      
+        <div class="slideshow-container">
+
+          {% for zdjecie in zdjecia %}
+            <div class="mySlides fade">
+              <div class="numbertext">{{ loop.index }} / {{ zdjecia|length }}</div>
+              <img class="zjdecie" src="{{ asset('zdjeciaUslug/' ~ usluga.uzytkownik.id ~ '/' ~ usluga.id ~ '/' ~ zdjecie) }}" alt="Zdjęcie usługi">
+            </div>
+          {% else %}
+              <li>Brak zdjęć dostępnych w katalogu.</li>
+          {% endfor %}
+
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <br>
+
+        <div class="dotcontainer">
+          {% for zdjecie in zdjecia %}
+            <span class="dot" onclick="currentSlide({{ loop.index }})"></span>
+          {% endfor %}
+        </div>
+      
+      </div>
+
+      <div class="kreskapoziom"></div>
+
+      <div class="opis">
+      
+        <div class="cechy">
+        
+          <div class="cecha">OSOBA PRYWATNA</div>
+          <div class="cecha">DO NEGOCJACJI</div>
+          <div class="cecha">ZAINTERESOWANY WYMIANĄ</div>
+        
+        </div>
+
+        <div class="opishead">OPIS</div>
+
+        <div class="opisuslugi">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+          Why do we use it?
+          It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+        
+        </div>
+
+        <div class="kreskapozioma"></div>
+
+      </div>
+
+    </div>
+
+    <div class="kreskapion"></div>
+
+    <div class="userinfo">
+    
+      <div class="nazwauslugi">{{ usluga.nazwaUslugi }} </div>
+
+      <div class="clear">
+        <div class="datadodania">DODANO: {{ usluga.dataDodania|date('d.m.Y') }} </div>
+        <div class="wyswietlenia">WYŚWETLENIA: 53 </div>
+      </div>
+
+      <div class="kreska"></div>
+
+      <div class="clear">
+        <div class="infocena">CENA</div>
+        <div class="infolokalizacja">LOKALIZACJA</div>
+        <div class="prize">{{ usluga.cena }} PLN/H</div>
+        <div class="miasto">{{ usluga.uzytkownik.daneUzytkownika.miasto|upper }}</div>
+      </div>
+
+      <div class="kreska"></div>
+
+      <div class="btn disabled">WYŚLIJ WIADOMOŚĆ</div>
+
+      <div class="btn disabled">ZAREZERWUJ</div>
+
+      <div class="kreska2"></div>
+
+      <div class="btn">ZOBACZ PROFIL</div>
+
+    
+    </div>
+
+  </div>
+
+  <script>
+  
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function myFunction(n) {
+      // slideIndex += n;
+      console.log("Działa!");
+      console.log(slideIndex);
+    }
+
+
+    function plusSlides(n) {
+      slideIndex += n;
+      showSlides(slideIndex);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      let slides = document.getElementsByClassName("mySlides");
+      let dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {slideIndex = 1}
+      if (n < 1) {slideIndex = slides.length}
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex-1].style.display = "grid";
+      dots[slideIndex-1].className += " active";
+    }
+  
+  </script>
+
+{% endblock %}

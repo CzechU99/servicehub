@@ -11,6 +11,10 @@ button {
   box-shadow: none;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 @font-face {
   font-family: Jura;
   src: url(../fonts/Jura/Jura-VariableFont_wght.ttf);

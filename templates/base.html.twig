@@ -8,16 +8,21 @@
 
         <link rel="stylesheet" href="{{ asset('css/base.css') }}">
         <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}"/>
+        {# <script type="text/javascript" src="{{ asset('js/script.js') }} defer"></script> #}
         
 
         {% block css %}{% endblock %}
 
-        {% block javascripts %}
+        {# {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+        {% endblock %} #}
     
     </head>
     <body>
+
+        {# {% block scripts %}
+            <script src="{{ asset('js/script.js') }} defer"></script>
+        {% endblock %} #}
 
         <div id="container">
 
@@ -47,7 +52,8 @@
 
         </div>
 
-        <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
+        <script src="{{ asset('js/script.js') }}"></script>
+        
         
     </body>
 </html>
