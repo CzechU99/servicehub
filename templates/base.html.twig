@@ -8,21 +8,15 @@
 
         <link rel="stylesheet" href="{{ asset('css/base.css') }}">
         <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}"/>
-        {# <script type="text/javascript" src="{{ asset('js/script.js') }} defer"></script> #}
-        
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+
 
         {% block css %}{% endblock %}
-
-        {# {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %} #}
     
     </head>
     <body>
-
-        {# {% block scripts %}
-            <script src="{{ asset('js/script.js') }} defer"></script>
-        {% endblock %} #}
 
         <div id="container">
 
@@ -53,7 +47,6 @@
         </div>
 
         <script src="{{ asset('js/script.js') }}"></script>
-        
         
     </body>
 </html>

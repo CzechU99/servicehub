@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB - ADD SERVICE{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/add_service.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+
+    <div class="container">
+
+      <div class="flashinfo">
+
+        {% set break = false %}
+        {% for child in dodajUslugeForm.children %}
+          {% for error in child.vars.errors %}
+            {% if not break %}
+              <div class="error-message">
+                  {{ error.message }}
+              </div>
+            {% endif %}
+            {% set break = true %}
+          {% endfor %}
+        {% endfor %}
+    
+      </div>
+
+      <div class="dodajForm">
+
+        {{ form_start(dodajUslugeForm) }}
+
+          <div class="box">
+          
+            <div class="opis">NAZWA USŁUGI<span class="val">(maks. 100 znaków)</span></div>
+            {{ form_widget(dodajUslugeForm.nazwaUslugi, {'attr': {'class': 'nazwauslugi', 'placeholder': 'PODAJ NAZWE USLUGI...'}}) }}
+          
+          </div>
+
+          <div class="box">
+          
+            <div class="opis">OPIS USŁUGI<span class="val">(min. 100, maks. 1000 znaków)</div>
+            {{ form_widget(dodajUslugeForm.opisUslugi, {'attr': {'class': 'opisuslugi', 'placeholder': 'PODAJ NAZWE USLUGI...'}}) }}
+          
+          </div>
+
+          <div class="box mt">
+
+            <div class="opis">PRZEŚLIJ ZDJĘCIA<span class="val">(maks. 8 zdjęć, do 3MB)</div>
+            <div id="myDropzone" class="dropzone"></div>
+
+          </div>
+
+          <div class="box mt-2">
+
+            <div class="opis2 ml">PODAJ CENE</div>
+            {{ form_widget(dodajUslugeForm.cena, {'attr': {'class': 'cena', 'placeholder': 'PLN'}}) }}
+
+            <div class="opis2">DO NEGOCJACJI</div>
+            {{ form_widget(dodajUslugeForm.doNegocjacji, {'attr': {'class': 'checkbox'}}) }}
+
+            <div class="opis2">JESTEŚ FIRMĄ</div>
+            {{ form_widget(dodajUslugeForm.czyFirma, {'attr': {'class': 'checkbox'}}) }}
+
+            <div class="opis2">WYMIANA</div>
+            {{ form_widget(dodajUslugeForm.czyWymiana, {'attr': {'class': 'checkbox'}}) }}
+
+            <div class="opis2">STAWKA GODZ.</div>
+            {{ form_widget(dodajUslugeForm.czyStawkaGodzinowa, {'attr': {'class': 'checkbox'}}) }}
+
+          </div>
+
+          <div class="box">
+
+            <div class="opis">WYBIERZ KATEGORIE<span class="val">(maks. 3)</div>
+            {{ form_widget(dodajUslugeForm.kategorie, {'attr': {'class': 'checkbox'}}) }}
+
+          </div>
+
+          <button type="submit" class="btndodaj">DODAJ USLUGE</button>
+
+        {{ form_end(dodajUslugeForm) }}
+
+      </div>
+
+    </div>
+
+    <script>
+    
+      Dropzone.autoDiscover = false;
+
+      const myDropzone = new Dropzone("#myDropzone", {
+          url: "/upload", // Ścieżka do przesyłania plików
+          autoProcessQueue: false, // Wyłącza automatyczne przesyłanie plików
+          maxFiles: 8, // Maksymalna liczba plików
+          maxFilesize: 3, // Maksymalny rozmiar pliku w MB
+          acceptedFiles: "image/jpeg,image/png,image/gif", // Akceptowane typy plików
+          addRemoveLinks: true, // Dodaje opcję usuwania plików
+          dictDefaultMessage: "Przeciągnij pliki tutaj lub kliknij, aby wybrać",
+          dictRemoveFile: "Usuń",
+          init: function () {
+              const dz = this;
+
+              // Obsługa przycisku do przesyłania
+              document.getElementById("submitBtn").addEventListener("click", function () {
+                  if (dz.getQueuedFiles().length > 0) {
+                      dz.processQueue(); // Rozpoczyna przesyłanie plików w kolejce
+                  } else {
+                      alert("Brak plików do przesłania!");
+                  }
+              });
+
+              this.on("sending", function (file, xhr, formData) {
+                  // Dodaj dane formularza do przesyłania z plikami
+                  formData.append("extraData", "value"); // Przykładowe dane
+              });
+
+              this.on("queuecomplete", function () {
+                  alert("Wszystkie pliki zostały przesłane!");
+              });
+
+              this.on("error", function (file, errorMessage) {
+                  console.error("Błąd przesyłania pliku:", file, errorMessage);
+              });
+          },
+          parallelUploads: 8, // Liczba równoczesnych przesyłanych plików
+      });
+
+
+    
+    </script>
+
+{% endblock %}

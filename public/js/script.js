@@ -162,3 +162,4 @@ document.addEventListener("DOMContentLoaded", function() {
 //   dots[slideIndex-1].className += " active";
 // }
 
+

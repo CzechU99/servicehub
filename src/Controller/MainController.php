@@ -204,29 +204,4 @@ class MainController extends AbstractController
 
     }
 
-    #[Route('/add_skill', name: 'app_add_skill')]
-    #[IsGranted('ROLE_USER')]
-    public function addSkill(
-        // EntityManagerInterface $entityManager,
-        // Request $request
-    ): Response
-    {
-        // $form = $this->createForm(AddPostFormType::class);
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $skill = $form->getData();
-        //     $skill->setUser($this->getUser());
-        //     $skill->setCreated(new DateTime());
-        //     $entityManager->persist($skill);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('app_skills_list');
-        // }
-
-        return $this->render('main/add_skill.html.twig', [
-            // 'form' => $form->createView()
-        ]);
-    }
-
 }

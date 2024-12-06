@@ -1,0 +1,180 @@
+body{
+  font-family: Jura;
+  background-color: white;
+}
+
+input{
+  border: none;
+}
+
+::placeholder{
+  color: white;
+  opacity: 1;
+}
+
+.container{
+  width: 1200px;
+  min-height: 1500px;
+  margin: auto;
+}
+
+.flashinfo{
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  font-weight: bold;
+  color: red;
+  float: left;
+  clear: both;
+  text-transform: uppercase;
+}
+
+.box{
+  width: 100%;
+  min-height: 100px;
+  box-sizing: border-box;
+  float: left;
+  clear: both;
+  margin-top: 20px;
+}
+
+.opis{
+  font-weight: normal;
+  font-size: 20px;
+  width: 800px;
+  height: 40px;
+  font-weight: bold;
+  line-height: 40px;
+  box-sizing: border-box;
+  padding-top: 8px;
+  padding-left: 30px;
+  margin: auto;
+}
+
+.checkbox{
+  margin-top: 20px;
+  font-weight: bold;
+  line-height: 25px;
+  float: left;
+  margin-left: 10px;
+  width: 17px;
+  height: 17px;
+}
+
+.mt{
+  margin-top: 20px;
+}
+
+
+
+.val{
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.opis2{
+  font-weight: normal;
+  font-size: 20px;
+  min-width: 100px;
+  height: 40px;
+  font-weight: bold;
+  line-height: 40px;
+  box-sizing: border-box;
+  padding-top: 8px;
+  float: left;
+  margin-left: 40px;
+  text-align: right;
+}
+
+.cena{
+  font-size: 15px;
+  width: 100px;
+  height: 40px;
+  background-color: rgba(40, 41, 40, 1);
+  padding: 5px 15px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  color: white;
+  transition: all 0.2s linear;
+  float: left;
+  margin-top: 7px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+/* .dropzone{
+  clear: both;
+  width: 820px;
+  margin: auto;
+} */
+
+.dropzone {
+  clear: both;
+  width: 820px;
+  margin: auto;
+}
+
+
+.nazwauslugi{
+  font-size: 15px;
+  width: 800px;
+  height: 40px;
+  background-color: rgba(40, 41, 40, 1);
+  padding-left: 30px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  color: white;
+  transition: all 0.2s linear;
+  margin: auto;
+  display: flex;
+}
+
+.opisuslugi{
+  font-size: 15px;
+  width: 800px;
+  height: 250px;
+  background-color: rgba(40, 41, 40, 1);
+  padding: 10px 30px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  color: white;
+  transition: all 0.2s linear;
+  margin: auto;
+  display: flex;
+  resize: none;
+  font-family: Jura;
+}
+
+.ml{
+  margin-left: 60px;
+}
+
+.btndodaj{
+  width: 260px;
+  height: 45px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 5px solid rgba(46, 83, 229, 1);
+  line-height: 35px;
+  color: rgba(46, 83, 229, 1);
+  text-align: center;
+  font-weight: bold;
+  margin-top: 60px;
+  background-color: white;
+  font-family: Jura;
+  clear: both;
+  display: block;
+  margin: auto;
+}
+
+.btndodaj:hover{
+  cursor: pointer;
+  background-color: rgba(46, 83, 229, 1);
+  color: white;
+}
+
+.mt-2{
+  margin-top: 40px;
+  height: 50px;
+}

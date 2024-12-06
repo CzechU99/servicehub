@@ -38,6 +38,21 @@ class Uslugi
     #[ORM\ManyToMany(targetEntity: Kategorie::class, mappedBy: 'uslugaKategoria')]
     private Collection $kategorie;
 
+    #[ORM\Column(length: 1000)]
+    private ?string $opisUslugi = null;
+
+    #[ORM\Column]
+    private ?bool $doNegocjacji = null;
+
+    #[ORM\Column]
+    private ?bool $czyFirma = null;
+
+    #[ORM\Column]
+    private ?bool $czyWymiana = null;
+
+    #[ORM\Column]
+    private ?bool $czyStawkaGodzinowa = null;
+
     public function __construct()
     {
         $this->kategorie = new ArrayCollection();
@@ -131,6 +146,66 @@ class Uslugi
         if ($this->kategorie->removeElement($kategorie)) {
             $kategorie->removeUslugaKategorium($this);
         }
+
+        return $this;
+    }
+
+    public function getOpisUslugi(): ?string
+    {
+        return $this->opisUslugi;
+    }
+
+    public function setOpisUslugi(string $opisUslugi): static
+    {
+        $this->opisUslugi = $opisUslugi;
+
+        return $this;
+    }
+
+    public function isDoNegocjacji(): ?bool
+    {
+        return $this->doNegocjacji;
+    }
+
+    public function setDoNegocjacji(bool $doNegocjacji): static
+    {
+        $this->doNegocjacji = $doNegocjacji;
+
+        return $this;
+    }
+
+    public function isCzyFirma(): ?bool
+    {
+        return $this->czyFirma;
+    }
+
+    public function setCzyFirma(bool $czyFirma): static
+    {
+        $this->czyFirma = $czyFirma;
+
+        return $this;
+    }
+
+    public function isCzyWymiana(): ?bool
+    {
+        return $this->czyWymiana;
+    }
+
+    public function setCzyWymiana(bool $czyWymiana): static
+    {
+        $this->czyWymiana = $czyWymiana;
+
+        return $this;
+    }
+
+    public function isCzyStawkaGodzinowa(): ?bool
+    {
+        return $this->czyStawkaGodzinowa;
+    }
+
+    public function setCzyStawkaGodzinowa(bool $czyStawkaGodzinowa): static
+    {
+        $this->czyStawkaGodzinowa = $czyStawkaGodzinowa;
 
         return $this;
     }
