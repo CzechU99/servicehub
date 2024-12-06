@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Uslugi;
 use App\Form\AddServiceFormType;
 use App\Repository\UslugiRepository;
 use App\Form\SzybkieSzukanieFormType;
+use App\Repository\KategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,28 +50,87 @@ class UserServiceController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function addSkill(
         EntityManagerInterface $entityManager,
-        Request $request
+        Request $request,
+        KategorieRepository $kategorie,
     ): Response
     {
-        $form = $this->createForm(AddServiceFormType::class);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            
-            
-            // $skill = $form->getData();
-            // $skill->setUser($this->getUser());
-            // $skill->setCreated(new DateTime());
-            // $entityManager->persist($skill);
-            // $entityManager->flush();
+      $categories = $kategorie->findAll();
 
-            // return $this->redirectToRoute('app_skills_list');
-        }
+      $usluga = new Uslugi();
 
-        return $this->render('userservice/add_skill.html.twig', [
-            'dodajUslugeForm' => $form->createView()
-        ]);
+      $form = $this->createForm(AddServiceFormType::class, $usluga, [
+        'categories' => $categories
+      ]);
+
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+          
+            $user = $this->getUser();
+
+
+            $userId = $user->getId();
+
+            dump($userId);
+
+            $publicDir = $this->getParameter('kernel.project_dir') . '/public';
+            $userFolder = '/zdjeciaUslug' . '/' . $userId;
+            $folderPath = $publicDir . '/' . $userFolder;
+            if (!is_dir($folderPath)) {
+                mkdir($userFolder, 0777, true);
+            }
+
+            $usluga->setUzytkownik($user);
+            $usluga->setDataDodania(new \DateTime());
+            $entityManager->persist($usluga);
+            $entityManager->flush();
+
+            $serviceId = $usluga->getId(); 
+
+            $serviceFolder = $folderPath . '/' . $serviceId;
+            if (!is_dir($serviceFolder)) {
+                mkdir($serviceFolder, 0777, true);
+            }
+
+            dump($request->files->all());
+
+
+            $uploadedFiles = $request->files->get('add_service_form')['images'];
+            dump($uploadedFiles);
+            if ($uploadedFiles) {
+                foreach ($uploadedFiles as $index => $file) {
+                    if ($file->isValid() && $file->getSize() <= 5 * 1024 * 1024) { 
+                      $filename = sprintf('%d_%s', $index + 1, $file->getClientOriginalName());
+                      if($index == 0){
+                        $usluga->setGlowneZdjecie($filename);
+                      }
+                      $file->move($serviceFolder, $filename); 
+                    }
+                }
+            }
+
+            $selectedCategories = $form->get('kategorie')->getData();
+            dump($selectedCategories);
+            
+            foreach ($selectedCategories as $category) {
+              $usluga->addKategorie($category);
+              $category->addUslugaKategorium($usluga); 
+            }
+
+            dump($usluga);
+
+            $entityManager->persist($usluga);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_myservices');
+
+      }
+
+      return $this->render('userservice/add_skill.html.twig', [
+          'dodajUslugeForm' => $form->createView()
+      ]);
+
     }
 
 }

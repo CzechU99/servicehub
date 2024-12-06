@@ -9,8 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -47,7 +49,15 @@ class AddServiceFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('kategorie', ChoiceType::class, [
+            ->add('images', FileType::class, [
+                'label' => 'Prześlij zdjęcia',
+                'mapped' => false,  // Ważne: to pole nie jest mapowane na encję
+                'multiple' => true,  // Możesz dodać wiele plików
+                'required' => true, // Opcjonalne
+                'attr' => ['accept' => 'image/*'],
+            ])
+            ->add('kategorie', EntityType::class, [
+                'class' => Kategorie::class,
                 'label' => 'Kategorie',
                 'choices' => $options['categories'], // Kategorie będą przekazane jako opcja formularza
                 'choice_label' => fn ($category) => $category->getNazwaKategorii(),

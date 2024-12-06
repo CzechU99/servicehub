@@ -7,8 +7,7 @@
 
 {% block body %}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
     <div class="container">
 
@@ -30,26 +29,29 @@
 
       <div class="dodajForm">
 
-        {{ form_start(dodajUslugeForm) }}
+        {{ form_start(dodajUslugeForm, { 'attr': {'enctype': 'multipart/form-data'} }) }}
 
           <div class="box">
           
-            <div class="opis">NAZWA USŁUGI<span class="val">(maks. 100 znaków)</span></div>
+            <div class="opis">NAZWA USŁUGI<span class="val">(min. 15 | maks. 100 znaków)</span></div>
             {{ form_widget(dodajUslugeForm.nazwaUslugi, {'attr': {'class': 'nazwauslugi', 'placeholder': 'PODAJ NAZWE USLUGI...'}}) }}
           
           </div>
 
           <div class="box">
           
-            <div class="opis">OPIS USŁUGI<span class="val">(min. 100, maks. 1000 znaków)</div>
+            <div class="opis">OPIS USŁUGI<span class="val">(min. 100 | maks. 1000 znaków)</div>
             {{ form_widget(dodajUslugeForm.opisUslugi, {'attr': {'class': 'opisuslugi', 'placeholder': 'PODAJ NAZWE USLUGI...'}}) }}
           
           </div>
 
           <div class="box mt">
 
-            <div class="opis">PRZEŚLIJ ZDJĘCIA<span class="val">(maks. 8 zdjęć, do 3MB)</div>
-            <div id="myDropzone" class="dropzone"></div>
+            <div id="image-upload-container">
+              {{ form_widget(dodajUslugeForm.images, {'attr': {'class': 'image-input'}}) }}
+              <label class="label" for="add_service_form_images">PRZEŚLIJ ZDJĘCIA<span class="val">(maks. 8 zdjęć | do 5MB każde)</label>
+              <div id="image-gallery" class="gallery"></div>
+            </div>
 
           </div>
 
@@ -72,10 +74,21 @@
 
           </div>
 
-          <div class="box">
+          <div class="box_check clr">
 
-            <div class="opis">WYBIERZ KATEGORIE<span class="val">(maks. 3)</div>
-            {{ form_widget(dodajUslugeForm.kategorie, {'attr': {'class': 'checkbox'}}) }}
+            <div class="opis">WYBIERZ KATEGORIE<span class="val">(min. 1 | maks. 3)</div>
+            <div class="checkbox_all">
+            <ul>
+            {% for category in dodajUslugeForm.kategorie %}
+              <li>
+                <div class="category-item">
+                  {{ form_label(category) }}
+                  {{ form_widget(category, {'attr': {'class': 'selectbox'}}) }}
+                </div>
+              </li>
+            {% endfor %}
+            </ul>
+            </div>
 
           </div>
 
@@ -88,48 +101,115 @@
     </div>
 
     <script>
-    
-      Dropzone.autoDiscover = false;
 
-      const myDropzone = new Dropzone("#myDropzone", {
-          url: "/upload", // Ścieżka do przesyłania plików
-          autoProcessQueue: false, // Wyłącza automatyczne przesyłanie plików
-          maxFiles: 8, // Maksymalna liczba plików
-          maxFilesize: 3, // Maksymalny rozmiar pliku w MB
-          acceptedFiles: "image/jpeg,image/png,image/gif", // Akceptowane typy plików
-          addRemoveLinks: true, // Dodaje opcję usuwania plików
-          dictDefaultMessage: "Przeciągnij pliki tutaj lub kliknij, aby wybrać",
-          dictRemoveFile: "Usuń",
-          init: function () {
-              const dz = this;
+      document.addEventListener('DOMContentLoaded', () => {
+        const checkboxes = document.querySelectorAll('.selectbox');
+        const maxSelection = 3;
 
-              // Obsługa przycisku do przesyłania
-              document.getElementById("submitBtn").addEventListener("click", function () {
-                  if (dz.getQueuedFiles().length > 0) {
-                      dz.processQueue(); // Rozpoczyna przesyłanie plików w kolejce
-                  } else {
-                      alert("Brak plików do przesłania!");
-                  }
-              });
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const checkedCount = document.querySelectorAll('.selectbox:checked').length;
 
-              this.on("sending", function (file, xhr, formData) {
-                  // Dodaj dane formularza do przesyłania z plikami
-                  formData.append("extraData", "value"); // Przykładowe dane
-              });
-
-              this.on("queuecomplete", function () {
-                  alert("Wszystkie pliki zostały przesłane!");
-              });
-
-              this.on("error", function (file, errorMessage) {
-                  console.error("Błąd przesyłania pliku:", file, errorMessage);
-              });
-          },
-          parallelUploads: 8, // Liczba równoczesnych przesyłanych plików
+                if (checkedCount >= maxSelection) {
+                    checkboxes.forEach(cb => {
+                        if (!cb.checked) {
+                            cb.disabled = true;
+                        }
+                    });
+                } else {
+                    checkboxes.forEach(cb => cb.disabled = false);
+                }
+            });
+        });
       });
 
+      const imageInput = document.querySelector('.image-input');
+      const gallery = document.getElementById('image-gallery');
+      const errorMessage = document.getElementById('error-message'); 
 
-    
+      let imageFiles = []; 
+      const maxFiles = 8; 
+      const maxFileSizeMB = 5; 
+
+      imageInput.addEventListener('change', (event) => {
+          const files = Array.from(event.target.files);
+          let skippedFiles = 0; 
+
+          const remainingSlots = maxFiles - imageFiles.length;
+
+          if (remainingSlots <= 0) {
+              return;
+          }
+
+          const filesToAdd = files.slice(0, remainingSlots); 
+
+          filesToAdd.forEach(file => {
+              if (!file.type.startsWith('image/')) {
+                  skippedFiles++;
+                  return;
+              }
+
+              if (file.size > maxFileSizeMB * 1024 * 1024) {
+                  skippedFiles++;
+                  return;
+              }
+
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                  const galleryItem = document.createElement('div');
+                  galleryItem.classList.add('gallery-item', 'draggable');
+                  galleryItem.dataset.filename = file.name;
+
+                  const img = document.createElement('img');
+                  img.src = e.target.result;
+
+                  const removeButton = document.createElement('button');
+                  removeButton.classList.add('remove-button');
+                  removeButton.textContent = 'USUŃ';
+                  removeButton.addEventListener('click', () => {
+                      gallery.removeChild(galleryItem);
+                      imageFiles = imageFiles.filter(f => f !== file);
+                      updateInput();
+                  });
+
+                  galleryItem.appendChild(img);
+                  galleryItem.appendChild(removeButton);
+                  gallery.appendChild(galleryItem);
+
+                  imageFiles.push(file);
+                  updateInput(); 
+              };
+              reader.readAsDataURL(file);
+          });
+      });
+
+      function updateInput() {
+          const dataTransfer = new DataTransfer(); 
+
+          imageFiles.forEach(file => {
+              dataTransfer.items.add(file);
+          });
+
+          imageInput.files = dataTransfer.files;
+      }
+
+      new Sortable(gallery, {
+          animation: 150,
+          ghostClass: 'draggable-ghost',
+          onEnd: () => {
+              const reorderedFiles = [];
+              Array.from(gallery.children).forEach(item => {
+                  const filename = item.dataset.filename;
+                  const file = imageFiles.find(f => f.name === filename);
+                  if (file) {
+                      reorderedFiles.push(file);
+                  }
+              });
+              imageFiles = reorderedFiles;
+              updateInput(); 
+          }
+      });
+
     </script>
 
 {% endblock %}
