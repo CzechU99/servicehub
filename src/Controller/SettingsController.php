@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Form\DaneFormType;
 use App\Entity\DaneUzytkownika;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Service\GeocoderService;
+use App\Repository\UslugiRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,10 +71,18 @@ class SettingsController extends AbstractController
 
     #[Route('/myservices', name: 'app_myservices')]
     #[IsGranted('ROLE_USER')]
-    public function services(): Response
+    public function services(
+      UslugiRepository $uslugi,
+      DaneUzytkownikaRepository $daneUzytkownika
+    ): Response
     {
 
+      $uslugiUzytkownika = $uslugi->findBy(['uzytkownik' => $this->getUser()]);
+      $daneUzytkownika = $daneUzytkownika->findOneBy(['uzytkownik' => $this->getUser()]);
+
       return $this->render('settings/myservices.html.twig', [
+        'uslugiUzytkownika' => $uslugiUzytkownika,
+        'daneUzytkownika' => $daneUzytkownika,
       ]);
     
     }

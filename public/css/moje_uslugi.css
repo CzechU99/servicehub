@@ -1,0 +1,224 @@
+body{
+  padding: 0px;
+  margin: 0px;
+  font-family: Jura;
+}
+
+#menu{
+  width: 100%;
+  background-color: rgba(16, 17, 16, 1);
+  height: 130px;
+  float: left;
+  clear: both;
+}
+
+#setts{
+  width: 100%;
+  height: 100px;
+  float: left;
+  text-align: center;
+  margin-top: 15px;
+  box-sizing: border-box;
+}
+
+#list{
+  width: 100%;
+  min-height: 200px;
+  float: left;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.tytul{
+  width: 90%;
+  height: 75px;
+  float: left;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 23px;
+  margin-left: 30px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.prawo{
+  width: 200px;
+  height: 150px;
+  float: left;
+  box-sizing: border-box;
+  border-radius: 0px 10px 10px 0px;
+  border-top: 3px solid rgba(16, 17, 16, 1);
+  border-right: 3px solid rgba(16, 17, 16, 1);
+  border-bottom: 3px solid rgba(16, 17, 16, 1);
+}
+
+.cena{
+  width: 200px;
+  height: 30px;
+  text-align: right;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 70px;
+  margin-bottom: 10px;
+  float: right;
+  box-sizing: border-box;
+  top: 0px;
+}
+
+.edytuj{
+  width: 100%;
+  height: 72px;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 75px;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.4);
+  
+}
+
+.edytuj:hover .edytujimg{
+  scale: 1.1;
+  transition: 0.5s scale;
+}
+
+.usun:hover .usunimg{
+  scale: 1.08;
+  transition: 0.5s scale;
+}
+
+.edytujimg{
+  width: 70px;
+  transition: 0.5s scale;
+  scale: 1;
+}
+
+.usunimg{
+  width: 55px;
+  margin-top: 12px;
+  transition: 0.5s scale;
+  scale: 1;
+}
+
+.kreska{
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+
+.usunimg:hover{
+  cursor: pointer;
+}
+
+.usun{
+  width: 100%;
+  height: 72px;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 75px;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+}
+
+.uslugainfo{
+  width: 100%;
+  height: 50px;
+  clear: both;
+  float: left;
+  box-sizing: border-box;
+}
+
+.data{
+  width: 50%;
+  height: 20px;
+  float: left;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 16px;
+  margin-left: 30px;
+  clear: both;
+}
+
+.lokalizacja{
+  width: 50%;
+  height: 20px;
+  float: left;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 16px;
+  margin-left: 30px;
+  margin-top: 10px;
+  clear: both;
+}
+
+.opis{
+  width: 650px;
+  height: 150px;
+  float: left;
+  box-sizing: border-box;
+  border-top: 3px solid rgba(16, 17, 16, 1);
+  border-bottom: 3px solid rgba(16, 17, 16, 1);
+}
+
+.zdjecie{
+  width: 220px;
+  height: 150px;
+  float: left;
+  box-sizing: border-box;
+  border-radius: 10px 0px 0px 10px;
+}
+
+.ogloszenie{
+  clear: both;
+  width: 1070px;
+  height: 150px;
+  box-sizing: border-box;
+  background-color: white;
+  margin: auto;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.ogloszenie:hover{
+  cursor: pointer;
+}
+
+.top{
+  margin-top: 50px;
+}
+
+.last{
+  margin-bottom: 85px;
+}
+
+.przycisk{
+  width: fit-content;
+  height: 50px;
+  background-color: rgba(40, 41, 40, 1);
+  color: white;
+  border-radius: 5px;
+  margin-top: 25px;
+  margin-left: 2px;
+  display: inline-block;
+  line-height: 50px;
+  vertical-align: top;
+  font-weight: bold;
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: all 0.2s linear;
+}
+
+.przycisk:hover{
+  cursor: pointer;
+}
+
+.clicked{
+  background-color: rgba(46, 83, 229, 1);
+}
+
+#footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}

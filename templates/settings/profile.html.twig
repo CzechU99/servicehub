@@ -11,7 +11,7 @@
   
     <div id="setts">
       
-      <a href="{{path('app_myservices')}}"><div class="przycisk">USŁUGI</div></a>
+      <a href="{{path('app_myservices')}}"><div class="przycisk">MOJE USŁUGI</div></a>
       <div class="przycisk">WIADOMOŚCI</div>
       <div class="przycisk">OCENY</div>
       <a href="{{path('app_profile')}}"><div class="przycisk {% if app.request.pathinfo == "/profile" %}clicked{% endif %}">DANE</div></a>
@@ -35,6 +35,10 @@
           {% endif %}
           {% set break = true %}
         {% endfor %}
+      {% endfor %}
+
+      {% for flash_msg in app.flashes('error') %}
+        <div class="error-message">{{ flash_msg }}</div>
       {% endfor %}
 
       {% for flash_msg in app.flashes('success') %}

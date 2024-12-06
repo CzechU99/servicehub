@@ -24,7 +24,7 @@
                 <div id="navbar">
                     <div id="logo"><a href="{{path('app_main')}}">ServiceHUB</a></div>
                     {% if app.user %}
-                        <a href="{{path('app_add_skill')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
+                        <a href="{{path('app_add_edit_skill')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
                         <a href="{{path('app_logout')}}"><div id="zaloguj" class="burst">WYLOGUJ</div></a>
                         <a href="{{path('app_myservices')}}"><div id="konto" class="burst"><img src="{{asset('images/profil.png')}}"></div></a>
                     {% else %}

@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\DaneUzytkownika;
 use App\Entity\Uslugi;
 use App\Form\AddServiceFormType;
 use App\Repository\UslugiRepository;
 use App\Form\SzybkieSzukanieFormType;
 use App\Repository\KategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DaneUzytkownikaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,14 +48,21 @@ class UserServiceController extends AbstractController
       
     }
 
-    #[Route('/add_skill', name: 'app_add_skill')]
+    #[Route('/add_edit_service/{idUslugaEdit?}', name: 'app_add_edit_skill')]
     #[IsGranted('ROLE_USER')]
-    public function addSkill(
+    public function addEditService(
         EntityManagerInterface $entityManager,
+        DaneUzytkownikaRepository $daneUzytkownika,
         Request $request,
         KategorieRepository $kategorie,
+        ?int $idUslugaEdit = null
     ): Response
     {
+
+      if(!$daneUzytkownika->findOneBy(['uzytkownik' => $this->getUser()])){
+        $this->addFlash('error', 'ABY KORZYSTAĆ W PEŁNI Z PLATFORMY NAJPIERW UZUPEŁNIJ SWOJE DANE');
+        return $this->redirectToRoute('app_profile');
+      }
 
       $categories = $kategorie->findAll();
 
@@ -68,11 +77,7 @@ class UserServiceController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
           
             $user = $this->getUser();
-
-
             $userId = $user->getId();
-
-            dump($userId);
 
             $publicDir = $this->getParameter('kernel.project_dir') . '/public';
             $userFolder = '/zdjeciaUslug' . '/' . $userId;
@@ -93,11 +98,7 @@ class UserServiceController extends AbstractController
                 mkdir($serviceFolder, 0777, true);
             }
 
-            dump($request->files->all());
-
-
             $uploadedFiles = $request->files->get('add_service_form')['images'];
-            dump($uploadedFiles);
             if ($uploadedFiles) {
                 foreach ($uploadedFiles as $index => $file) {
                     if ($file->isValid() && $file->getSize() <= 5 * 1024 * 1024) { 
@@ -111,14 +112,11 @@ class UserServiceController extends AbstractController
             }
 
             $selectedCategories = $form->get('kategorie')->getData();
-            dump($selectedCategories);
             
             foreach ($selectedCategories as $category) {
               $usluga->addKategorie($category);
               $category->addUslugaKategorium($usluga); 
             }
-
-            dump($usluga);
 
             $entityManager->persist($usluga);
             $entityManager->flush();
@@ -131,6 +129,53 @@ class UserServiceController extends AbstractController
           'dodajUslugeForm' => $form->createView()
       ]);
 
+    }
+
+    #[Route('/delete_service/{idUslugi}', name: 'app_delete_service')]
+    #[IsGranted('ROLE_USER')]
+    public function deleteService(
+        int $idUslugi,
+        UslugiRepository $uslugi,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+
+      $user = $this->getUser();
+      $userId = $user->getId();
+
+      $uslugaDoUsuniecia = $uslugi->findOneBy([
+        'id' => $idUslugi,
+        'uzytkownik' => $this->getUser(), 
+      ]);
+
+      $idUslugaDoUsuniecia = $uslugaDoUsuniecia->getId();
+
+      $publicDir = $this->getParameter('kernel.project_dir') . '/public';
+      $sciezkaDoUsuniecia = $publicDir . '/zdjeciaUslug' . '/' . $userId . '/' . $idUslugaDoUsuniecia;
+
+      if(is_dir($sciezkaDoUsuniecia)){
+        $this->deleteFolder($sciezkaDoUsuniecia);
+      }
+
+      $entityManager->remove($uslugaDoUsuniecia);
+      $entityManager->flush();
+      
+      return $this->redirectToRoute('app_myservices');
+      
+    }
+
+    private function deleteFolder(string $folderPath): void
+    {
+        $files = array_diff(scandir($folderPath), ['.', '..']);
+        foreach ($files as $file) {
+            $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+            if (is_dir($filePath)) {
+                $this->deleteFolder($filePath);
+            } else {
+                unlink($filePath);
+            }
+        }
+        rmdir($folderPath);
     }
 
 }
