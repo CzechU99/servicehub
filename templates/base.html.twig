@@ -9,8 +9,8 @@
         <link rel="stylesheet" href="{{ asset('css/base.css') }}">
         <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}"/>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
 
 
         {% block css %}{% endblock %}
@@ -24,7 +24,7 @@
                 <div id="navbar">
                     <div id="logo"><a href="{{path('app_main')}}">ServiceHUB</a></div>
                     {% if app.user %}
-                        <a href="{{path('app_add_edit_skill')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
+                        <a href="{{path('app_add_edit_service')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
                         <a href="{{path('app_logout')}}"><div id="zaloguj" class="burst">WYLOGUJ</div></a>
                         <a href="{{path('app_myservices')}}"><div id="konto" class="burst"><img src="{{asset('images/profil.png')}}"></div></a>
                     {% else %}

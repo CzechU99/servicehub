@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ServiceHUB - ADD SERVICE{% endblock %}
+{% block title %}ServiceHUB - {{ isEdit ? 'EDYTUJ' : 'DODAJ' }} USŁUGĘ{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ asset('css/add_service.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
-    <div class="container">
+    <div class="inputs">
 
       <div class="flashinfo">
 
@@ -50,7 +49,16 @@
             <div id="image-upload-container">
               {{ form_widget(dodajUslugeForm.images, {'attr': {'class': 'image-input'}}) }}
               <label class="label" for="add_service_form_images">PRZEŚLIJ ZDJĘCIA<span class="val">(maks. 8 zdjęć | do 5MB każde)</label>
-              <div id="image-gallery" class="gallery"></div>
+              <div id="image-gallery" class="gallery">
+              
+                {% for image in existingImages %}
+                  <div class="gallery-item draggable" data-filename="{{ asset(image) }}">
+                    <img src="{{ asset(image) }}" alt="Zdjęcie usługi">
+                    <button type="button" class="remove-button">USUŃ</button>
+                  </div>
+                {% endfor %}
+              
+              </div>
             </div>
 
           </div>
@@ -92,7 +100,7 @@
 
           </div>
 
-          <button type="submit" class="btndodaj">DODAJ USLUGE</button>
+          <button type="submit" class="btndodaj">{{ isEdit ? 'EDYTUJ' : 'DODAJ' }} USLUGĘ</button>
 
         {{ form_end(dodajUslugeForm) }}
 

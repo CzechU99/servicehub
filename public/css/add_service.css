@@ -12,10 +12,11 @@ input{
   opacity: 1;
 }
 
-.container{
+.inputs{
   width: 1200px;
-  min-height: 1600px;
   margin: auto;
+  min-height: 1600px;
+  clear: both;
 }
 
 .flashinfo{
@@ -189,6 +190,7 @@ input{
   margin: auto;
   display: flex;
   resize: none;
+  text-align: justify;
   font-family: Jura;
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
 

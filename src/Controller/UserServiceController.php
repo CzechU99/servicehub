@@ -48,88 +48,132 @@ class UserServiceController extends AbstractController
       
     }
 
-    #[Route('/add_edit_service/{idUslugaEdit?}', name: 'app_add_edit_skill')]
+    #[Route('/add_edit_service/{idUslugi?}', name: 'app_add_edit_service')]
     #[IsGranted('ROLE_USER')]
     public function addEditService(
-        EntityManagerInterface $entityManager,
-        DaneUzytkownikaRepository $daneUzytkownika,
-        Request $request,
-        KategorieRepository $kategorie,
-        ?int $idUslugaEdit = null
-    ): Response
-    {
+      EntityManagerInterface $entityManager,
+      DaneUzytkownikaRepository $daneUzytkownika,
+      Request $request,
+      KategorieRepository $kategorie,
+      UslugiRepository $uslugiRepository,
+      ?int $idUslugi = null
+    ): Response {
 
-      if(!$daneUzytkownika->findOneBy(['uzytkownik' => $this->getUser()])){
-        $this->addFlash('error', 'ABY KORZYSTAĆ W PEŁNI Z PLATFORMY NAJPIERW UZUPEŁNIJ SWOJE DANE');
+      if (!$daneUzytkownika->findOneBy(['uzytkownik' => $this->getUser()])) {
+        $this->addFlash('error', 'Aby korzystać w pełni z platformy, najpierw uzupełnij swoje dane.');
         return $this->redirectToRoute('app_profile');
       }
 
+      $user = $this->getUser();
+      $userId = $user->getId();
+
       $categories = $kategorie->findAll();
 
-      $usluga = new Uslugi();
+      $usluga = $idUslugi ? $uslugiRepository->findOneBy([
+        'id' => $idUslugi,
+        'uzytkownik' => $userId,
+      ])
+      : new Uslugi();
 
       $form = $this->createForm(AddServiceFormType::class, $usluga, [
-        'categories' => $categories
+          'categories' => $categories,
       ]);
 
       $form->handleRequest($request);
 
-      if ($form->isSubmitted() && $form->isValid()) {
-          
-            $user = $this->getUser();
-            $userId = $user->getId();
-
-            $publicDir = $this->getParameter('kernel.project_dir') . '/public';
-            $userFolder = '/zdjeciaUslug' . '/' . $userId;
-            $folderPath = $publicDir . '/' . $userFolder;
-            if (!is_dir($folderPath)) {
-                mkdir($userFolder, 0777, true);
-            }
-
-            $usluga->setUzytkownik($user);
-            $usluga->setDataDodania(new \DateTime());
-            $entityManager->persist($usluga);
-            $entityManager->flush();
-
-            $serviceId = $usluga->getId(); 
-
-            $serviceFolder = $folderPath . '/' . $serviceId;
-            if (!is_dir($serviceFolder)) {
-                mkdir($serviceFolder, 0777, true);
-            }
-
-            $uploadedFiles = $request->files->get('add_service_form')['images'];
-            if ($uploadedFiles) {
-                foreach ($uploadedFiles as $index => $file) {
-                    if ($file->isValid() && $file->getSize() <= 5 * 1024 * 1024) { 
-                      $filename = sprintf('%d_%s', $index + 1, $file->getClientOriginalName());
-                      if($index == 0){
-                        $usluga->setGlowneZdjecie($filename);
-                      }
-                      $file->move($serviceFolder, $filename); 
-                    }
-                }
-            }
-
-            $selectedCategories = $form->get('kategorie')->getData();
-            
-            foreach ($selectedCategories as $category) {
-              $usluga->addKategorie($category);
-              $category->addUslugaKategorium($usluga); 
-            }
-
-            $entityManager->persist($usluga);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_myservices');
-
+      $existingImages = [];
+      if ($idUslugi !== null) {
+          $serviceFolder = $this->getParameter('kernel.project_dir') . '/public/zdjeciaUslug/' . $userId . '/' . $idUslugi;
+          if (is_dir($serviceFolder)) {
+              $files = array_diff(scandir($serviceFolder), ['.', '..']);
+              foreach ($files as $file) {
+                $existingImages[] = '/servicehub/public/zdjeciaUslug/' . $userId . '/' . $idUslugi . '/' . $file;
+              }
+          }
       }
 
-      return $this->render('userservice/add_skill.html.twig', [
-          'dodajUslugeForm' => $form->createView()
-      ]);
+      if ($form->isSubmitted() && $form->isValid()) {
 
+        if($idUslugi){
+        
+          $query = $entityManager->getConnection()->prepare('
+              DELETE FROM kategorie_uslugi
+              WHERE uslugi_id = :uslugaId
+          ');
+
+          $query->bindValue(':uslugaId', $idUslugi);
+          $query->executeQuery();
+
+        }
+
+        $publicDir = $this->getParameter('kernel.project_dir') . '/public';
+        $userFolder = $publicDir . '/zdjeciaUslug/' . $userId;
+
+        if (!is_dir($userFolder)) {
+          mkdir($userFolder, 0777, true);
+        }
+
+        if($idUslugi) {
+          $serviceFolder = $userFolder . '/' . $usluga->getId();
+
+          if (is_dir($serviceFolder)) {
+            $files = glob($serviceFolder . '/*'); 
+            foreach ($files as $file) {
+              if (is_file($file)) {
+                unlink($file); 
+              }
+            }
+          } else {
+              mkdir($serviceFolder, 0777, true);
+          }
+        } else {
+          $usluga->setUzytkownik($user);
+          $usluga->setDataDodania(new \DateTime());
+          $entityManager->persist($usluga);
+          $entityManager->flush();
+
+          $serviceFolder = $userFolder . '/' . $usluga->getId();
+          if (!is_dir($serviceFolder)) {
+            mkdir($serviceFolder, 0777, true);
+          }
+        }
+
+        $uploadedFiles = $request->files->get('add_service_form')['images'];
+        if ($uploadedFiles) {
+          foreach ($uploadedFiles as $index => $file) {
+            if ($file->isValid() && $file->getSize() <= 5 * 1024 * 1024) {
+              $originalName = $file->getClientOriginalName();
+              $cleanName = preg_replace('/^[\d_]+/', '', $originalName);
+              $filename = sprintf('%d_%s', $index + 1, $cleanName);
+              if ($index == 0) {
+                $usluga->setGlowneZdjecie($filename);
+              }
+              $file->move($serviceFolder, $filename);
+            }
+          }
+        }
+
+        $selectedCategories = $form->get('kategorie')->getData();
+
+        foreach ($selectedCategories as $category) {
+          $usluga->addKategorie($category);
+          $category->addUslugaKategorium($usluga); 
+        }
+
+        $entityManager->persist($usluga);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_myservices');
+      }
+
+      return $this->render('userservice/add_edit_service.html.twig', [
+        'dodajUslugeForm' => $form->createView(),
+        'isEdit' => $idUslugi !== null,
+        'existingImages' => $existingImages,
+      ]);
     }
+
 
     #[Route('/delete_service/{idUslugi}', name: 'app_delete_service')]
     #[IsGranted('ROLE_USER')]

@@ -54,7 +54,7 @@
               </div>
             </div></a>
             <div class="prawo">
-              <div class="edytuj"><img class="edytujimg" src="{{ asset('images/edit_icon.png') }}"></div>
+              <a href="{{ path('app_add_edit_service', {idUslugi: usluga.id}) }}"><div class="edytuj"><img class="edytujimg" src="{{ asset('images/edit_icon.png') }}"></div></a>
               <a href="{{ path('app_delete_service', {idUslugi: usluga.id}) }}"><div class="usun"><img class="usunimg" src="{{ asset('images/delete_icon.png') }}"></div>
             </div>
           </div>
