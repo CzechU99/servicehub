@@ -40,6 +40,15 @@ class Rezerwacje
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dataZlozenia = null;
 
+    #[ORM\Column]
+    private ?bool $czyPotwierdzona = null;
+
+    #[ORM\Column]
+    private ?bool $czyAnulowana = null;
+
+    #[ORM\Column]
+    private ?bool $czyOdrzucona = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +146,42 @@ class Rezerwacje
     public function setDataZlozenia(\DateTimeInterface $dataZlozenia): static
     {
         $this->dataZlozenia = $dataZlozenia;
+
+        return $this;
+    }
+
+    public function isCzyPotwierdzona(): ?bool
+    {
+        return $this->czyPotwierdzona;
+    }
+
+    public function setCzyPotwierdzona(bool $czyPotwierdzona): static
+    {
+        $this->czyPotwierdzona = $czyPotwierdzona;
+
+        return $this;
+    }
+
+    public function isCzyAnulowana(): ?bool
+    {
+        return $this->czyAnulowana;
+    }
+
+    public function setCzyAnulowana(bool $czyAnulowana): static
+    {
+        $this->czyAnulowana = $czyAnulowana;
+
+        return $this;
+    }
+
+    public function isCzyOdrzucona(): ?bool
+    {
+        return $this->czyOdrzucona;
+    }
+
+    public function setCzyOdrzucona(bool $czyOdrzucona): static
+    {
+        $this->czyOdrzucona = $czyOdrzucona;
 
         return $this;
     }

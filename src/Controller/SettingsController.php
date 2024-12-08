@@ -6,6 +6,7 @@ use App\Form\DaneFormType;
 use App\Entity\DaneUzytkownika;
 use App\Service\GeocoderService;
 use App\Repository\UslugiRepository;
+use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,6 +86,119 @@ class SettingsController extends AbstractController
         'daneUzytkownika' => $daneUzytkownika,
       ]);
     
+    }
+
+    #[Route('/rezerwacje', name: 'app_rezerwacje')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacje(
+      RezerwacjeRepository $rezerwacje,
+      EntityManagerInterface $entityManager,
+    ): Response
+    {
+
+      $rezerwacjePrzezCiebie = $rezerwacje->findBy(
+        ['uzytkownikId' => $this->getUser()],
+        ['id' => 'DESC'] 
+      );
+
+      $rezerwacjaInnych = $rezerwacje->createQueryBuilder('r')
+        ->join('r.uslugaDoRezerwacji', 'u')
+        ->where('u.uzytkownik = :userId')
+        ->andWhere('r.czyOdrzucona = true')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacjePrzezCiebie' => $rezerwacjePrzezCiebie,
+        'rezerwacjePrzezInnych' => $rezerwacjaInnych
+      ]);
+    
+    }
+
+    #[Route('/usun_rezerwacje/{idRezerwacji}', name: 'app_usun_rezerwacje')]
+    #[IsGranted('ROLE_USER')]
+    public function usunRezerwacje(
+      RezerwacjeRepository $rezerwacje,
+      EntityManagerInterface $entityManager,
+      int $idRezerwacji,
+    ): Response
+    {
+
+      $rezerwacjaDoUsuniecia = $rezerwacje->findOneBy([
+        'id' => $idRezerwacji,
+        'uzytkownikId' => $this->getUser(), 
+      ]);
+
+      $entityManager->remove($rezerwacjaDoUsuniecia);
+      $entityManager->flush();
+      
+      return $this->redirectToRoute('app_rezerwacje');
+
+    }
+
+    #[Route('/potwierdz_rezerwacje/{idRezerwacji}', name: 'app_potwierdz_rezerwacje')]
+    #[IsGranted('ROLE_USER')]
+    public function potwierdzRezerwacje(
+      RezerwacjeRepository $rezerwacje,
+      EntityManagerInterface $entityManager,
+      int $idRezerwacji,
+    ): Response
+    {
+
+      $rezerwacjaDoPotwierdzenia = $rezerwacje->findOneBy([
+        'id' => $idRezerwacji,
+      ]);
+
+      $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(true);
+      $entityManager->flush();
+      
+      return $this->redirectToRoute('app_rezerwacje');
+
+    }
+
+    #[Route('/anuluj_rezerwacje/{idRezerwacji}', name: 'app_anuluj_rezerwacje')]
+    #[IsGranted('ROLE_USER')]
+    public function anulujRezerwacje(
+      RezerwacjeRepository $rezerwacje,
+      EntityManagerInterface $entityManager,
+      int $idRezerwacji,
+    ): Response
+    {
+
+      $rezerwacjaDoPotwierdzenia = $rezerwacje->findOneBy([
+        'id' => $idRezerwacji,
+      ]);
+
+      $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(false);
+      $rezerwacjaDoPotwierdzenia->setCzyAnulowana(false);
+      $entityManager->flush();
+      
+      return $this->redirectToRoute('app_rezerwacje');
+
+    }
+
+    #[Route('/odrzuc_rezerwacje/{idRezerwacji}', name: 'app_odrzuc_rezerwacje')]
+    #[IsGranted('ROLE_USER')]
+    public function odrzucRezerwacje(
+      RezerwacjeRepository $rezerwacje,
+      EntityManagerInterface $entityManager,
+      int $idRezerwacji,
+    ): Response
+    {
+
+      $rezerwacjaDoPotwierdzenia = $rezerwacje->findOneBy([
+        'id' => $idRezerwacji,
+      ]);
+
+      $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(false);
+      $rezerwacjaDoPotwierdzenia->setCzyAnulowana(false);
+      $rezerwacjaDoPotwierdzenia->setCzyOdrzucona(true);
+      $entityManager->flush();
+      
+      return $this->redirectToRoute('app_rezerwacje');
+
     }
 
 }

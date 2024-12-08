@@ -257,6 +257,10 @@ class MainController extends AbstractController
             }
 
             $rezerwacja->setUzytkownikId($this->getUser());
+            $rezerwacja->setCzyAnulowana(false);
+            $rezerwacja->setCzyPotwierdzona(false);
+            $rezerwacja->setCzyOdrzucona(false);
+            $rezerwacja->setUzytkownikId($this->getUser());
             $rezerwacja->setUslugaDoRezerwacji($usluga);
             $rezerwacja->setDataZlozenia(new \DateTime());
 

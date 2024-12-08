@@ -46,8 +46,6 @@ body{
   height: 150px;
   float: left;
   box-sizing: border-box;
-  
-  
 }
 
 .cena{
@@ -71,7 +69,6 @@ body{
   line-height: 75px;
   font-weight: bold;
   font-size: 20px;
-  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.4);
 }
 
 .edytuj:hover .edytujimg{
@@ -116,7 +113,6 @@ body{
   line-height: 75px;
   font-weight: bold;
   font-size: 20px;
-  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
 }
 
 .uslugainfo{
@@ -155,7 +151,6 @@ body{
   height: 150px;
   float: left;
   box-sizing: border-box;
-  
 }
 
 .zdjecie{

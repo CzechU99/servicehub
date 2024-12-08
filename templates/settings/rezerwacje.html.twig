@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB - REZERWACJE{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/rezerwacje.css') }}">
+{% endblock %}
+
+{% block body %}
+
+  <div id="menu">
+  
+    <div id="setts">
+      
+      <a href="{{path('app_myservices')}}"><div class="przycisk">MOJE USŁUGI</div></a>
+      <a href="{{path('app_rezerwacje')}}"><div class="przycisk {% if app.request.pathinfo == "/rezerwacje" %}clicked{% endif %}">REZERWACJE I WYMIANY</div></a>
+      <a href="{{path('app_profile')}}"><div class="przycisk">DANE</div></a>
+
+    </div>
+
+    <div class="ustawienia">
+
+      <div class="opcja">CO WYŚWIETLIĆ: </div>
+      
+      <select class="kat">
+      
+        <option>WSZYSTKO</option>
+        <option>ZAREZERWOWANE PRZEZ CIEBIE</option>
+        <option>ZAREZERWOWANE PRZEZ INNYCH</option>
+        <option>WYMIANY ZŁOŻONE PRZEZ INNYCH</option>
+        <option>WYMIANY ZŁOŻONE PRZEZ CIEBIE</option>
+        <option>OCZEKUJĄCE</option>
+        <option>ZAAKCEPTOWANE</option>
+        <option>ODRZUCONE</option>
+      
+      </select>
+    
+    </div>
+  
+  </div>
+
+  <div class="container_zarezerwowane_przez_innych">
+
+    {% for rezerwacjaPrzezInnych in rezerwacjePrzezInnych %}
+
+      <div class="ogloszenie 
+        {# {% if rezerwacjaPrzezInnych|length == 1 %}
+          top
+        {% elseif loop.first and rezerwacjaPrzezInnych|length == 2 %}
+          top
+        {% elseif loop.last and rezerwacjaPrzezInnych|length == 2 %}
+          last
+        {% elseif loop.first and rezerwacjaPrzezInnych|length >= 3 %}
+          top
+        {% elseif loop.last and rezerwacjaPrzezInnych|length >= 3 %}
+          last
+        {% endif %}" #}">
+        
+        {% set imagePath = 'zdjeciaUslug/' ~ rezerwacjaPrzezInnych.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacjaPrzezInnych.uslugaDoRezerwacji.id ~ '/' ~ rezerwacjaPrzezInnych.uslugaDoRezerwacji.glowneZdjecie %}
+        <a href="{{ path('app_service_view', {idUslugi: rezerwacjaPrzezInnych.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+        <div class="opis">
+          <div class="tytul">{{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
+          
+          <div class="uslugainfo">
+            <div class="lokalizacja">{{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.miasto|upper }}</div>
+            <div class="data">DODANO {{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.dataDodania|date('d.m.Y') }}</div>
+            <div class="cena">{{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.cena }} PLN{% if rezerwacjaPrzezInnych.uslugaDoRezerwacji.czyStawkaGodzinowa == 1 %}/H{% endif %}</div>
+          </div>
+        </div></a>
+        <div class="prawo">
+          
+          {% if rezerwacjaPrzezInnych.czyPotwierdzona == 0 %}
+            <a href="{{ path('app_potwierdz_rezerwacje', {idRezerwacji: rezerwacjaPrzezInnych.id}) }}"><div class="potwierdz mt-25">POTWIERDŹ</div></a>
+            <a href="{{ path('app_odrzuc_rezerwacje', {idRezerwacji: rezerwacjaPrzezInnych.id}) }}"><div class="usun">ODRZUC</div></a>
+          {% else %}
+            <a href="{{ path('app_anuluj_rezerwacje', {idRezerwacji: rezerwacjaPrzezInnych.id}) }}"><div class="odrzuc mt-50">ANULUJ</div></a>
+          {% endif %}
+
+        </div>
+        
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+  <div class="container_moje_rezerwacje">
+
+    {% for rezerwacjaPrzezCiebie in rezerwacjePrzezCiebie %}
+
+      <div class="ogloszenie 
+        {% if rezerwacjePrzezCiebie|length == 1 %}
+          top last
+        {% elseif loop.first and rezerwacjePrzezCiebie|length == 2 %}
+          top
+        {% elseif loop.last and rezerwacjePrzezCiebie|length == 2 %}
+          last
+        {% elseif loop.first and rezerwacjePrzezCiebie|length >= 3 %}
+          top
+        {% elseif loop.last and rezerwacjePrzezCiebie|length >= 3 %}
+          last
+        {% endif %}">
+        
+        {% set imagePath = 'zdjeciaUslug/' ~ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.id ~ '/' ~ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.glowneZdjecie %}
+        <a href="{{ path('app_service_view', {idUslugi: rezerwacjaPrzezCiebie.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+        <div class="opis">
+          <div class="tytul">{{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
+          
+          <div class="uslugainfo">
+            <div class="lokalizacja">{{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.miasto|upper }}</div>
+            <div class="data">DODANO {{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.dataDodania|date('d.m.Y') }}</div>
+            <div class="cena">{{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.cena }} PLN{% if rezerwacjaPrzezCiebie.uslugaDoRezerwacji.czyStawkaGodzinowa == 1 %}/H{% endif %}</div>
+          </div>
+        </div></a>
+        <div class="prawo">
+          
+          <a href="{{ path('app_usun_rezerwacje', {idRezerwacji: rezerwacjaPrzezCiebie.id}) }}"><div class="usun mt-50">USUŃ</div></a>
+
+        </div>
+        
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+{% endblock %}

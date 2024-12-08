@@ -11,11 +11,9 @@
   
     <div id="setts">
       
-      <div class="przycisk {% if app.request.pathinfo == "/myservices" %}clicked{% endif %}">MOJE USŁUGI</div>
-      <div class="przycisk">WIADOMOŚCI</div>
-      <div class="przycisk">OCENY</div>
+      <a href="{{path('app_myservices')}}"><div class="przycisk {% if app.request.pathinfo == "/myservices" %}clicked{% endif %}">MOJE USŁUGI</div></a>
+      <a href="{{path('app_rezerwacje')}}"><div class="przycisk">REZERWACJE I WYMIANY</div></a>
       <a href="{{path('app_profile')}}"><div class="przycisk">DANE</div></a>
-      <div class="przycisk">USTAWIENIA</div>
 
     </div>
   
