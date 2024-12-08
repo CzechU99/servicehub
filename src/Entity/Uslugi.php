@@ -16,7 +16,7 @@ class Uslugi
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'uslugis')]
+    #[ORM\ManyToOne(inversedBy: 'uslugi')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $uzytkownik = null;
 
@@ -53,9 +53,16 @@ class Uslugi
     #[ORM\Column]
     private ?bool $czyStawkaGodzinowa = null;
 
+    /**
+     * @var Collection<int, Rezerwacje>
+     */
+    #[ORM\OneToMany(targetEntity: Rezerwacje::class, mappedBy: 'uslugaDoRezerwacji', orphanRemoval: true)]
+    private Collection $rezerwacje;
+
     public function __construct()
     {
         $this->kategorie = new ArrayCollection();
+        $this->rezerwacje = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -206,6 +213,36 @@ class Uslugi
     public function setCzyStawkaGodzinowa(bool $czyStawkaGodzinowa): static
     {
         $this->czyStawkaGodzinowa = $czyStawkaGodzinowa;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rezerwacje>
+     */
+    public function getRezerwacje(): Collection
+    {
+        return $this->rezerwacje;
+    }
+
+    public function addRezerwacje(Rezerwacje $rezerwacje): static
+    {
+        if (!$this->rezerwacje->contains($rezerwacje)) {
+            $this->rezerwacje->add($rezerwacje);
+            $rezerwacje->setUslugaDoRezerwacji($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRezerwacje(Rezerwacje $rezerwacje): static
+    {
+        if ($this->rezerwacje->removeElement($rezerwacje)) {
+            // set the owning side to null (unless already changed)
+            if ($rezerwacje->getUslugaDoRezerwacji() === $this) {
+                $rezerwacje->setUslugaDoRezerwacji(null);
+            }
+        }
 
         return $this;
     }

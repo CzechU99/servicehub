@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceHUB - ZAREZERWUJ{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{{ asset('css/zarezerwuj_usluge.css') }}">
+{% endblock %}
+
+
+
+
+{% set imagePath = 'zdjeciaUslug/' ~ usluga.uzytkownik.id ~ '/' ~ usluga.id ~ '/' ~ usluga.glowneZdjecie %}
+
+{% block body %}
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/pl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  
+  <div id="search">
+
+    <div class="back"><a href="{{ path('app_service_view', {idUslugi: usluga.id}) }} "><div class="backdiv"><span class="backarrow">&#10094;</span>&nbsp;&nbsp;&nbsp;WRÓĆ</div></a></div>
+    
+  </div>
+
+  <div class="rezerwacja">
+  
+    <div class="ogloszenia">
+
+      <div class="ogloszenie">
+            
+        <img class="zdjecie" src="{{ asset(imagePath) }}" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!">
+
+        <div class="opis">
+          <div class="tytul">{{ usluga.nazwaUslugi|upper }}</div>
+          
+          <div class="uslugainfo">
+            <div class="lokalizacja">{{ usluga.uzytkownik.daneUzytkownika.miasto|upper }}</div>
+            <div class="data">DODANO {{ usluga.dataDodania|date('d.m.Y') }}</div>
+            <div class="cena">{{ usluga.cena }} PLN{% if usluga.czyStawkaGodzinowa == 1 %}/H{% endif %}</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="trademark"><img src=" {{ asset('images/tradeicon.png') }} " class="trade"></div>
+
+      <div class="ogloszenietrade" id="ogloszenie">
+      
+        <img class="zdjecie" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!" id="ogloszenie-img">
+
+        <div class="opis">
+          <div class="tytul" id="ogloszenie-tytul"></div>
+          
+          <div class="uslugainfo">
+            <div class="lokalizacja" id="ogloszenie-lokalizacja"></div>
+            <div class="data" id="ogloszenie-data"></div>
+            <div class="cena" id="ogloszenie-cena"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    {{ form_start(rezerwacjaForm) }}
+
+      <div class="boxes">
+
+        {% if usluga.czyWymiana == 0 %}
+          <div class="empty"></div>
+        {% endif %}
+
+        <div class="wiadomoscbox">NAPISZ WIADOMOŚĆ: {{ form_widget(rezerwacjaForm.wymiana, {'attr': {'class': 'chck_msg event1'}}) }}</div>
+
+        {% if usluga.czyWymiana == 1 %}
+          <div class="wiadomoscbox ml">WYMIANA: <input type="checkbox" class="chck_msg event2"></div>
+        {% endif %}
+
+        <div class="wiadomoscbox ml">UDOSTĘPNIJ NR TELEFONU: {{ form_widget(rezerwacjaForm.udostepnijTelefon, {'attr': {'class': 'chck_msg'}}) }}</div>
+
+      </div>
+
+      <div class="box">
+      
+        {{ form_widget(rezerwacjaForm.uslugaNaWymiane, {'attr': {'class': 'select', 'data-moje-uslugi': uslugiJson }} ) }}
+
+      </div>
+
+      <div class="kalendarz">
+
+        {{ form_widget(rezerwacjaForm.odKiedy, {'attr': {'class': 'form-control mr rez unset'}, 'id': 'datePicker'} )}}
+        <div class="gap"></div>
+        {{ form_widget(rezerwacjaForm.doKiedy, {'attr': {'class': 'form-control rez unset'}, 'id': 'datePicker'} )}}
+
+      </div>
+
+      {{ form_widget(rezerwacjaForm.wiadomosc, {'attr': {'class': 'wiadomość unset'}}) }}
+
+      <button type="submit" class="btndodaj">ZAREZERWUJ</button>
+
+    {{ form_end(rezerwacjaForm) }}
+
+  </div>
+    
+
+
+    <script>
+
+      document.addEventListener('DOMContentLoaded', () => {
+        flatpickr("#datePicker", {
+          dateFormat: "Y-m-d",
+          enableTime: 'false'
+        });
+      });
+
+      document.querySelector('.event1').addEventListener('change', function() {
+        const messageBox = document.querySelector('.wiadomość');
+        
+        if (this.checked) {
+          messageBox.style.display = 'block';
+        } else {
+          messageBox.style.display = 'none';
+        }
+      });
+
+      document.querySelector('.event2').addEventListener('change', function() {
+        const trade = document.querySelector('.trademark');
+        const ogloszenietrade = document.querySelector('.ogloszenietrade');
+        const ogloszenie = document.querySelector('.ogloszenie');
+        const uslugi = document.querySelector('.box');
+        
+        if (this.checked) {
+          trade.style.display = 'block';
+          ogloszenietrade.style.display = 'block';
+          ogloszenie.style.float = "left";
+          ogloszenie.style.margin = "none";
+          uslugi.style.display = 'block';
+
+        } else {
+          trade.style.display = 'none';
+          ogloszenietrade.style.display = 'none';
+          ogloszenie.style.float = "none";
+          ogloszenie.style.margin = "auto";
+          uslugi.style.display = 'none';
+        }
+      });
+
+const selectElement = document.querySelector('.select');
+const mojeUslugi = JSON.parse(selectElement.getAttribute('data-moje-uslugi'));
+const ogloszenieDiv = document.getElementById('ogloszenie');
+const tytulDiv = document.getElementById('ogloszenie-tytul');
+const lokalizacjaDiv = document.getElementById('ogloszenie-lokalizacja');
+const dataDiv = document.getElementById('ogloszenie-data');
+const cenaDiv = document.getElementById('ogloszenie-cena');
+const imgElement = document.getElementById('ogloszenie-img');
+
+function updateOgloszenie(index) {
+    usluga = mojeUslugi[index];
+    if (usluga) {
+        tytulDiv.textContent = usluga.nazwaUslugi;
+        lokalizacjaDiv.textContent = usluga.uzytkownik.daneUzytkownika.miasto;
+        dataDiv.textContent = `DODANO ${new Date(usluga.dataDodania).toLocaleDateString('pl-PL')}`;
+        cenaDiv.textContent = `${usluga.cena} PLN${usluga.czyStawkaGodzinowa ? '/H' : ''}`;
+        imgElement.src = `/servicehub/public/zdjeciaUslug/${usluga.uzytkownik.id}/${usluga.id}/${usluga.glowneZdjecie}`;
+    }
+}
+
+selectElement.addEventListener('change', (e) => {
+    const selectedIndex = e.target.selectedIndex;
+    updateOgloszenie(selectedIndex);
+});
+
+updateOgloszenie(0);
+
+    </script>
+    
+
+{% endblock %}

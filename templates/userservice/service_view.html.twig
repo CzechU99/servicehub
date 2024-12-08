@@ -100,13 +100,15 @@
 
       <div class="kreska"></div>
 
-      <div class="btn disabled">WYŚLIJ WIADOMOŚĆ</div>
+        {% if app.user %}
+          <a href="{{ path('app_zarezerwuj_usluge', {idUslugi: usluga.id}) }}"><div class="btn">ZAREZERWUJ</div></a>
+        {% else %}
+          <div class="btn disabled">ZAREZERWUJ</div>
+        {% endif %}
 
-      <div class="btn disabled">ZAREZERWUJ</div>
+      {# <div class="kreska2"></div> #}
 
-      <div class="kreska2"></div>
-
-      <div class="btn">ZOBACZ PROFIL</div>
+      {# <div class="btn">ZOBACZ PROFIL</div> #}
 
     
     </div>
@@ -119,7 +121,6 @@
     showSlides(slideIndex);
 
     function myFunction(n) {
-      // slideIndex += n;
       console.log("Działa!");
       console.log(slideIndex);
     }

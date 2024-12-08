@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Rezerwacje;
+use Doctrine\ORM\EntityManager;
+use App\Form\RezerwacjaFormType;
 use App\Service\GeocoderService;
+use Doctrine\ORM\Mapping\Entity;
 use App\Form\WyszukiwanieFormType;
 use App\Repository\UserRepository;
 use App\Repository\UslugiRepository;
 use App\Form\SzybkieSzukanieFormType;
 use App\Repository\KategorieRepository;
+use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +25,14 @@ class MainController extends AbstractController
     #[Route('/main', name: 'app_main')]
     public function index(
         UserRepository $user,
-        UslugiRepository $uslugi
+        UslugiRepository $uslugi,
+        RezerwacjeRepository $rezerwacje,
     ): Response
     {
 
         $wszystkieUslugi = $uslugi->findAll();
         $uzytkownicy = $user->findAll();
+        $rezerwacje = $rezerwacje->findAll();
 
         $form = $this->createForm(SzybkieSzukanieFormType::class);
 
@@ -33,6 +40,7 @@ class MainController extends AbstractController
             'szybkieSzukanieForm' => $form->createView(),
             'uzytkownicy' => $uzytkownicy,
             'wszystkieUslugi' => $wszystkieUslugi,
+            'rezerwacje' => $rezerwacje
         ]);
 
     }
@@ -200,6 +208,76 @@ class MainController extends AbstractController
             'wyszukiwanieForm' => $form->createView(),
             'uslugi' => $wszystkieUslugi,
             'kategorie' => $wszystkieKategorie,
+        ]);
+
+    }
+
+    #[Route('/zarezerwuj_usluge/{idUslugi}', name: 'app_zarezerwuj_usluge')]
+    #[IsGranted('ROLE_USER')]
+    public function zarezerwujUsluge(
+        int $idUslugi,
+        UslugiRepository $uslugi,
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+
+        $usluga = $uslugi->find($idUslugi);
+
+        $uslugiUzytkownika = $uslugi->findBy(['uzytkownik' => $this->getUser()]);
+
+        $rezerwacja = new Rezerwacje();
+
+        $form = $this->createForm(RezerwacjaFormType::class, $rezerwacja, [
+            'mojeUslugi' => $uslugiUzytkownika,
+        ]);
+        $form->handleRequest($request);
+
+        $uslugiArray = array_map(function ($usluga) {
+            return [
+                'id' => $usluga->getId(),
+                'nazwaUslugi' => $usluga->getNazwaUslugi(),
+                'dataDodania' => $usluga->getDataDodania()->format('Y-m-d'),
+                'cena' => $usluga->getCena(),
+                'czyStawkaGodzinowa' => $usluga->isCzyStawkaGodzinowa(),
+                'glowneZdjecie' => $usluga->getGlowneZdjecie(),
+                'uzytkownik' => [
+                    'id' => $usluga->getUzytkownik()->getId(),
+                    'daneUzytkownika' => [
+                        'miasto' => $usluga->getUzytkownik()->getDaneUzytkownika()->getMiasto(),
+                    ],
+                ],
+            ];
+        }, $uslugiUzytkownika);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            if($form->get('odKiedy')->getData() === null){
+                return $this->redirectToRoute('app_myservices');
+            }
+
+            $rezerwacja->setUzytkownikId($this->getUser());
+            $rezerwacja->setUslugaDoRezerwacji($usluga);
+            $rezerwacja->setDataZlozenia(new \DateTime());
+
+            if(!$form->get('wymiana')->getData()){
+                $rezerwacja->setUslugaNaWymiane(null);
+            }
+
+            $entityManager->persist($rezerwacja);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'ZLOŻONO REZERWACJĘ!');
+
+            return $this->redirectToRoute('app_myservices');
+
+        }
+
+        return $this->render('main/zarezerwuj_usluge.html.twig', [
+            'rezerwacjaForm' => $form,
+            'usluga' => $usluga,
+            'mojeUslugi' => $uslugiUzytkownika,
+            'uslugiJson' => json_encode($uslugiArray)
         ]);
 
     }

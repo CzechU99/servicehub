@@ -132,74 +132,116 @@
       });
 
       const imageInput = document.querySelector('.image-input');
-      const gallery = document.getElementById('image-gallery');
-      const errorMessage = document.getElementById('error-message'); 
+const gallery = document.getElementById('image-gallery');
+const errorMessage = document.getElementById('error-message'); 
 
-      let imageFiles = []; 
-      const maxFiles = 8; 
-      const maxFileSizeMB = 5; 
+let imageFiles = []; // Tablica dla nowych i wczytanych zdjęć
+const maxFiles = 8; 
+const maxFileSizeMB = 5; 
 
-      imageInput.addEventListener('change', (event) => {
-          const files = Array.from(event.target.files);
-          let skippedFiles = 0; 
+// 1. Wczytaj istniejące zdjęcia z galerii przy ładowaniu strony
+document.addEventListener('DOMContentLoaded', () => {
+    const existingGalleryItems = gallery.querySelectorAll('.gallery-item');
 
-          const remainingSlots = maxFiles - imageFiles.length;
+    existingGalleryItems.forEach(item => {
+        const filename = item.dataset.filename; // Przyjmujemy, że w atrybucie "data-filename" jest nazwa pliku
+        const imagePath = item.querySelector('img').src; // Pobierz URL obrazu
+        
+        // Dodaj zdjęcie do tablicy jako obiekt File (symulacja)
+        imageFiles.push({
+            name: filename,
+            path: imagePath,
+            existing: true // Dodaj dodatkową flagę
+        });
 
-          if (remainingSlots <= 0) {
-              return;
-          }
+        // Obsługa usuwania istniejących zdjęć
+        const removeButton = item.querySelector('.remove-button');
+        removeButton.addEventListener('click', () => {
+            gallery.removeChild(item);
+            imageFiles = imageFiles.filter(f => f.name !== filename);
+            updateInput();
+        });
+    });
 
-          const filesToAdd = files.slice(0, remainingSlots); 
+    // Aktualizuj input po wczytaniu istniejących zdjęć
+    updateInput();
+});
 
-          filesToAdd.forEach(file => {
-              if (!file.type.startsWith('image/')) {
-                  skippedFiles++;
-                  return;
-              }
+// 2. Obsługa dodawania nowych zdjęć
+imageInput.addEventListener('change', (event) => {
+    const files = Array.from(event.target.files);
+    let skippedFiles = 0; 
 
-              if (file.size > maxFileSizeMB * 1024 * 1024) {
-                  skippedFiles++;
-                  return;
-              }
+    const remainingSlots = maxFiles - imageFiles.length;
 
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                  const galleryItem = document.createElement('div');
-                  galleryItem.classList.add('gallery-item', 'draggable');
-                  galleryItem.dataset.filename = file.name;
+    if (remainingSlots <= 0) {
+        return;
+    }
 
-                  const img = document.createElement('img');
-                  img.src = e.target.result;
+    const filesToAdd = files.slice(0, remainingSlots); 
 
-                  const removeButton = document.createElement('button');
-                  removeButton.classList.add('remove-button');
-                  removeButton.textContent = 'USUŃ';
-                  removeButton.addEventListener('click', () => {
-                      gallery.removeChild(galleryItem);
-                      imageFiles = imageFiles.filter(f => f !== file);
-                      updateInput();
-                  });
+    filesToAdd.forEach(file => {
+        if (!file.type.startsWith('image/')) {
+            skippedFiles++;
+            return;
+        }
 
-                  galleryItem.appendChild(img);
-                  galleryItem.appendChild(removeButton);
-                  gallery.appendChild(galleryItem);
+        if (file.size > maxFileSizeMB * 1024 * 1024) {
+            skippedFiles++;
+            return;
+        }
 
-                  imageFiles.push(file);
-                  updateInput(); 
-              };
-              reader.readAsDataURL(file);
-          });
-      });
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.classList.add('gallery-item', 'draggable');
+            galleryItem.dataset.filename = file.name;
 
-      function updateInput() {
-          const dataTransfer = new DataTransfer(); 
+            const img = document.createElement('img');
+            img.src = e.target.result;
 
-          imageFiles.forEach(file => {
-              dataTransfer.items.add(file);
-          });
+            const removeButton = document.createElement('button');
+            removeButton.classList.add('remove-button');
+            removeButton.textContent = 'USUŃ';
+            removeButton.addEventListener('click', () => {
+                gallery.removeChild(galleryItem);
+                imageFiles = imageFiles.filter(f => f.name !== file.name);
+                updateInput();
+            });
 
-          imageInput.files = dataTransfer.files;
-      }
+            galleryItem.appendChild(img);
+            galleryItem.appendChild(removeButton);
+            gallery.appendChild(galleryItem);
+
+            imageFiles.push(file);
+            updateInput(); 
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+// 3. Aktualizacja inputa z plikami
+function updateInput() {
+    const dataTransfer = new DataTransfer(); 
+
+    imageFiles.forEach(file => {
+        if (file.existing) {
+            // Zamiana istniejącego zdjęcia na obiekt File
+            const blob = fetch(file.path)
+                .then(res => res.blob())
+                .then(blob => {
+                    const existingFile = new File([blob], file.name, { type: blob.type });
+                    dataTransfer.items.add(existingFile);
+                    imageInput.files = dataTransfer.files;
+                });
+        } else {
+            dataTransfer.items.add(file); // Tylko nowe pliki trafiają do inputa
+        }
+    });
+
+    imageInput.files = dataTransfer.files;
+}
+
 
       new Sortable(gallery, {
           animation: 150,

@@ -1,1 +1,7 @@
 1. kolejnosc zdjec z edytowaniu
+2. klikanie w usluge w margin przenosi do niej
+3. pomijanie wyswietlania swoich uslug
+4. liczba wyswietlen
+5. profil uzytkownika
+6. promowane/losowe uslugi
+7. walidacja przy rezerwacji | problem z data od kiedy

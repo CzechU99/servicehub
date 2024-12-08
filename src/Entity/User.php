@@ -38,9 +38,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Uslugi::class, mappedBy: 'uzytkownik', orphanRemoval: true)]
     private Collection $uslugi;
 
+    /**
+     * @var Collection<int, Rezerwacje>
+     */
+    #[ORM\OneToMany(targetEntity: Rezerwacje::class, mappedBy: 'uzytkownikId', orphanRemoval: true)]
+    private Collection $rezerwacje;
+
     public function __construct()
     {
         $this->uslugi = new ArrayCollection();
+        $this->rezerwacje = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,6 +161,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($uslugi->getUzytkownik() === $this) {
                 $uslugi->setUzytkownik(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rezerwacje>
+     */
+    public function getRezerwacje(): Collection
+    {
+        return $this->rezerwacje;
+    }
+
+    public function addRezerwacje(Rezerwacje $rezerwacje): static
+    {
+        if (!$this->rezerwacje->contains($rezerwacje)) {
+            $this->rezerwacje->add($rezerwacje);
+            $rezerwacje->setUzytkownikId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRezerwacje(Rezerwacje $rezerwacje): static
+    {
+        if ($this->rezerwacje->removeElement($rezerwacje)) {
+            // set the owning side to null (unless already changed)
+            if ($rezerwacje->getUzytkownikId() === $this) {
+                $rezerwacje->setUzytkownikId(null);
             }
         }
 

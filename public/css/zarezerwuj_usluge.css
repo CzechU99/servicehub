@@ -1,0 +1,305 @@
+body{
+  font-family: Jura;
+  background-color: white;
+}
+
+::placeholder{
+  color: white;
+  opacity: 1;
+}
+
+#search{
+  width: 100%;
+  height: 60px;
+  background-color: rgba(16, 17, 16, 1);
+  float: left;
+  box-sizing: border-box;
+  clear: both;
+  margin-bottom: 20px;
+}
+
+.unset{
+  all: unset;
+}
+
+.ml{
+  margin-left: 50px;
+}
+
+.box{
+  display: none;
+  width: 600px;
+  height: 50px;
+  margin: auto;
+}
+
+.boxes{
+  width: 730px;
+  margin: auto;
+  margin-top: 30px;
+  text-align: center;
+  height: 50px;
+}
+
+.cena{
+  width: 180px;
+  height: 30px;
+  text-align: right;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  float: right;
+  box-sizing: border-box;
+  top: 0px;
+}
+
+.rez{
+  float: left;
+}
+
+
+
+.kalendarz{
+  width: 664px;
+  height: 50px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.gap{
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+
+#datePicker{
+  width: 307px;
+  border-radius: 10px;
+  height: 40px;
+  color: white;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+  text-align: center;
+  line-height: 40px;
+  background-color: rgba(40, 41, 40, 1);
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.mr{
+  margin-right: 50px;
+}
+
+.wiadomoscbox{
+  min-width: 100px;
+  height: 50px;
+  float: left;
+  font-size: 20px;
+  box-sizing: border-box;
+  line-height: 50px;
+}
+.mt{
+  margin-top: 10px;
+}
+
+.chck_msg{
+  width: 15px;
+  height: 15px;
+  top: 20px;
+}
+
+.empty{
+  width: 85px;
+  height: 10px;
+  float: left;
+}
+
+.btndodaj{
+  width: 260px;
+  height: 45px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 5px solid rgba(46, 83, 229, 1);
+  line-height: 35px;
+  color: rgba(46, 83, 229, 1);
+  text-align: center;
+  font-weight: bold;
+  background-color: white;
+  font-family: Jura;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: block;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.wiadomość{
+  width: 750px;
+  margin: auto;
+  display: none;
+  height: 150px;
+  background-color:rgba(40, 41, 40, 1);
+  padding: 20px;
+  color: white;
+  margin-top: 30px;
+  border-radius: 5px;
+}
+
+.back{
+  color: white;
+  font-weight: bold;
+  width: 1000px;
+  margin: auto;
+  padding-top: 15px;
+  clear: both;
+}
+
+.backdiv{
+  width: 100px;
+}
+
+.backdiv:hover{
+  cursor: pointer;
+}
+
+.backarrow{
+  font-size: 20px;
+}
+
+.rezerwacja{
+  min-height: 500px;
+  margin: auto;
+  width: 1460px;
+  clear: both;
+}
+
+.uslugainfo{
+  width: 430px;
+  height: 50px;
+  clear: both;
+  float: left;
+  box-sizing: border-box;
+}
+
+.ogloszenia{
+  width: 100%;
+  height: 150px;
+  margin: auto;
+  display: block;
+}
+
+.ogloszenietrade{
+  width: 680px;
+  height: 150px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 10px 0px 0px 10px;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  transition: 0.5s scale;
+  scale: 1;
+  display: none;
+  float: left;
+}
+
+.select{
+  float: left;
+  width: 600px;
+  height: 30px;
+  margin-top: 15px;
+  border-radius: none;
+  border: none;
+  font-size: 15px;
+  opacity: 1;
+  font-family: Jura;
+  padding-left: 5px;
+  box-sizing: border-box;
+  clear: both;
+  text-transform: uppercase;
+  border: 1px solid black;
+}
+
+.ogloszenie{
+  width: 680px;
+  height: 150px;
+  margin: auto;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 10px 0px 0px 10px;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  transition: 0.5s scale;
+  scale: 1;
+}
+
+.trademark{
+  width: 100px;
+  height: 150px;
+  float: left;
+  display: none;
+  text-align: center;
+  padding-top: 40px;
+  box-sizing: border-box;
+}
+
+.trade{
+  width: 70px;
+  height: auto;
+}
+
+.data{
+  width: 50%;
+  height: 20px;
+  float: left;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 16px;
+  margin-left: 30px;
+  clear: both;
+}
+
+.lokalizacja{
+  width: 50%;
+  height: 20px;
+  float: left;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 16px;
+  margin-left: 30px;
+  margin-top: 10px;
+  clear: both;
+}
+
+.opis{
+  width: 430px;
+  height: 150px;
+  float: left;
+  box-sizing: border-box;
+  
+}
+
+.zdjecie{
+  width: 220px;
+  height: 150px;
+  float: left;
+  box-sizing: border-box;
+  border-radius: 10px 0px 0px 10px;
+}
+
+.tytul{
+  width: 400px;
+  height: 75px;
+  float: left;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 23px;
+  margin-left: 30px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+#footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin-top: 50px;
+  clear: both;
+}
