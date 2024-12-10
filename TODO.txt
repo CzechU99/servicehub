@@ -1,7 +1,22 @@
+ZROBIĆ:
+1. klikanie w usluge w margin przenosi do niej
+2. losowe uslugi
+3. powiadomienia email
+4. zrobic cos z kodem JS
+5. uporzadkowac kod
+6. nazewnictwo
+7. dodac przycisk w navbar do listy uslug
+
+PROBLEMY:
 1. kolejnosc zdjec z edytowaniu
-2. klikanie w usluge w margin przenosi do niej
-3. pomijanie wyswietlania swoich uslug
-4. liczba wyswietlen
-5. profil uzytkownika
-6. promowane/losowe uslugi
-7. walidacja przy rezerwacji | problem z data od kiedy
+2. walidacja przy rezerwacji | problem z data od kiedy
+3. brak powiadomienia przy logowaniu ze email nie istnieje
+
+MOŻLIWOŚCI:
+1. liczba wyswietlen
+2. profil uzytkownika 
+3. oceny (jest w opisie pracy)?
+4. followania (jest w opisie pracy)?
+5. promowanie uslug
+6. lupa na zdjecie rezerwacji i podglad
+

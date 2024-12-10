@@ -92,27 +92,218 @@ class SettingsController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function rezerwacje(
       RezerwacjeRepository $rezerwacje,
-      EntityManagerInterface $entityManager,
     ): Response
     {
 
-      $rezerwacjePrzezCiebie = $rezerwacje->findBy(
-        ['uzytkownikId' => $this->getUser()],
-        ['id' => 'DESC'] 
-      );
+      $queryBuilder = $rezerwacje->createQueryBuilder('r')
+        ->leftJoin('r.uslugaDoRezerwacji', 'u')
+        ->where('r.uzytkownikId = :userId')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC');
 
-      $rezerwacjaInnych = $rezerwacje->createQueryBuilder('r')
+      $queryBuilder->andWhere('r.uslugaNaWymiane IS NULL');
+      $queryBuilder->orWhere('r.uslugaNaWymiane IS NOT NULL');
+      $queryBuilder->orWhere('u.uzytkownik = :userId');
+      $rezerwacje = $queryBuilder->getQuery()->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacje
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_oczekujace', name: 'app_rezerwacje_oczekujace')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjeOczekujace(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $queryBuilder = $rezerwacje->createQueryBuilder('r')
+        ->leftJoin('r.uslugaDoRezerwacji', 'u')
+        ->where('r.czyOdrzucona = 0')
+        ->andWhere('r.czyAnulowana = 0')
+        ->andWhere('r.czyPotwierdzona = 0')
+        ->andWhere('(
+          r.uzytkownikId = :userId
+          OR r.uslugaNaWymiane IS NULL 
+          OR r.uslugaNaWymiane IS NOT NULL 
+          OR u.uzytkownik = :userId
+        )')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC');
+      
+      $rezerwacje = $queryBuilder->getQuery()->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacje
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_odrzucone', name: 'app_rezerwacje_odrzucone')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjeOdrzucone(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $queryBuilder = $rezerwacje->createQueryBuilder('r')
+        ->leftJoin('r.uslugaDoRezerwacji', 'u')
+        ->where('r.czyOdrzucona = 1')
+        ->andWhere('(
+          r.uzytkownikId = :userId
+          OR r.uslugaNaWymiane IS NULL 
+          OR r.uslugaNaWymiane IS NOT NULL 
+          OR u.uzytkownik = :userId
+        )')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC');
+      
+      $rezerwacje = $queryBuilder->getQuery()->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacje
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_anulowane', name: 'app_rezerwacje_anulowane')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjeAnulowane(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $queryBuilder = $rezerwacje->createQueryBuilder('r')
+        ->leftJoin('r.uslugaDoRezerwacji', 'u')
+        ->where('r.czyAnulowana = 1')
+        ->andWhere('(
+          r.uzytkownikId = :userId
+          OR r.uslugaNaWymiane IS NULL 
+          OR r.uslugaNaWymiane IS NOT NULL 
+          OR u.uzytkownik = :userId
+        )')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC');
+      
+      $rezerwacje = $queryBuilder->getQuery()->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacje
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_potwierdzone', name: 'app_rezerwacje_potwierdzone')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjePotwierdzone(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $queryBuilder = $rezerwacje->createQueryBuilder('r')
+        ->leftJoin('r.uslugaDoRezerwacji', 'u')
+        ->where('r.czyPotwierdzona = 1')
+        ->andWhere('(
+          r.uzytkownikId = :userId
+          OR r.uslugaNaWymiane IS NULL 
+          OR r.uslugaNaWymiane IS NOT NULL 
+          OR u.uzytkownik = :userId
+        )')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC');
+      
+      $rezerwacje = $queryBuilder->getQuery()->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacje
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_innych_bez', name: 'app_rezerwacje_innych_bez')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjeInnychBezWymiany(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $rezerwacjeInnychBezWymiany = $rezerwacje->createQueryBuilder('r')
         ->join('r.uslugaDoRezerwacji', 'u')
         ->where('u.uzytkownik = :userId')
-        ->andWhere('r.czyOdrzucona = true')
+        ->andWhere('r.uslugaNaWymiane IS NULL')
         ->setParameter('userId', $this->getUser())
         ->orderBy('r.id', 'DESC')
         ->getQuery()
         ->getResult();
 
       return $this->render('settings/rezerwacje.html.twig', [
-        'rezerwacjePrzezCiebie' => $rezerwacjePrzezCiebie,
-        'rezerwacjePrzezInnych' => $rezerwacjaInnych
+        'rezerwacje' => $rezerwacjeInnychBezWymiany,
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_innych_z', name: 'app_rezerwacje_innych_z')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjeInnychZWymiana(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $rezerwacjeInnychZWymiana = $rezerwacje->createQueryBuilder('r')
+        ->join('r.uslugaDoRezerwacji', 'u')
+        ->where('u.uzytkownik = :userId')
+        ->andWhere('r.uslugaNaWymiane IS NOT NULL')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacjeInnychZWymiana,
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_ciebie_z', name: 'app_rezerwacje_ciebie_z')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjePrzezCiebieZWymiana(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $rezerwacjePrzezCiebieZWymiana = $rezerwacje->createQueryBuilder('r')
+        ->where('r.uzytkownikId = :userId')
+        ->andWhere('r.uslugaNaWymiane IS NOT NULL')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacjePrzezCiebieZWymiana,
+      ]);
+    
+    }
+
+    #[Route('/rezerwacje_ciebie_bez', name: 'app_rezerwacje_ciebie_bez')]
+    #[IsGranted('ROLE_USER')]
+    public function rezerwacjePrzezCiebieBezWymiany(
+      RezerwacjeRepository $rezerwacje,
+    ): Response
+    {
+
+      $rezerwacjePrzezCiebieBezWymiany = $rezerwacje->createQueryBuilder('r')
+        ->where('r.uzytkownikId = :userId')
+        ->andWhere('r.uslugaNaWymiane IS NULL')
+        ->setParameter('userId', $this->getUser())
+        ->orderBy('r.id', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+      return $this->render('settings/rezerwacje.html.twig', [
+        'rezerwacje' => $rezerwacjePrzezCiebieBezWymiany,
       ]);
     
     }
@@ -152,6 +343,8 @@ class SettingsController extends AbstractController
       ]);
 
       $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(true);
+      $rezerwacjaDoPotwierdzenia->setCzyOdrzucona(false);
+      $rezerwacjaDoPotwierdzenia->setCzyAnulowana(false);
       $entityManager->flush();
       
       return $this->redirectToRoute('app_rezerwacje');
@@ -172,7 +365,8 @@ class SettingsController extends AbstractController
       ]);
 
       $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(false);
-      $rezerwacjaDoPotwierdzenia->setCzyAnulowana(false);
+      $rezerwacjaDoPotwierdzenia->setCzyOdrzucona(false);
+      $rezerwacjaDoPotwierdzenia->setCzyAnulowana(true);
       $entityManager->flush();
       
       return $this->redirectToRoute('app_rezerwacje');

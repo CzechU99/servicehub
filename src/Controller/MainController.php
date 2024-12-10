@@ -48,6 +48,7 @@ class MainController extends AbstractController
     #[Route('/skills_list', name: 'app_skills_list')]
     public function skillsList(
         UslugiRepository $uslugi,
+        UserRepository $uzytkownicy,
         Request $request,
         KategorieRepository $kategorie
     ): Response
@@ -64,9 +65,14 @@ class MainController extends AbstractController
         if ($szybkiFormularz->isSubmitted() && $szybkiFormularz->isValid()) {
             $searchTerm = $szybkiFormularz->get('nazwaUslugi')->getData();
 
+            $user = $this->getUser(); 
+            $userId = $user->getId();
+
             $filteredUslugi = $uslugi->createQueryBuilder('u')
                 ->where('u.nazwaUslugi LIKE :searchTerm')
+                ->andWhere('u.uzytkownik != :userId') 
                 ->setParameter('searchTerm', '%' . $searchTerm . '%')
+                ->setParameter('userId', $userId)
                 ->getQuery()
                 ->getResult();
         }else{
@@ -252,20 +258,19 @@ class MainController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
-            if($form->get('odKiedy')->getData() === null){
-                return $this->redirectToRoute('app_myservices');
-            }
-
             $rezerwacja->setUzytkownikId($this->getUser());
             $rezerwacja->setCzyAnulowana(false);
             $rezerwacja->setCzyPotwierdzona(false);
             $rezerwacja->setCzyOdrzucona(false);
-            $rezerwacja->setUzytkownikId($this->getUser());
             $rezerwacja->setUslugaDoRezerwacji($usluga);
             $rezerwacja->setDataZlozenia(new \DateTime());
 
             if(!$form->get('wymiana')->getData()){
                 $rezerwacja->setUslugaNaWymiane(null);
+            }
+
+            if(!$form->get('czyWiadomosc')->getData()){
+                $rezerwacja->setWiadomosc(null);
             }
 
             $entityManager->persist($rezerwacja);

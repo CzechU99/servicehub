@@ -35,9 +35,13 @@ class RezerwacjaFormType extends AbstractType
             ->add('udostepnijTelefon', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('czyWiadomosc', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+            ])
             ->add('wymiana', CheckboxType::class, [
                 'required' => false,
-                'mapped' => false
+                'mapped' => false,
             ])
             ->add('odKiedy', DateType::class, [
                 'widget' => 'single_text',  // Użyj pojedynczego pola tekstowego

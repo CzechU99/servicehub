@@ -7,12 +7,14 @@
 
 {% block body %}
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <div id="menu">
   
     <div id="setts">
       
       <a href="{{path('app_myservices')}}"><div class="przycisk">MOJE USŁUGI</div></a>
-      <a href="{{path('app_rezerwacje')}}"><div class="przycisk {% if app.request.pathinfo == "/rezerwacje" %}clicked{% endif %}">REZERWACJE I WYMIANY</div></a>
+      <a href="{{path('app_rezerwacje')}}"><div class="przycisk clicked">REZERWACJE I WYMIANY</div></a>
       <a href="{{path('app_profile')}}"><div class="przycisk">DANE</div></a>
 
     </div>
@@ -21,108 +23,342 @@
 
       <div class="opcja">CO WYŚWIETLIĆ: </div>
       
-      <select class="kat">
-      
-        <option>WSZYSTKO</option>
-        <option>ZAREZERWOWANE PRZEZ CIEBIE</option>
-        <option>ZAREZERWOWANE PRZEZ INNYCH</option>
-        <option>WYMIANY ZŁOŻONE PRZEZ INNYCH</option>
-        <option>WYMIANY ZŁOŻONE PRZEZ CIEBIE</option>
-        <option>OCZEKUJĄCE</option>
-        <option>ZAAKCEPTOWANE</option>
-        <option>ODRZUCONE</option>
-      
+      <select class="kat" id="kategorie-select">
+        <option value="{{ path('app_rezerwacje') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje' %}selected{% endif %}>
+            WSZYSTKIE REZERWACJE I WYMIANY
+        </option>
+        <option value="{{ path('app_rezerwacje_ciebie_bez') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_ciebie_bez' %}selected{% endif %}>
+            ZAREZERWOWANE PRZEZ CIEBIE
+        </option>
+        <option value="{{ path('app_rezerwacje_innych_bez') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_innych_bez' %}selected{% endif %}>
+            ZAREZERWOWANE PRZEZ INNYCH
+        </option>
+        <option value="{{ path('app_rezerwacje_innych_z') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_wymiany_innych' %}selected{% endif %}>
+            WYMIANY ZŁOŻONE PRZEZ INNYCH
+        </option>
+        <option value="{{ path('app_rezerwacje_ciebie_z') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_ciebie_z' %}selected{% endif %}>
+            WYMIANY ZŁOŻONE PRZEZ CIEBIE
+        </option>
+        <option value="{{ path('app_rezerwacje_potwierdzone') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_potwierdzone' %}selected{% endif %}>
+            POTWIERDZONE
+        </option>
+        <option value="{{ path('app_rezerwacje_anulowane') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_anulowane' %}selected{% endif %}>
+            ANULOWANE
+        </option>
+        <option value="{{ path('app_rezerwacje_oczekujace') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_oczekujace' %}selected{% endif %}>
+            OCZEKUJĄCE
+        </option>
+        <option value="{{ path('app_rezerwacje_odrzucone') }}" 
+            {% if app.request.get('_route') == 'app_rezerwacje_odrzucone' %}selected{% endif %}>
+            ODRZUCONE
+        </option>
       </select>
-    
+
     </div>
   
   </div>
 
-  <div class="container_zarezerwowane_przez_innych">
+  <div class="container">
 
-    {% for rezerwacjaPrzezInnych in rezerwacjePrzezInnych %}
+    {% for rezerwacja in rezerwacje %}
+  
+      {% if rezerwacja.uslugaNaWymiane is null and rezerwacja.uzytkownikId.id == app.user.id %}
 
-      <div class="ogloszenie 
-        {# {% if rezerwacjaPrzezInnych|length == 1 %}
-          top
-        {% elseif loop.first and rezerwacjaPrzezInnych|length == 2 %}
-          top
-        {% elseif loop.last and rezerwacjaPrzezInnych|length == 2 %}
-          last
-        {% elseif loop.first and rezerwacjaPrzezInnych|length >= 3 %}
-          top
-        {% elseif loop.last and rezerwacjaPrzezInnych|length >= 3 %}
-          last
-        {% endif %}" #}">
-        
-        {% set imagePath = 'zdjeciaUslug/' ~ rezerwacjaPrzezInnych.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacjaPrzezInnych.uslugaDoRezerwacji.id ~ '/' ~ rezerwacjaPrzezInnych.uslugaDoRezerwacji.glowneZdjecie %}
-        <a href="{{ path('app_service_view', {idUslugi: rezerwacjaPrzezInnych.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+        <div class="opisrezerwacji">REZERWACJA ZŁOŻONA PRZEZ CIEBIE:</div>
 
-        <div class="opis">
-          <div class="tytul">{{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
-          
-          <div class="uslugainfo">
-            <div class="lokalizacja">{{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.miasto|upper }}</div>
-            <div class="data">DODANO {{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.dataDodania|date('d.m.Y') }}</div>
-            <div class="cena">{{ rezerwacjaPrzezInnych.uslugaDoRezerwacji.cena }} PLN{% if rezerwacjaPrzezInnych.uslugaDoRezerwacji.czyStawkaGodzinowa == 1 %}/H{% endif %}</div>
+        <div class="ogloszenie">
+
+          {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
+          <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+          <div class="opis">
+            <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
+            
+            <div class="uslugainfo">
+              <div class="data">OD: {{ rezerwacja.odKiedy|date('d.m.Y') }}</div>
+
+                {% if rezerwacja.doKiedy %}
+                  <div class="data">DO: {{ rezerwacja.doKiedy|date('d.m.Y') }}</div>
+                {% endif %}
+
+                {% if rezerwacja.udostepnijTelefon %}
+                  <div class="data">TELEFON: {{ rezerwacja.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.telefon|upper }}</div>
+                {% endif %}
+
+                <div class="data">DATA ZŁOŻENIA: {{ rezerwacja.dataZlozenia|date('d.m.Y') }}</div>
+                
+                {% if rezerwacja.wiadomosc %}
+                  <div class="wiadomosc" onclick="showMessage('{{ rezerwacja.wiadomosc|e('js') }}')">WIADOMOŚĆ</div>
+                {% endif %}
+            </div>
+          </div></a>
+          <div class="prawo">
+
+            {% if not rezerwacja.czyPotwierdzona %}
+            
+              <a href="{{ path('app_usun_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="usun mt-50">USUŃ</div></a>
+
+            {% endif %}
+
           </div>
-        </div></a>
-        <div class="prawo">
-          
-          {% if rezerwacjaPrzezInnych.czyPotwierdzona == 0 %}
-            <a href="{{ path('app_potwierdz_rezerwacje', {idRezerwacji: rezerwacjaPrzezInnych.id}) }}"><div class="potwierdz mt-25">POTWIERDŹ</div></a>
-            <a href="{{ path('app_odrzuc_rezerwacje', {idRezerwacji: rezerwacjaPrzezInnych.id}) }}"><div class="usun">ODRZUC</div></a>
+          {% if rezerwacja.czyPotwierdzona %}
+            <div class="status potwierdzona">POTWIERDZONA</div>
+          {% elseif rezerwacja.czyOdrzucona %}
+            <div class="status odrzucona">ODRZUCONA</div>
+          {% elseif rezerwacja.czyAnulowana %}
+            <div class="status anulowana">ANULOWANA</div>
           {% else %}
-            <a href="{{ path('app_anuluj_rezerwacje', {idRezerwacji: rezerwacjaPrzezInnych.id}) }}"><div class="odrzuc mt-50">ANULUJ</div></a>
+            <div class="status oczekujace">OCZEKUJĄCE</div>
           {% endif %}
-
-        </div>
-        
-      </div>
-
-    {% endfor %}
-
-  </div>
-
-  <div class="container_moje_rezerwacje">
-
-    {% for rezerwacjaPrzezCiebie in rezerwacjePrzezCiebie %}
-
-      <div class="ogloszenie 
-        {% if rezerwacjePrzezCiebie|length == 1 %}
-          top last
-        {% elseif loop.first and rezerwacjePrzezCiebie|length == 2 %}
-          top
-        {% elseif loop.last and rezerwacjePrzezCiebie|length == 2 %}
-          last
-        {% elseif loop.first and rezerwacjePrzezCiebie|length >= 3 %}
-          top
-        {% elseif loop.last and rezerwacjePrzezCiebie|length >= 3 %}
-          last
-        {% endif %}">
-        
-        {% set imagePath = 'zdjeciaUslug/' ~ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.id ~ '/' ~ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.glowneZdjecie %}
-        <a href="{{ path('app_service_view', {idUslugi: rezerwacjaPrzezCiebie.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
-
-        <div class="opis">
-          <div class="tytul">{{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
           
-          <div class="uslugainfo">
-            <div class="lokalizacja">{{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.miasto|upper }}</div>
-            <div class="data">DODANO {{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.dataDodania|date('d.m.Y') }}</div>
-            <div class="cena">{{ rezerwacjaPrzezCiebie.uslugaDoRezerwacji.cena }} PLN{% if rezerwacjaPrzezCiebie.uslugaDoRezerwacji.czyStawkaGodzinowa == 1 %}/H{% endif %}</div>
+        </div>
+
+      {% elseif rezerwacja.uslugaNaWymiane is null and rezerwacja.uzytkownikId.id != app.user.id %}
+      
+        <div class="opisrezerwacji">REZERWACJA ZŁOŻONA TOBIE:</div>
+
+        <div class="ogloszenie">
+        
+          {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
+          <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+          <div class="opis">
+            <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
+            
+            <div class="uslugainfo">
+
+              <div class="data">OD: {{ rezerwacja.odKiedy|date('d.m.Y') }}</div>
+
+              {% if rezerwacja.doKiedy %}
+                <div class="data">DO: {{ rezerwacja.doKiedy|date('d.m.Y') }}</div>
+              {% endif %}
+
+              {% if rezerwacja.udostepnijTelefon %}
+                <div class="data">TELEFON: {{ rezerwacja.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.telefon|upper }}</div>
+              {% endif %}
+
+              <div class="data">DATA ZŁOŻENIA: {{ rezerwacja.dataZlozenia|date('d.m.Y') }}</div>
+              
+              {% if rezerwacja.wiadomosc %}
+                <div class="wiadomosc" onclick="showMessage('{{ rezerwacja.wiadomosc|e('js') }}')">WIADOMOŚĆ</div>
+              {% endif %}
+
+            </div>
           </div>
-        </div></a>
-        <div class="prawo">
-          
-          <a href="{{ path('app_usun_rezerwacje', {idRezerwacji: rezerwacjaPrzezCiebie.id}) }}"><div class="usun mt-50">USUŃ</div></a>
+          <div class="prawo">
+            
+            {% if rezerwacja.czyPotwierdzona == 0 %}
+              <a href="{{ path('app_potwierdz_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="potwierdz {% if rezerwacja.czyOdrzucona %}mt-50{% else %}mt-20{% endif %}">POTWIERDŹ</div></a>
+              {% if not rezerwacja.czyOdrzucona %}
+                <a href="{{ path('app_odrzuc_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="usun mt-10">ODRZUC</div></a>
+              {% endif %}
+            {% else %}
+              <a href="{{ path('app_anuluj_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="odrzuc mt-50">ANULUJ</div></a>
+            {% endif %}
 
+          </div>
+
+          {% if rezerwacja.czyPotwierdzona %}
+            <div class="status potwierdzona">POTWIERDZONA</div>
+          {% elseif rezerwacja.czyOdrzucona %}
+            <div class="status odrzucona">ODRZUCONA</div>
+          {% elseif rezerwacja.czyAnulowana %}
+            <div class="status anulowana">ANULOWANA</div>
+          {% else %}
+            <div class="status oczekujace">OCZEKUJĄCE</div>
+          {% endif %}
+          
         </div>
+      
+      {% elseif rezerwacja.uslugaNaWymiane is not null and rezerwacja.uzytkownikId.id == app.user.id %}
+
+        <div class="wymiana">
+
+          <div class="opiswymiany">WYMIANA ZŁOŻONA PRZEZ CIEBIE:</div>
+
+          <div class="moja_usluga">
+          
+            {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uzytkownikId.id ~ '/' ~ rezerwacja.uslugaNaWymiane.id ~ '/' ~ rezerwacja.uslugaNaWymiane.glowneZdjecie %}
+            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+            <div class="opis">
+              <div class="tytul">{{ rezerwacja.uslugaNaWymiane.nazwaUslugi|upper }}</div>
+
+              <div class="uslugainfo">
+
+                <div class="data">DODANO: {{ rezerwacja.uslugaNaWymiane.dataDodania|date('d.m.Y') }}</div>
+
+                <div class="data twoja">TWOJA USŁUGA</div>
+
+              </div>
+
+            </div>
+          
+          </div>
+
+          <div class="trademark"><img class="tradeicon" src="{{ asset('images/tradeicon.png') }}"></div>
+
+          <div class="usluga_na_wymiane">
+          
+            {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
+            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+            <div class="opis">
+              <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
+              
+              <div class="uslugainfo">
+                <div class="data">OD: {{ rezerwacja.odKiedy|date('d.m.Y') }}</div>
+
+                {% if rezerwacja.doKiedy %}
+                  <div class="data">DO: {{ rezerwacja.doKiedy|date('d.m.Y') }}</div>
+                {% endif %}
+
+                {% if rezerwacja.udostepnijTelefon %}
+                  <div class="data">TELEFON: {{ rezerwacja.uslugaDoRezerwacji.uzytkownik.daneUzytkownika.telefon|upper }}</div>
+                {% endif %}
+
+                <div class="data">DATA ZŁOŻENIA: {{ rezerwacja.dataZlozenia|date('d.m.Y') }}</div>
+                
+                {% if rezerwacja.wiadomosc %}
+                  <div class="wiadomosc" onclick="showMessage('{{ rezerwacja.wiadomosc|e('js') }}')">WIADOMOŚĆ</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="prawo">
+              
+              {% if not rezerwacja.czyPotwierdzona %}
+            
+                <a href="{{ path('app_usun_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="usun mt-50">USUŃ</div></a>
+
+              {% endif %}
+
+            </div>
+
+            {% if rezerwacja.czyPotwierdzona %}
+              <div class="status potwierdzona">POTWIERDZONA</div>
+            {% elseif rezerwacja.czyOdrzucona %}
+              <div class="status odrzucona">ODRZUCONA</div>
+            {% elseif rezerwacja.czyAnulowana %}
+              <div class="status anulowana">ANULOWANA</div>
+            {% else %}
+              <div class="status oczekujace">OCZEKUJĄCE</div>
+            {% endif %}
+          
+          </div>
         
-      </div>
+        </div>
+
+      {% elseif rezerwacja.uslugaNaWymiane is not null and rezerwacja.uzytkownikId.id != app.user.id %}
+
+        <div class="wymiana">
+
+          <div class="opiswymiany">WYMIANA ZŁOŻONA TOBIE:</div>
+      
+          <div class="moja_usluga">
+          
+            {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
+            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+            <div class="opis">
+              <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
+
+              <div class="uslugainfo">
+
+                <div class="data">DODANO: {{ rezerwacja.uslugaDoRezerwacji.dataDodania|date('d.m.Y') }}</div>
+
+                <div class="data twoja">TWOJA USŁUGA</div>
+
+              </div>
+
+            </div>
+          
+          </div>
+
+          <div class="trademark"><img class="tradeicon" src="{{ asset('images/tradeicon.png') }}"></div>
+
+          <div class="usluga_na_wymiane">
+          
+            {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaNaWymiane.uzytkownik.id ~ '/' ~ rezerwacja.uslugaNaWymiane.id ~ '/' ~ rezerwacja.uslugaNaWymiane.glowneZdjecie %}
+            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+
+            <div class="opis">
+              <div class="tytul">{{ rezerwacja.uslugaNaWymiane.nazwaUslugi|upper }}</div>
+              
+              <div class="uslugainfo">
+                <div class="data">OD: {{ rezerwacja.odKiedy|date('d.m.Y') }}</div>
+
+                {% if rezerwacja.doKiedy %}
+                  <div class="data">DO: {{ rezerwacja.doKiedy|date('d.m.Y') }}</div>
+                {% endif %}
+
+                {% if rezerwacja.udostepnijTelefon %}
+                  <div class="data">TELEFON: {{ rezerwacja.uslugaNaWymiane.uzytkownik.daneUzytkownika.telefon|upper }}</div>
+                {% endif %}
+
+                <div class="data">DATA ZŁOŻENIA: {{ rezerwacja.dataZlozenia|date('d.m.Y') }}</div>
+                
+                {% if rezerwacja.wiadomosc %}
+                  <div class="wiadomosc" onclick="showMessage('{{ rezerwacja.wiadomosc|e('js') }}')">WIADOMOŚĆ</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="prawo">
+              
+              {% if rezerwacja.czyPotwierdzona == 0 %}
+                <a href="{{ path('app_potwierdz_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="potwierdz mt-20">POTWIERDŹ</div></a>
+                <a href="{{ path('app_odrzuc_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="usun mt-10">ODRZUC</div></a>
+              {% else %}
+                <a href="{{ path('app_anuluj_rezerwacje', {idRezerwacji: rezerwacja.id}) }}"><div class="odrzuc mt-50">ANULUJ</div></a>
+              {% endif %}
+
+            </div>
+
+            {% if rezerwacja.czyPotwierdzona %}
+              <div class="status potwierdzona">POTWIERDZONA</div>
+            {% elseif rezerwacja.czyOdrzucona %}
+              <div class="status odrzucona">ODRZUCONA</div>
+            {% elseif rezerwacja.czyAnulowana %}
+              <div class="status anulowana">ANULOWANA</div>
+            {% else %}
+              <div class="status oczekujace">OCZEKUJĄCE</div>
+            {% endif %}
+          
+          </div>
+        
+        </div>
+
+      {% endif %}
 
     {% endfor %}
-
+  
   </div>
+
+  <script>
+
+    document.getElementById('kategorie-select').addEventListener('change', function () {
+        window.location.href = this.value;
+    });
+  
+    function showMessage(message) {
+      Swal.fire({
+        text: message,
+        icon: 'question',
+        confirmButtonText: 'OK',
+        customClass: {
+          icon: 'swal-small-icon',
+          confirmButton: 'swal-custom-button'
+        }
+      });
+    }
+  
+  </script>
 
 {% endblock %}

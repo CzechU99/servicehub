@@ -72,10 +72,10 @@
           <div class="empty"></div>
         {% endif %}
 
-        <div class="wiadomoscbox">NAPISZ WIADOMOŚĆ: {{ form_widget(rezerwacjaForm.wymiana, {'attr': {'class': 'chck_msg event1'}}) }}</div>
+        <div class="wiadomoscbox">NAPISZ WIADOMOŚĆ: {{ form_widget(rezerwacjaForm.czyWiadomosc, {'attr': {'class': 'chck_msg event1'}}) }}</div>
 
         {% if usluga.czyWymiana == 1 %}
-          <div class="wiadomoscbox ml">WYMIANA: <input type="checkbox" class="chck_msg event2"></div>
+          <div class="wiadomoscbox ml">WYMIANA: {{ form_widget(rezerwacjaForm.wymiana, {'attr': {'class': 'chck_msg event2'}}) }}</div>
         {% endif %}
 
         <div class="wiadomoscbox ml">UDOSTĘPNIJ NR TELEFONU: {{ form_widget(rezerwacjaForm.udostepnijTelefon, {'attr': {'class': 'chck_msg'}}) }}</div>
@@ -111,7 +111,8 @@
       document.addEventListener('DOMContentLoaded', () => {
         flatpickr("#datePicker", {
           dateFormat: "Y-m-d",
-          enableTime: 'false'
+          enableTime: 'false',
+          minDate: 'today'
         });
       });
 
