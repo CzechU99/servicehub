@@ -28,9 +28,11 @@
                         <a href="{{path('app_add_edit_service')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
                         <a href="{{path('app_logout')}}"><div id="zaloguj" class="burst">WYLOGUJ</div></a>
                         <a href="{{path('app_myservices')}}"><div id="konto" class="burst"><img src="{{asset('images/profil.png')}}"></div></a>
+                        <a href="{{path('app_skills_list')}}"><div id="lista" class="burst">LISTA USŁUG</div></a>
                     {% else %}
                         <a href="{{path('app_login')}}"><div id="dodaj" class="burst">DODAJ USŁUGĘ</div></a>
                         <a href="{{path('app_login')}}"><div id="zaloguj" class="burst">ZALOGUJ</div></a>
+                        <a href="{{path('app_skills_list')}}"><div id="lista" class="burst">LISTA USŁUG</div></a>
                     {% endif %}
                 </div>
             {% endblock %}

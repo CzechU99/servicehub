@@ -47,53 +47,61 @@
   <div id="promowaneuslugi">
     
     <div id="boxlewo">
-      <div class="uslugilewo animate__animated animate__backInLeft">
-      
-        <img class="imgserviceleft" src="{{ asset('zdjeciaUslug/1/1/1_pobrane.jpeg') }}">
-        <div class="serivceopisleft">
-          <div class="serviceopis textleft">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="servicecena textleft">50 PLN/H</div>
-          <div class="servicedata textleft">OPOLE<br>DODANO 14.05.2024</div>   
+      <a href="{{ path('app_service_view', {idUslugi: losoweUslugi[0].id}) }} ">
+        <div class="uslugilewo">
+          {% set imagePath = 'zdjeciaUslug/' ~ losoweUslugi[0].uzytkownik.id ~ '/' ~ losoweUslugi[0].id ~ '/' ~ losoweUslugi[0].glowneZdjecie %}
+          <img class="imgserviceleft" src="{{ asset(imagePath) }}">
+          <div class="serivceopisleft">
+            <div class="serviceopis textleft">{{ losoweUslugi[0].nazwaUslugi }}</div>
+            <div class="servicecena textleft">{{ losoweUslugi[0].cena }} PLN{% if losoweUslugi[0].czyStawkaGodzinowa %}/H{% endif %}</div>
+            <div class="servicedata textleft">{{ losoweUslugi[0].uzytkownik.daneUzytkownika.miasto }}<br>DODANO {{ losoweUslugi[0].dataDodania|date('d.m.Y') }}</div>   
+          </div>
+        
         </div>
-      
-      </div>
+      </a>
 
-      <div class="uslugilewo animate__animated animate__backInLeft mgtop">
-      
-        <img class="imgserviceleft" src="{{ asset('zdjeciaUslug/1/1/1_pobrane.jpeg') }}">
-        <div class="serivceopisleft">   
-          <div class="serviceopis textleft">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="servicecena textleft">50 PLN/H</div>
-          <div class="servicedata textleft">OPOLE<br>DODANO 14.05.2024</div> 
+      <a href="{{ path('app_service_view', {idUslugi: losoweUslugi[1].id}) }} ">
+        <div class="uslugilewo mgtop">
+          {% set imagePath = 'zdjeciaUslug/' ~ losoweUslugi[1].uzytkownik.id ~ '/' ~ losoweUslugi[1].id ~ '/' ~ losoweUslugi[1].glowneZdjecie %}
+          <img class="imgserviceleft" src="{{ asset(imagePath) }}">
+          <div class="serivceopisleft">
+            <div class="serviceopis textleft">{{ losoweUslugi[1].nazwaUslugi }}</div>
+            <div class="servicecena textleft">{{ losoweUslugi[1].cena }} PLN{% if losoweUslugi[1].czyStawkaGodzinowa %}/H{% endif %}</div>
+            <div class="servicedata textleft">{{ losoweUslugi[1].uzytkownik.daneUzytkownika.miasto }}<br>DODANO {{ losoweUslugi[1].dataDodania|date('d.m.Y') }}</div>   
+          </div>
+        
         </div>
-
-      </div>
+      </a>
     </div>
 
     <div id="kreskaczarna"></div>
 
     <div id="boxprawo">
-      <div class="uslugiprawo animate__animated animate__backInRight">
-      
-        <img class="imgserviceright" src="{{ asset('zdjeciaUslug/1/1/1_pobrane.jpeg') }}">
-        <div class="serivceopisright">   
-          <div class="serviceopis textright">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="servicecena textright">50 PLN/H</div>
-          <div class="servicedata textright">OPOLE<br>DODANO 14.05.2024</div>      
+      <a href="{{ path('app_service_view', {idUslugi: losoweUslugi[2].id}) }} ">
+        <div class="uslugiprawo">
+          {% set imagePath = 'zdjeciaUslug/' ~ losoweUslugi[2].uzytkownik.id ~ '/' ~ losoweUslugi[2].id ~ '/' ~ losoweUslugi[2].glowneZdjecie %}
+          <img class="imgserviceright" src="{{ asset(imagePath) }}">
+          <div class="serivceopisright">
+            <div class="serviceopis textright">{{ losoweUslugi[2].nazwaUslugi }}</div>
+            <div class="servicecena textright">{{ losoweUslugi[2].cena }} PLN{% if losoweUslugi[2].czyStawkaGodzinowa %}/H{% endif %}</div>
+            <div class="servicedata textright">{{ losoweUslugi[2].uzytkownik.daneUzytkownika.miasto }}<br>DODANO {{ losoweUslugi[2].dataDodania|date('d.m.Y') }}</div>   
+          </div>
+        
         </div>
-      
-      </div>
+      </a>
 
-      <div class="uslugiprawo animate__animated animate__backInRight mgtop">
-      
-        <img class="imgserviceright" src="{{ asset('zdjeciaUslug/1/1/1_pobrane.jpeg') }}">
-        <div class="serivceopisright">  
-          <div class="serviceopis textright">KOSZENIE TRAWNIKÓW, DZIAŁEK, ROWÓW ITD...</div>
-          <div class="servicecena textright">50 PLN/H</div>
-          <div class="servicedata textright">OPOLE<br>DODANO 14.05.2024</div>   
+      <a href="{{ path('app_service_view', {idUslugi: losoweUslugi[3].id}) }} ">
+        <div class="uslugiprawo mgtop">
+          {% set imagePath = 'zdjeciaUslug/' ~ losoweUslugi[3].uzytkownik.id ~ '/' ~ losoweUslugi[3].id ~ '/' ~ losoweUslugi[3].glowneZdjecie %}
+          <img class="imgserviceright" src="{{ asset(imagePath) }}">
+          <div class="serivceopisright">
+            <div class="serviceopis textright">{{ losoweUslugi[3].nazwaUslugi }}</div>
+            <div class="servicecena textright">{{ losoweUslugi[3].cena }} PLN{% if losoweUslugi[3].czyStawkaGodzinowa %}/H{% endif %}</div>
+            <div class="servicedata textright">{{ losoweUslugi[3].uzytkownik.daneUzytkownika.miasto }}<br>DODANO {{ losoweUslugi[3].dataDodania|date('d.m.Y') }}</div>   
+          </div>
+        
         </div>
-
-      </div>
+      </a>
     </div>
 
   </div>

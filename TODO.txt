@@ -1,11 +1,10 @@
 ZROBIĆ:
 1. klikanie w usluge w margin przenosi do niej
-2. losowe uslugi
 3. powiadomienia email
 4. zrobic cos z kodem JS
 5. uporzadkowac kod
 6. nazewnictwo
-7. dodac przycisk w navbar do listy uslug
+7. podgload uslugi w rezerwacjach
 
 PROBLEMY:
 1. kolejnosc zdjec z edytowaniu
@@ -19,4 +18,3 @@ MOŻLIWOŚCI:
 4. followania (jest w opisie pracy)?
 5. promowanie uslug
 6. lupa na zdjecie rezerwacji i podglad
-

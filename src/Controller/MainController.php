@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DaneUzytkownika;
 use App\Entity\Rezerwacje;
 use Doctrine\ORM\EntityManager;
 use App\Form\RezerwacjaFormType;
@@ -11,12 +12,14 @@ use App\Form\WyszukiwanieFormType;
 use App\Repository\UserRepository;
 use App\Repository\UslugiRepository;
 use App\Form\SzybkieSzukanieFormType;
+use App\Repository\DaneUzytkownikaRepository;
 use App\Repository\KategorieRepository;
 use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -34,13 +37,18 @@ class MainController extends AbstractController
         $uzytkownicy = $user->findAll();
         $rezerwacje = $rezerwacje->findAll();
 
+        $wymieszaneUslugi = $uslugi->findAll();
+        shuffle($wymieszaneUslugi);
+        $losoweUslugi = array_slice($wymieszaneUslugi, 0, 4);
+
         $form = $this->createForm(SzybkieSzukanieFormType::class);
 
         return $this->render('main/index.html.twig', [
             'szybkieSzukanieForm' => $form->createView(),
             'uzytkownicy' => $uzytkownicy,
             'wszystkieUslugi' => $wszystkieUslugi,
-            'rezerwacje' => $rezerwacje
+            'rezerwacje' => $rezerwacje,
+            'losoweUslugi' => $losoweUslugi
         ]);
 
     }
@@ -276,9 +284,7 @@ class MainController extends AbstractController
             $entityManager->persist($rezerwacja);
             $entityManager->flush();
 
-            $this->addFlash('success', 'ZLOŻONO REZERWACJĘ!');
-
-            return $this->redirectToRoute('app_myservices');
+            return $this->redirectToRoute('app_rezerwacje');
 
         }
 

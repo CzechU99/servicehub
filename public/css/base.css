@@ -72,6 +72,27 @@ a, a:link, #logo a:visited, #logo a:active, #logo a:hover{
   cursor: pointer;
 }
 
+#lista{
+  border-radius: 5px;
+  width: 220px;
+  height: 50px;
+  background-color: white;
+  color:rgba(46, 83, 229, 1);
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  box-sizing: border-box;
+  margin-right: 55px;
+  line-height: 50px;
+  margin-top: 25px;
+  transition: all 0.2s linear;
+}
+
+#lista:hover{
+  cursor: pointer;
+}
+
 #zaloguj{
   border-radius: 5px;
   width: 140px;
