@@ -54,10 +54,14 @@
         <div id="number">ZNALEZIONO {{ uslugi|length }} OGŁOSZEŃ</div>
         <div id="kreska"></div>
         <div id="reklama">REKLAMA</div>
-        <div id="okno">MIEJSCE DLA REKLAMODAWCY, JAK SIĘ JAKIŚ ZNAJDZIE</div>
+        <div id="okno">MIEJSCE DLA REKLAMODAWCY</div>
+    </div>
 
-        {% for usluga in uslugi %}
-          <a href="{{ path('app_service_view', {idUslugi: usluga.id}) }}"><div class="ogloszenie 
+    <div class="container">
+    
+      {% for usluga in uslugi %}
+        <a class="link" href="{{ path('app_service_view', {idUslugi: usluga.id}) }}">
+          <div class="ogloszenie 
             {% if uslugi|length == 1 %}
               top last
             {% elseif loop.first and uslugi|length == 2 %}
@@ -79,10 +83,12 @@
               <div class="data">DODANO {{ usluga.dataDodania|date('d.m.Y') }}</div>
             </div>
             <div class="prawo">
-              <div class="cena">{{ usluga.cena }} PLN/H</div>
+              <div class="cena">{{ usluga.cena }} PLN{% if usluga.czyStawkaGodzinowa %}/H{% endif %}</div>
             </div>
-          </div></a>
-        {% endfor %}
+          </div>
+        </a>
+      {% endfor %}
+
     </div>
 
 {% endblock %}

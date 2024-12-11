@@ -44,8 +44,8 @@ class RezerwacjaFormType extends AbstractType
                 'mapped' => false,
             ])
             ->add('odKiedy', DateType::class, [
-                'widget' => 'single_text',  // Użyj pojedynczego pola tekstowego
-                'format' => 'yyyy-MM-dd',  // Możesz ustawić format, np. YYYY-MM-DD
+                'widget' => 'single_text',  
+                'format' => 'yyyy-MM-dd',  
                 'attr' => [
                     'placeholder' => 'WPROWADŹ DATĘ OD'
                 ],

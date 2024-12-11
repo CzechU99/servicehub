@@ -6,6 +6,8 @@ use App\Form\DaneFormType;
 use App\Entity\DaneUzytkownika;
 use App\Service\GeocoderService;
 use App\Repository\UslugiRepository;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
@@ -335,12 +337,46 @@ class SettingsController extends AbstractController
       RezerwacjeRepository $rezerwacje,
       EntityManagerInterface $entityManager,
       int $idRezerwacji,
+      MailerInterface $mailer,
     ): Response
     {
 
       $rezerwacjaDoPotwierdzenia = $rezerwacje->findOneBy([
         'id' => $idRezerwacji,
       ]);
+
+      if($rezerwacjaDoPotwierdzenia->getDoKiedy()){
+        $doKiedy = " do: " . $rezerwacjaDoPotwierdzenia->getDoKiedy()->format('Y-m-d');
+      }else{
+        $doKiedy = "";
+      }
+
+      $emailMsg = '<h2>Potwierdzono twoją rezerwację!</h2> Użytkownik potwierdził rezerwację: <a href="localhost/servicehub/public/index.php/service_view/' . $idRezerwacji . '">' . $rezerwacjaDoPotwierdzenia->getUslugaDoRezerwacji()->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacjaDoPotwierdzenia->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+      $emailMsg2 = '<h2>Potwierdzono rezerwację!</h2> Potwierdziłeś rezerwację: <a href="localhost/servicehub/public/index.php/service_view/' . $idRezerwacji . '">' . $rezerwacjaDoPotwierdzenia->getUslugaDoRezerwacji()->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacjaDoPotwierdzenia->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+      if($rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()){
+        $emailMsg = $emailMsg . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getId() . '">' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+
+        $emailMsg2 = $emailMsg2 . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getId() . '">' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+      }
+
+      $emailDoUslugodawcy = (new Email())
+        ->from('nor-replay@servicehub.com')
+        ->to($rezerwacjaDoPotwierdzenia->getUzytkownikId()->getEmail())
+        ->subject('ServiceHub - potwierdzono twoją rezerwację!')
+        ->text('Rezerwacja usługi')
+        ->html($emailMsg);
+
+      $emailDoCiebie = (new Email())
+        ->from('nor-replay@servicehub.com')
+        ->to($this->getUser()->getEmail())
+        ->subject('ServiceHub - potwierdziłeś rezerwację!')
+        ->text('Rezerwacja usługi')
+        ->html($emailMsg2);
+
+      $mailer->send($emailDoUslugodawcy);
+      $mailer->send($emailDoCiebie);
 
       $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(true);
       $rezerwacjaDoPotwierdzenia->setCzyOdrzucona(false);
@@ -356,6 +392,7 @@ class SettingsController extends AbstractController
     public function anulujRezerwacje(
       RezerwacjeRepository $rezerwacje,
       EntityManagerInterface $entityManager,
+      MailerInterface $mailer,
       int $idRezerwacji,
     ): Response
     {
@@ -363,6 +400,39 @@ class SettingsController extends AbstractController
       $rezerwacjaDoPotwierdzenia = $rezerwacje->findOneBy([
         'id' => $idRezerwacji,
       ]);
+
+      if($rezerwacjaDoPotwierdzenia->getDoKiedy()){
+        $doKiedy = " do: " . $rezerwacjaDoPotwierdzenia->getDoKiedy()->format('Y-m-d');
+      }else{
+        $doKiedy = "";
+      }
+
+      $emailMsg = '<h2>Anulowano twoją rezerwację!</h2> Użytkownik anulował rezerwację: <a href="localhost/servicehub/public/index.php/service_view/' . $idRezerwacji . '">' . $rezerwacjaDoPotwierdzenia->getUslugaDoRezerwacji()->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacjaDoPotwierdzenia->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+      $emailMsg2 = '<h2>Anulowano rezerwację!</h2> Anulowałeś rezerwację: <a href="localhost/servicehub/public/index.php/service_view/' . $idRezerwacji . '">' . $rezerwacjaDoPotwierdzenia->getUslugaDoRezerwacji()->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacjaDoPotwierdzenia->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+      if($rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()){
+        $emailMsg = $emailMsg . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getId() . '">' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+
+        $emailMsg2 = $emailMsg2 . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getId() . '">' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+      }
+
+      $emailDoUslugodawcy = (new Email())
+        ->from('nor-replay@servicehub.com')
+        ->to($rezerwacjaDoPotwierdzenia->getUzytkownikId()->getEmail())
+        ->subject('ServiceHub - anulowano twoją rezerwację!')
+        ->text('Rezerwacja usługi')
+        ->html($emailMsg);
+
+      $emailDoCiebie = (new Email())
+        ->from('nor-replay@servicehub.com')
+        ->to($this->getUser()->getEmail())
+        ->subject('ServiceHub - anulowałeś rezerwację!')
+        ->text('Rezerwacja usługi')
+        ->html($emailMsg2);
+
+      $mailer->send($emailDoUslugodawcy);
+      $mailer->send($emailDoCiebie);
 
       $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(false);
       $rezerwacjaDoPotwierdzenia->setCzyOdrzucona(false);
@@ -378,6 +448,7 @@ class SettingsController extends AbstractController
     public function odrzucRezerwacje(
       RezerwacjeRepository $rezerwacje,
       EntityManagerInterface $entityManager,
+      MailerInterface $mailer,
       int $idRezerwacji,
     ): Response
     {
@@ -385,6 +456,39 @@ class SettingsController extends AbstractController
       $rezerwacjaDoPotwierdzenia = $rezerwacje->findOneBy([
         'id' => $idRezerwacji,
       ]);
+
+      if($rezerwacjaDoPotwierdzenia->getDoKiedy()){
+        $doKiedy = " do: " . $rezerwacjaDoPotwierdzenia->getDoKiedy()->format('Y-m-d');
+      }else{
+        $doKiedy = "";
+      }
+
+      $emailMsg = '<h2>Odrzucono twoją rezerwację!</h2> Użytkownik odrzucił rezerwację: <a href="localhost/servicehub/public/index.php/service_view/' . $idRezerwacji . '">' . $rezerwacjaDoPotwierdzenia->getUslugaDoRezerwacji()->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacjaDoPotwierdzenia->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+      $emailMsg2 = '<h2>Odrzucono rezerwację!</h2> Odrzuciłeś rezerwację: <a href="localhost/servicehub/public/index.php/service_view/' . $idRezerwacji . '">' . $rezerwacjaDoPotwierdzenia->getUslugaDoRezerwacji()->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacjaDoPotwierdzenia->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+      if($rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()){
+        $emailMsg = $emailMsg . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getId() . '">' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+
+        $emailMsg2 = $emailMsg2 . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getId() . '">' . $rezerwacjaDoPotwierdzenia->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+      }
+
+      $emailDoUslugodawcy = (new Email())
+        ->from('nor-replay@servicehub.com')
+        ->to($rezerwacjaDoPotwierdzenia->getUzytkownikId()->getEmail())
+        ->subject('ServiceHub - odrzucono twoją rezerwację!')
+        ->text('Rezerwacja usługi')
+        ->html($emailMsg);
+
+      $emailDoCiebie = (new Email())
+        ->from('nor-replay@servicehub.com')
+        ->to($this->getUser()->getEmail())
+        ->subject('ServiceHub - odrzuciłeś rezerwację!')
+        ->text('Rezerwacja usługi')
+        ->html($emailMsg2);
+
+      $mailer->send($emailDoUslugodawcy);
+      $mailer->send($emailDoCiebie);
 
       $rezerwacjaDoPotwierdzenia->setCzyPotwierdzona(false);
       $rezerwacjaDoPotwierdzenia->setCzyAnulowana(false);

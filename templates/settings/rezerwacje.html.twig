@@ -128,7 +128,7 @@
         <div class="ogloszenie">
         
           {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-          <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+          <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
 
           <div class="opis">
             <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -152,7 +152,7 @@
               {% endif %}
 
             </div>
-          </div>
+          </div></a>
           <div class="prawo">
             
             {% if rezerwacja.czyPotwierdzona == 0 %}
@@ -187,7 +187,7 @@
           <div class="moja_usluga">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uzytkownikId.id ~ '/' ~ rezerwacja.uslugaNaWymiane.id ~ '/' ~ rezerwacja.uslugaNaWymiane.glowneZdjecie %}
-            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaNaWymiane.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaNaWymiane.nazwaUslugi|upper }}</div>
@@ -200,7 +200,7 @@
 
               </div>
 
-            </div>
+            </div></a>
           
           </div>
 
@@ -209,7 +209,7 @@
           <div class="usluga_na_wymiane">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -231,7 +231,7 @@
                   <div class="wiadomosc" onclick="showMessage('{{ rezerwacja.wiadomosc|e('js') }}')">WIADOMOŚĆ</div>
                 {% endif %}
               </div>
-            </div>
+            </div></a>
             <div class="prawo">
               
               {% if not rezerwacja.czyPotwierdzona %}
@@ -265,7 +265,7 @@
           <div class="moja_usluga">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -278,7 +278,7 @@
 
               </div>
 
-            </div>
+            </div></a>
           
           </div>
 
@@ -287,7 +287,7 @@
           <div class="usluga_na_wymiane">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaNaWymiane.uzytkownik.id ~ '/' ~ rezerwacja.uslugaNaWymiane.id ~ '/' ~ rezerwacja.uslugaNaWymiane.glowneZdjecie %}
-            <img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaNaWymiane.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaNaWymiane.nazwaUslugi|upper }}</div>
@@ -309,7 +309,7 @@
                   <div class="wiadomosc" onclick="showMessage('{{ rezerwacja.wiadomosc|e('js') }}')">WIADOMOŚĆ</div>
                 {% endif %}
               </div>
-            </div>
+            </div></a>
             <div class="prawo">
               
               {% if rezerwacja.czyPotwierdzona == 0 %}
@@ -344,7 +344,14 @@
   <script>
 
     document.getElementById('kategorie-select').addEventListener('change', function () {
-        window.location.href = this.value;
+      window.location.href = this.value;
+    });
+
+    document.querySelectorAll('.wiadomosc').forEach(button => {
+      button.addEventListener('click', function (event) {
+          event.stopPropagation(); 
+          event.preventDefault(); 
+      });
     });
   
     function showMessage(message) {

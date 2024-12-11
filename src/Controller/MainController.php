@@ -4,10 +4,9 @@ namespace App\Controller;
 
 use App\Entity\DaneUzytkownika;
 use App\Entity\Rezerwacje;
-use Doctrine\ORM\EntityManager;
 use App\Form\RezerwacjaFormType;
 use App\Service\GeocoderService;
-use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\Mime\Email;
 use App\Form\WyszukiwanieFormType;
 use App\Repository\UserRepository;
 use App\Repository\UslugiRepository;
@@ -17,9 +16,9 @@ use App\Repository\KategorieRepository;
 use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -67,20 +66,23 @@ class MainController extends AbstractController
         $szybkiFormularz = $this->createForm(SzybkieSzukanieFormType::class);
         $szybkiFormularz->handleRequest($request);
 
-        $filteredUslugi = $uslugi->findAll();
+        $user = $this->getUser(); 
+        $userId = $user->getId();
+
+        $filteredUslugi = $uslugi->createQueryBuilder('u')
+            ->where('u.uzytkownik != :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+
         $wszystkieKategorie = $kategorie->findAll();
 
         if ($szybkiFormularz->isSubmitted() && $szybkiFormularz->isValid()) {
             $searchTerm = $szybkiFormularz->get('nazwaUslugi')->getData();
 
-            $user = $this->getUser(); 
-            $userId = $user->getId();
-
             $filteredUslugi = $uslugi->createQueryBuilder('u')
                 ->where('u.nazwaUslugi LIKE :searchTerm')
-                ->andWhere('u.uzytkownik != :userId') 
                 ->setParameter('searchTerm', '%' . $searchTerm . '%')
-                ->setParameter('userId', $userId)
                 ->getQuery()
                 ->getResult();
         }else{
@@ -233,6 +235,8 @@ class MainController extends AbstractController
         UslugiRepository $uslugi,
         Request $request,
         EntityManagerInterface $entityManager,
+        DaneUzytkownikaRepository $daneUzytkownika,
+        MailerInterface $mailer
     ): Response
     {
 
@@ -273,13 +277,53 @@ class MainController extends AbstractController
             $rezerwacja->setUslugaDoRezerwacji($usluga);
             $rezerwacja->setDataZlozenia(new \DateTime());
 
+            $daneUzytkownika = $daneUzytkownika->findOneBy(['uzytkownik' => $this->getUser()]);
+            // $user = $user->findOneBy(['id' => $this->getUser()->getId()]);
+
+            if($rezerwacja->getDoKiedy()){
+                $doKiedy = " do: " . $rezerwacja->getDoKiedy()->format('Y-m-d');
+            }else{
+                $doKiedy = "";
+            }
+
+            $emailMsg = '<h2>Dokonano rezerwacji twojej usługi!</h2>' . $daneUzytkownika->getImie() . " " . $daneUzytkownika->getNazwisko() . ' zarezerwował: <a href="localhost/servicehub/public/index.php/service_view/' . $idUslugi . '">' . $usluga->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacja->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
+            $emailMsg2 = '<h2>Dokonałeś rezerwacji!</h2> Zarezerwowałeś: <a href="localhost/servicehub/public/index.php/service_view/' . $idUslugi . '">' . $usluga->getNazwaUslugi() . '</a><br> W terminie od: ' . $rezerwacja->getOdKiedy()->format('Y-m-d') . $doKiedy;
+
             if(!$form->get('wymiana')->getData()){
                 $rezerwacja->setUslugaNaWymiane(null);
+            }else{
+                $emailMsg = $emailMsg . '<br> Zaoferował wymianę w zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacja->getUslugaNaWymiane()->getId() . '">' . $rezerwacja->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+                
+                $emailMsg2 = $emailMsg2 . '<br> W zamian za: <a href="localhost/servicehub/public/index.php/service_view/' . $rezerwacja->getUslugaNaWymiane()->getId() . '">' . $rezerwacja->getUslugaNaWymiane()->getNazwaUslugi() . '</a>';
+            }
+
+            if($rezerwacja->isUdostepnijTelefon()){
+                $emailMsg = $emailMsg . '<br>Telefon: ' . $daneUzytkownika->getTelefon();
             }
 
             if(!$form->get('czyWiadomosc')->getData()){
                 $rezerwacja->setWiadomosc(null);
+            }else{
+                $emailMsg = $emailMsg . '<br><br><h4>Wiadomość do ciebie: </h4>' . $rezerwacja->getWiadomosc();
             }
+            
+            $emailDoUslugodawcy = (new Email())
+                ->from('nor-replay@servicehub.com')
+                ->to($usluga->getUzytkownik()->getEmail())
+                ->subject('ServiceHub - zarezerwowano twoją usługę!')
+                ->text('Rezerwacja usługi')
+                ->html($emailMsg);
+
+            $emailDoCiebie = (new Email())
+                ->from('nor-replay@servicehub.com')
+                ->to($this->getUser()->getEmail())
+                ->subject('ServiceHub - zarezerwołeś usługę!')
+                ->text('Rezerwacja usługi')
+                ->html($emailMsg2);
+
+            $mailer->send($emailDoUslugodawcy);
+            $mailer->send($emailDoCiebie);
 
             $entityManager->persist($rezerwacja);
             $entityManager->flush();

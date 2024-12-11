@@ -105,12 +105,20 @@ input{
   top: 300px;
 }
 
+:root {
+  --lh: 1.3rem;
+}
+
 .nazwauslugi{
   font-weight: bold;
   text-transform: uppercase;
   font-size: 20px;
   float: left;
   clear: both;
+  --max-lines: 2;
+  position: relative;
+  max-height: calc(var(--lh) * var(--max-lines));
+  overflow: hidden;
 }
 
 .datadodania{
