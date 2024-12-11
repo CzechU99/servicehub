@@ -8,51 +8,49 @@ function handShake(){
 
 setInterval(handShake, 10000);
 
-
 const input = document.getElementById('wyszukiwanie_form_lokalizacja');
 const suggestions = document.getElementById('suggestions');
 
 input.addEventListener('input', function () {
   const query = input.value.trim();
   if (query.length > 2) { 
-      fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=20&countrycodes=PL&q=${query}`)
-        .then(response => response.json())
-        .then(data => {
-            suggestions.innerHTML = '';
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=20&countrycodes=PL&q=${query}`)
+      .then(response => response.json())
+      .then(data => {
+        suggestions.innerHTML = '';
 
-            data.filter(item => {
-                    
-                    const { address } = item;
-                    if (!address) return false;
+        data.filter(item => {
+              const { address } = item;
+              if (!address) return false;
 
-                    const city = address.city || address.town || address.village || address.hamlet;
-                    return city && city.toLowerCase().includes(query.toLowerCase());
-                })
-                .forEach(item => {
-                    const { address } = item;
+              const city = address.city || address.town || address.village || address.hamlet;
+              return city && city.toLowerCase().includes(query.toLowerCase());
+            })
+            .forEach(item => {
+              const { address } = item;
 
-                    const city = address.city || address.town || address.village || address.hamlet || 'Nieznane miasto';
-                    const state = address.state || 'Nieznane województwo';
-                    const postcode = address.postcode || '';
+              const city = address.city || address.town || address.village || address.hamlet || 'Nieznane miasto';
+              const state = address.state || 'Nieznane województwo';
+              const postcode = address.postcode || '';
 
-                    if(postcode == ""){
-                      formattedAddress = `${city}, ${state}`;
-                    }else{
-                      formattedAddress = `${city}, ${state}, ${postcode}`;
-                    }
+              if(postcode == ""){
+                formattedAddress = `${city}, ${state}`;
+              }else{
+                formattedAddress = `${city}, ${state}, ${postcode}`;
+              }
 
-                    const span = document.createElement('p');
-                    span.textContent = formattedAddress;
-                    span.onclick = () => {
-                        input.value = formattedAddress; 
-                        suggestions.innerHTML = ''; 
-                    };
-                    suggestions.appendChild(span);
-                });
-        })
-        .catch(error => console.error('Błąd pobierania danych:', error));
+              const span = document.createElement('p');
+              span.textContent = formattedAddress;
+              span.onclick = () => {
+                input.value = formattedAddress; 
+                suggestions.innerHTML = ''; 
+              };
+              suggestions.appendChild(span);
+            });
+      })
+      .catch(error => console.error('Błąd pobierania danych:', error));
   } else {
-      suggestions.innerHTML = ''; 
+    suggestions.innerHTML = ''; 
   }
 });
 
@@ -80,8 +78,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
   const lokalizacjaInput = document.querySelector(".lokalizacja2");
   const kmDiv = document.getElementById("km");
@@ -100,3 +96,4 @@ document.addEventListener("DOMContentLoaded", function() {
   lokalizacjaInput.addEventListener("input", toggleKmVisibility);
   toggleKmVisibility();
 });
+

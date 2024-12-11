@@ -2,13 +2,9 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Mime\Email;
-use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
-use Symfony\Component\Mailer\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -92,7 +88,9 @@ class LoginController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Hasło zostało zmienione!');
             return $this->redirectToRoute('app_login');
-        }else{
+        }
+        
+        if(isset($_POST['password']) && $_POST['password'] != $_POST['passwordRepeat'] && $users->find($id)){
             $this->addFlash('error', 'Hasła nie są identyczne!');
         }
         

@@ -59,6 +59,9 @@ class Uslugi
     #[ORM\OneToMany(targetEntity: Rezerwacje::class, mappedBy: 'uslugaDoRezerwacji', orphanRemoval: true)]
     private Collection $rezerwacje;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $wyswietlenia = null;
+
     public function __construct()
     {
         $this->kategorie = new ArrayCollection();
@@ -245,6 +248,23 @@ class Uslugi
         }
 
         return $this;
+    }
+
+    public function getWyswietlenia(): ?int
+    {
+        return $this->wyswietlenia;
+    }
+
+    public function setWyswietlenia(?int $wyswietlenia): static
+    {
+        $this->wyswietlenia = $wyswietlenia;
+
+        return $this;
+    }
+
+    public function incrementWyswietlenia(): void
+    {
+        $this->wyswietlenia++;
     }
 
 }

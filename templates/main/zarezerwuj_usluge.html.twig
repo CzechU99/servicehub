@@ -6,9 +6,6 @@
   <link rel="stylesheet" href="{{ asset('css/zarezerwuj_usluge.css') }}">
 {% endblock %}
 
-
-
-
 {% set imagePath = 'zdjeciaUslug/' ~ usluga.uzytkownik.id ~ '/' ~ usluga.id ~ '/' ~ usluga.glowneZdjecie %}
 
 {% block body %}
@@ -103,79 +100,77 @@
     {{ form_end(rezerwacjaForm) }}
 
   </div>
-    
 
+  <script>
 
-    <script>
-
-      document.addEventListener('DOMContentLoaded', () => {
-        flatpickr("#datePicker", {
-          dateFormat: "Y-m-d",
-          enableTime: 'false',
-          minDate: 'today'
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+      flatpickr("#datePicker", {
+        dateFormat: "Y-m-d",
+        enableTime: 'false',
+        minDate: 'today'
       });
+    });
 
-      document.querySelector('.event1').addEventListener('change', function() {
-        const messageBox = document.querySelector('.wiadomość');
-        
-        if (this.checked) {
-          messageBox.style.display = 'block';
-        } else {
-          messageBox.style.display = 'none';
-        }
-      });
+    document.querySelector('.event1').addEventListener('change', function() {
+      const messageBox = document.querySelector('.wiadomość');
+      
+      if (this.checked) {
+        messageBox.style.display = 'block';
+      } else {
+        messageBox.style.display = 'none';
+      }
+    });
 
-      document.querySelector('.event2').addEventListener('change', function() {
-        const trade = document.querySelector('.trademark');
-        const ogloszenietrade = document.querySelector('.ogloszenietrade');
-        const ogloszenie = document.querySelector('.ogloszenie');
-        const uslugi = document.querySelector('.box');
-        
-        if (this.checked) {
-          trade.style.display = 'block';
-          ogloszenietrade.style.display = 'block';
-          ogloszenie.style.float = "left";
-          ogloszenie.style.margin = "none";
-          uslugi.style.display = 'block';
+    document.querySelector('.event2').addEventListener('change', function() {
+      const trade = document.querySelector('.trademark');
+      const ogloszenietrade = document.querySelector('.ogloszenietrade');
+      const ogloszenie = document.querySelector('.ogloszenie');
+      const uslugi = document.querySelector('.box');
+      
+      if (this.checked) {
+        trade.style.display = 'block';
+        ogloszenietrade.style.display = 'block';
+        ogloszenie.style.float = "left";
+        ogloszenie.style.margin = "none";
+        uslugi.style.display = 'block';
 
-        } else {
-          trade.style.display = 'none';
-          ogloszenietrade.style.display = 'none';
-          ogloszenie.style.float = "none";
-          ogloszenie.style.margin = "auto";
-          uslugi.style.display = 'none';
-        }
-      });
+      } else {
+        trade.style.display = 'none';
+        ogloszenietrade.style.display = 'none';
+        ogloszenie.style.float = "none";
+        ogloszenie.style.margin = "auto";
+        uslugi.style.display = 'none';
+      }
+    });
 
-const selectElement = document.querySelector('.select');
-const mojeUslugi = JSON.parse(selectElement.getAttribute('data-moje-uslugi'));
-const ogloszenieDiv = document.getElementById('ogloszenie');
-const tytulDiv = document.getElementById('ogloszenie-tytul');
-const lokalizacjaDiv = document.getElementById('ogloszenie-lokalizacja');
-const dataDiv = document.getElementById('ogloszenie-data');
-const cenaDiv = document.getElementById('ogloszenie-cena');
-const imgElement = document.getElementById('ogloszenie-img');
+    const selectElement = document.querySelector('.select');
+    const mojeUslugi = JSON.parse(selectElement.getAttribute('data-moje-uslugi'));
+    const ogloszenieDiv = document.getElementById('ogloszenie');
+    const tytulDiv = document.getElementById('ogloszenie-tytul');
+    const lokalizacjaDiv = document.getElementById('ogloszenie-lokalizacja');
+    const dataDiv = document.getElementById('ogloszenie-data');
+    const cenaDiv = document.getElementById('ogloszenie-cena');
+    const imgElement = document.getElementById('ogloszenie-img');
 
-function updateOgloszenie(index) {
-    usluga = mojeUslugi[index];
-    if (usluga) {
+    function updateOgloszenie(index) {
+      usluga = mojeUslugi[index];
+      if (usluga) {
         tytulDiv.textContent = usluga.nazwaUslugi;
         lokalizacjaDiv.textContent = usluga.uzytkownik.daneUzytkownika.miasto;
         dataDiv.textContent = `DODANO ${new Date(usluga.dataDodania).toLocaleDateString('pl-PL')}`;
         cenaDiv.textContent = `${usluga.cena} PLN${usluga.czyStawkaGodzinowa ? '/H' : ''}`;
         imgElement.src = `/servicehub/public/zdjeciaUslug/${usluga.uzytkownik.id}/${usluga.id}/${usluga.glowneZdjecie}`;
+      }
     }
-}
 
-selectElement.addEventListener('change', (e) => {
-    const selectedIndex = e.target.selectedIndex;
-    updateOgloszenie(selectedIndex);
-});
+    selectElement.addEventListener('change', (e) => {
+      const selectedIndex = e.target.selectedIndex;
+      updateOgloszenie(selectedIndex);
+    });
 
-updateOgloszenie(0);
+    updateOgloszenie(0);
 
-    </script>
+  </script>
     
 
 {% endblock %}

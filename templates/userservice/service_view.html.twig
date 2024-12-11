@@ -86,7 +86,7 @@
 
       <div class="clear">
         <div class="datadodania">DODANO: {{ usluga.dataDodania|date('d.m.Y') }} </div>
-        <div class="wyswietlenia">WYŚWETLENIA: 53 </div>
+        <div class="wyswietlenia">WYŚWETLENIA: {{ usluga.wyswietlenia }} </div>
       </div>
 
       <div class="kreska"></div>
@@ -124,7 +124,6 @@
       console.log("Działa!");
       console.log(slideIndex);
     }
-
 
     function plusSlides(n) {
       slideIndex += n;

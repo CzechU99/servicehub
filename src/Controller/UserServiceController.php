@@ -10,6 +10,7 @@ use App\Form\SzybkieSzukanieFormType;
 use App\Repository\KategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +22,9 @@ class UserServiceController extends AbstractController
     #[Route('/service_view/{idUslugi}', name: 'app_service_view')]
     public function register(
         int $idUslugi,
-        UslugiRepository $uslugi
+        UslugiRepository $uslugi,
+        Request $request,
+        EntityManagerInterface $entityManager,
     ): Response
     {
 
@@ -36,6 +39,18 @@ class UserServiceController extends AbstractController
           if (in_array(pathinfo($plik, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])) {
               $nazwyZdjec[] = $plik;
           }
+      }
+
+      $session = $request->getSession();
+      $viewedServices = $session->get('viewed_services', []);
+
+      if (!in_array($usluga->getId(), $viewedServices, true)) {
+        $usluga->incrementWyswietlenia();
+        $entityManager->persist($usluga);
+        $entityManager->flush();
+
+        $viewedServices[] = $usluga->getId();
+        $session->set('viewed_services', $viewedServices);
       }
 
       $form = $this->createForm(SzybkieSzukanieFormType::class);
@@ -129,6 +144,7 @@ class UserServiceController extends AbstractController
         } else {
           $usluga->setUzytkownik($user);
           $usluga->setDataDodania(new \DateTime());
+          $usluga->setWyswietlenia(0);
           $entityManager->persist($usluga);
           $entityManager->flush();
 

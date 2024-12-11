@@ -1,13 +1,14 @@
 ZROBIĆ:
-3. powiadomienia email
-4. zrobic cos z kodem JS
-5. uporzadkowac kod
-6. nazewnictwo
+7. poprawic logowanie i rejestracje
+8. dodac powiadomienia
 
 PROBLEMY:
 1. kolejnosc zdjec z edytowaniu
 2. walidacja przy rezerwacji | problem z data od kiedy
 3. brak powiadomienia przy logowaniu ze email nie istnieje
+4. zrobic cos z kodem JS
+5. uporzadkowac kod
+6. nazewnictwo
 
 MOŻLIWOŚCI:
 1. liczba wyswietlen
