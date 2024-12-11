@@ -27,25 +27,40 @@
 
                 <div id="kreska"></div>
 
-                {% for flash_msg in app.flashes('success') %}
-                    <div class="success">{{ flash_msg }}</div>
-                {% endfor %}
+                <div class="alerts">
                 
-                <form action="{{ path('app_login') }}" method="POST">
+                    {% for flash_msg in app.flashes('success') %}
+                        <div class="success">{{ flash_msg|upper }}</div>
+                    {% endfor %}
+
+                    {% if error %}
+                        <div class="error">NIEPROWIDŁOWE EMAIL LUB HASŁO</div>
+                    {% endif %}
+
+                    {% if not error %}
+                        {% for error in loginForm.vars.errors.form.getErrors(true) %}
+                            {% if loop.index == 1 %}
+                                <div class="error">{{ error.message|upper }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                
+                </div>
+
+                {{ form_start(loginForm) }}
 
                     <div class="name mt">E-MAIL:</div>
-                    <input type="text" name="_username" value="{{lastUsername}}" class="logininput" placeholder="WPISZ SWÓJ E-MAIL">
+                    {{ form_widget(loginForm.email, {'attr' : {'value': lastUsername ? lastUsername, 'class': 'logininput', 'placeholder': 'WPISZ SWÓJ EMAIL...'}}) }}
 
                     <div class="name mtpswd">HASŁO:</div>
-                    <input type="password" name="_password" class="logininput" placeholder="WPISZ SWOJE HASŁO">
+                    {{ form_widget(loginForm.password, {'attr' : {'class': 'logininput', 'placeholder': 'WPISZ SWÓJE HASŁO...'}}) }}
 
-                    <input type="hidden" name="_target_path" value="/skills_list" />
-
-                    <a href="{{path('app_email_verify')}}"><div class="name rem">NIE PAMIĘTASZ HASŁA?</div></a>
+                    <a href="{{path('app_send_email')}}"><div class="name rem">NIE PAMIĘTASZ HASŁA?</div></a>
 
                     <button type="submit" id="btnzaloguj">ZALOGUJ</button>
 
-                </form>
+                {{ form_end(loginForm) }}
+
 
             </div>
 

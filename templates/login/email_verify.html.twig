@@ -20,26 +20,34 @@
 
             <div id="emailbox">
 
-                <a href="{{path('app_login')}}"><div id="back"><img src="{{asset('images/back.png')}}"></div></a>                
+                <a href="{{path('app_login')}}"><div id="back"><img src="{{asset('images/back.png')}}"></div></a>   
 
-                {% for flash_error in app.flashes('success') %}
-                    <div class="success">{{ flash_error }}</div>
-                {% endfor %}
-
-                {% for flash_error in app.flashes('error') %}
-                    <div class="error">{{ flash_error }}</div>
-                {% endfor %}
+                <div class="alerts">
                 
-                <form action="{{ path('app_send_email') }}" method="POST">
+                    {% for flash_error in app.flashes('success') %}
+                        <div class="success">{{ flash_error }}</div>
+                    {% endfor %}
 
-                    <div class="name mt">E-MAIL:</div>
-                    <input type="text" name="email" class="logininput" placeholder="WPISZ SWÓJ E-MAIL">
+                    {% for flash_error in app.flashes('error') %}
+                        <div class="error">{{ flash_error }}</div>
+                    {% endfor %}
 
-                    <input type="hidden" name="_target_path" value="/login">
+                    {% for error in form.vars.errors.form.getErrors(true) %}
+                        {% if loop.index == 1 %}
+                            <div class="error">{{ error.message|upper }}</div>
+                        {% endif %}
+                    {% endfor %}
+                
+                </div>             
+                
+                {{ form_start(form) }}
 
-                    <button type="submit" id="btnzaloguj">WYŚLIJ WIADOMOŚĆ</button>
+                    <div class="name">E-MAIL:</div>
+                    {{ form_widget(form.email, {'attr': {'class': 'logininput', 'placeholder': 'WPISZ SWÓJ EMAIL...'}}) }}
 
-                </form>
+                    <button type="submit" id="btnzaloguj" class="mt-10">WYŚLIJ WIADOMOŚĆ</button>
+
+                {{ form_end(form) }}
 
             </div>
 

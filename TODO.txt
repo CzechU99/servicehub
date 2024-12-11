@@ -1,5 +1,4 @@
 ZROBIĆ:
-7. poprawic logowanie i rejestracje
 8. dodac powiadomienia
 
 PROBLEMY:
@@ -11,7 +10,6 @@ PROBLEMY:
 6. nazewnictwo
 
 MOŻLIWOŚCI:
-1. liczba wyswietlen
 2. profil uzytkownika 
 3. oceny (jest w opisie pracy)?
 4. followania (jest w opisie pracy)?

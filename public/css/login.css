@@ -119,7 +119,7 @@ input{
 }
 
 .mt{
-  margin-top: 35px;
+  margin-top: 15px;
 }
 
 .mtpswd{
@@ -175,25 +175,24 @@ input{
   color: white;
 }
 
-.success{
-  color: green;
+.mt-10{
+  margin-top: 25px;
+}
+
+.alerts{
   font-weight: bold;
   text-align: center;
   margin-top: 10px;
-  width: 375px;
-  margin-left: 37.5px;
+  width: 100%;
+  height: 30px;
+}
+
+.success{
+  color: green;
 }
 
 .error{
   color: red;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 10px;
-  width: 375px;
-  height: 30px;
-  line-height: 30px;
-  margin-left: 37.5px;
-  background-color: rgba(255, 0, 0, 0.1);
 }
 
 #emailbox{

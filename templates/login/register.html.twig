@@ -27,21 +27,24 @@
 
                 <div id="kreska"></div>
 
-                {{ form_errors(registrationForm) }}
+                <div class="alerts">
+                    {% for error in registrationForm.vars.errors.form.getErrors(true) %}
+                        {% if loop.index == 1 %}
+                            <div class="error">{{ error.message|upper }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
 
                 {{ form_start(registrationForm) }}
                 
                     <div class="name mt">E-MAIL:</div>
                     {{ form_widget(registrationForm.email, {'attr': {'class': 'logininput', 'placeholder': 'WPISZ SWÓJ E-MAIL'}}) }}
-                    {{ form_errors(registrationForm.email) }}
 
                     <div class="name mtpswd">HASŁO:</div>
                     {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'logininput', 'placeholder': 'WPISZ HASŁO'}}) }}
-                    {{ form_errors(registrationForm.plainPassword.first) }}
 
                     <div class="name mtpswd">POWTÓRZ HASŁO:</div>
                     {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'logininput', 'placeholder': 'POWTÓRZ HASŁO'}}) }}
-                    {{ form_errors(registrationForm.plainPassword.second) }}
 
                     <div class="name check">{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'checkbox'}}) }}<div id="accept">AKCEPTUJE REGULAMIN</div></div>
 

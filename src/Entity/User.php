@@ -6,6 +6,7 @@ use App\Entity\DaneUzytkownika;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -43,6 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Rezerwacje::class, mappedBy: 'uzytkownikId', orphanRemoval: true)]
     private Collection $rezerwacje;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $resetTokenWaznosc = null;
 
     public function __construct()
     {
@@ -193,6 +200,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $rezerwacje->setUzytkownikId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetTokenWaznosc(): ?\DateTimeInterface
+    {
+        return $this->resetTokenWaznosc;
+    }
+
+    public function setResetTokenWaznosc(?\DateTimeInterface $resetTokenWaznosc): static
+    {
+        $this->resetTokenWaznosc = $resetTokenWaznosc;
 
         return $this;
     }

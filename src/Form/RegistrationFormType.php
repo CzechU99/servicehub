@@ -58,8 +58,25 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Twoje hasło musi mieć minimum {{ limit }} znaków!',
-                        'max' => 4096,
+                        'minMessage' => 'Twoje hasło musi mieć min. {{ limit }} znaków!',
+                        'max' => 15,
+                        'maxMessage' => 'Twoje hasło może mieć maks. {{ limit }} znaków!',
+                    ]),
+                    new Regex([
+                        'pattern' => '/[A-Z]/',
+                        'message' => 'Hasło musi zawierać dużą literę!',
+                    ]),
+                    new Regex([
+                        'pattern' => '/[a-z]/',
+                        'message' => 'Hasło musi zawierać małą literę!',
+                    ]),
+                    new Regex([
+                        'pattern' => '/[0-9]/',
+                        'message' => 'Hasło musi zawierać jedną cyfrę!',
+                    ]),
+                    new Regex([
+                        'pattern' => '/[\W_]/',
+                        'message' => 'Hasło musi zawierać znak specjalny!',
                     ]),
                 ],
             ])
