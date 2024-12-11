@@ -21,6 +21,18 @@
     
   </div>
 
+  <div class="alerts">
+  
+    {% for flash_msg in app.flashes('success') %}
+      <div class="success">{{ flash_msg|upper }}</div>
+    {% endfor %}
+
+    {% for flash_msg in app.flashes('error') %}
+      <div class="error">{{ flash_msg|upper }}</div>
+    {% endfor %}
+  
+  </div>
+
   <div class="rezerwacja">
   
     <div class="ogloszenia">
@@ -95,7 +107,7 @@
 
       {{ form_widget(rezerwacjaForm.wiadomosc, {'attr': {'class': 'wiadomość unset'}}) }}
 
-      <button type="submit" class="btndodaj">ZAREZERWUJ</button>
+      <button type="submit" class="btndodaj" name="zarezerwuj">ZAREZERWUJ</button>
 
     {{ form_end(rezerwacjaForm) }}
 

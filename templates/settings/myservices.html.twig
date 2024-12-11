@@ -19,6 +19,18 @@
   
   </div>
 
+  <div class="alerts">
+  
+    {% for flash_msg in app.flashes('success') %}
+      <div class="success">{{ flash_msg|upper }}</div>
+    {% endfor %}
+
+    {% for flash_msg in app.flashes('error') %}
+      <div class="error">{{ flash_msg|upper }}</div>
+    {% endfor %}
+  
+  </div>
+
   <div id="container">
 
     <div id="list" class="{% if uslugiUzytkownika|length == 0 %}last{% endif %}">

@@ -28,7 +28,7 @@
         {% for error in child.vars.errors %}
           {% if not break %}
             <div class="error-message">
-                {{ error.message }}
+                {{ error.message|upper }}
             </div>
           {% endif %}
           {% set break = true %}
@@ -36,11 +36,11 @@
       {% endfor %}
 
       {% for flash_msg in app.flashes('error') %}
-        <div class="error-message">{{ flash_msg }}</div>
+        <div class="error-message">{{ flash_msg|upper }}</div>
       {% endfor %}
 
       {% for flash_msg in app.flashes('success') %}
-        <div class="success">{{ flash_msg }}</div>
+        <div class="success">{{ flash_msg|upper }}</div>
       {% endfor %}
     
     </div>

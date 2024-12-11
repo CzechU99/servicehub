@@ -10,7 +10,6 @@ body{
   height: 215px;
   float: left;
   clear: both;
-  margin-bottom: 20px;
 }
 
 input{
@@ -355,6 +354,26 @@ input{
 
 :root {
   --lh: 1.3rem;
+}
+
+.alerts{
+  width: 100%;
+  height: 50px;
+  clear: both;
+  margin-bottom: 30px;
+  line-height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error{
+  color: red;
+}
+
+.success{
+  color: green;
 }
 
 .tytul{

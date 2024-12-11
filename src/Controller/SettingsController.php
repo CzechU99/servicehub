@@ -327,6 +327,7 @@ class SettingsController extends AbstractController
       $entityManager->remove($rezerwacjaDoUsuniecia);
       $entityManager->flush();
       
+      $this->addFlash('success', 'Rezerwacja została usunięta!');
       return $this->redirectToRoute('app_rezerwacje');
 
     }
@@ -383,6 +384,7 @@ class SettingsController extends AbstractController
       $rezerwacjaDoPotwierdzenia->setCzyAnulowana(false);
       $entityManager->flush();
       
+      $this->addFlash('success', 'Rezerwacja została potwierdzona!');
       return $this->redirectToRoute('app_rezerwacje');
 
     }
@@ -439,6 +441,7 @@ class SettingsController extends AbstractController
       $rezerwacjaDoPotwierdzenia->setCzyAnulowana(true);
       $entityManager->flush();
       
+      $this->addFlash('success', 'Rezerwacja została anulowana!');
       return $this->redirectToRoute('app_rezerwacje');
 
     }
@@ -495,6 +498,7 @@ class SettingsController extends AbstractController
       $rezerwacjaDoPotwierdzenia->setCzyOdrzucona(true);
       $entityManager->flush();
       
+      $this->addFlash('success', 'Rezerwacja została odrzucona!');
       return $this->redirectToRoute('app_rezerwacje');
 
     }

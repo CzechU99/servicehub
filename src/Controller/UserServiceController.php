@@ -10,6 +10,7 @@ use App\Form\SzybkieSzukanieFormType;
 use App\Repository\KategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
+use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -179,8 +180,9 @@ class UserServiceController extends AbstractController
         $entityManager->persist($usluga);
         $entityManager->flush();
 
-
+        $this->addFlash('success', 'Usługa została dodana!');
         return $this->redirectToRoute('app_myservices');
+
       }
 
       return $this->render('userservice/add_edit_service.html.twig', [
@@ -196,6 +198,7 @@ class UserServiceController extends AbstractController
     public function deleteService(
         int $idUslugi,
         UslugiRepository $uslugi,
+        RezerwacjeRepository $rezerwacje,
         EntityManagerInterface $entityManager,
     ): Response
     {
@@ -210,6 +213,28 @@ class UserServiceController extends AbstractController
 
       $idUslugaDoUsuniecia = $uslugaDoUsuniecia->getId();
 
+      $queryBuilder = $rezerwacje->createQueryBuilder('u')
+        ->where('(u.uslugaDoRezerwacji = :usluga AND u.czyPotwierdzona = 1)')
+        ->orWhere('(u.uslugaNaWymiane = :usluga AND u.czyPotwierdzona = 1)')
+        ->setParameter('usluga', $idUslugaDoUsuniecia);
+
+      $powiazaneUslugi = $queryBuilder->getQuery()->getResult();
+
+      dump($idUslugaDoUsuniecia);
+      dump($powiazaneUslugi);
+
+      if($powiazaneUslugi){
+        $this->addFlash('error', 'Nie możesz usunąć usługi, która ma potwierdzoną rezerwację!');
+        return $this->redirectToRoute('app_myservices');
+      }else{
+        $queryBuilder = $rezerwacje->createQueryBuilder('u')
+          ->where('(u.uslugaDoRezerwacji = :usluga)')
+          ->orWhere('(u.uslugaNaWymiane = :usluga)')
+          ->setParameter('usluga', $idUslugaDoUsuniecia);
+
+        $rezerwacjeDoUsuniecia = $queryBuilder->getQuery()->getResult();
+      }
+
       $publicDir = $this->getParameter('kernel.project_dir') . '/public';
       $sciezkaDoUsuniecia = $publicDir . '/zdjeciaUslug' . '/' . $userId . '/' . $idUslugaDoUsuniecia;
 
@@ -217,9 +242,15 @@ class UserServiceController extends AbstractController
         $this->deleteFolder($sciezkaDoUsuniecia);
       }
 
+      foreach($rezerwacjeDoUsuniecia as $rezerwacjaDoUsuniecia){
+        $entityManager->remove($rezerwacjaDoUsuniecia);
+        $entityManager->flush();
+      }
+
       $entityManager->remove($uslugaDoUsuniecia);
       $entityManager->flush();
       
+      $this->addFlash('success', 'Usługa została usunięta!');
       return $this->redirectToRoute('app_myservices');
       
     }

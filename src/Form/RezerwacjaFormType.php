@@ -44,6 +44,8 @@ class RezerwacjaFormType extends AbstractType
                 'mapped' => false,
             ])
             ->add('odKiedy', DateType::class, [
+                'required' => true,
+                'mapped' => false,
                 'widget' => 'single_text',  
                 'format' => 'yyyy-MM-dd',  
                 'attr' => [

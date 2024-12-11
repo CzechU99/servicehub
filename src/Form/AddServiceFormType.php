@@ -55,6 +55,7 @@ class AddServiceFormType extends AbstractType
                 'attr' => ['accept' => 'image/*'],
             ])
             ->add('kategorie', EntityType::class, [
+                'required' => true,
                 'class' => Kategorie::class,
                 'label' => 'Kategorie',
                 'choices' => $options['categories'], 
@@ -62,7 +63,10 @@ class AddServiceFormType extends AbstractType
                 'multiple' => true,
                 'expanded' => true, 
                 'constraints' => [
-                    new Assert\NotNull(['message' => 'Wybór przynajmniej jednej kategorii jest obowiązkowy.']),
+                    new Assert\Count([
+                        'min' => 1,
+                        'minMessage' => 'Wybór przynajmniej jednej kategorii jest obowiązkowy!',
+                    ]),
                 ],
             ])
             ->add('opisUslugi', TextareaType::class, [
@@ -71,7 +75,7 @@ class AddServiceFormType extends AbstractType
                     new Assert\NotBlank(['message' => 'Opis usługi nie może być pusty.']),
                     new Assert\Length([
                         'max' => 1000,
-                        'min' => 80,
+                        'min' => 100,
                         'maxMessage' => 'Opis usługi nie może być dłuższy niż {{ limit }} znaków.',
                         'minMessage' => 'Opis usługi nie może być krótszy niż {{ limit }} znaków.',
                     ]),

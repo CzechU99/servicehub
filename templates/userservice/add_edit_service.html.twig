@@ -110,26 +110,40 @@
 
     <script>
 
+      document.querySelector('.cena').addEventListener('keydown', function (event) {
+        const allowedKeys = [
+          'Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', 'Delete' 
+        ];
+
+        if (!allowedKeys.includes(event.key) && !event.key.match(/[0-9]/)) {
+          event.preventDefault(); 
+        }
+      });
+
       document.addEventListener('DOMContentLoaded', () => {
         const checkboxes = document.querySelectorAll('.selectbox');
         const maxSelection = 3;
 
-        checkboxes.forEach(checkbox => {
-          checkbox.addEventListener('change', () => {
-            const checkedCount = document.querySelectorAll('.selectbox:checked').length;
+        function updateCheckboxes() {
+          const checkedCount = document.querySelectorAll('.selectbox:checked').length;
 
-            if (checkedCount >= maxSelection) {
-              checkboxes.forEach(cb => {
-                if (!cb.checked) {
-                  cb.disabled = true;
-                }
-              });
+          checkboxes.forEach(checkbox => {
+            if (checkedCount >= maxSelection && !checkbox.checked) {
+              checkbox.disabled = true;  
             } else {
-              checkboxes.forEach(cb => cb.disabled = false);
+              checkbox.disabled = false;  
             }
           });
+        }
+
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', updateCheckboxes);
         });
+
+        updateCheckboxes();
       });
+
+
 
       const imageInput = document.querySelector('.image-input');
       const gallery = document.getElementById('image-gallery');

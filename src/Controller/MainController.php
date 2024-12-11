@@ -55,7 +55,6 @@ class MainController extends AbstractController
     #[Route('/skills_list', name: 'app_skills_list')]
     public function skillsList(
         UslugiRepository $uslugi,
-        UserRepository $uzytkownicy,
         Request $request,
         KategorieRepository $kategorie
     ): Response
@@ -69,25 +68,24 @@ class MainController extends AbstractController
         $user = $this->getUser(); 
         $userId = $user->getId();
 
-        $filteredUslugi = $uslugi->createQueryBuilder('u')
+        $queryBuilder  = $uslugi->createQueryBuilder('u')
             ->where('u.uzytkownik != :userId')
-            ->setParameter('userId', $userId)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('userId', $userId);
 
         $wszystkieKategorie = $kategorie->findAll();
 
         if ($szybkiFormularz->isSubmitted() && $szybkiFormularz->isValid()) {
             $searchTerm = $szybkiFormularz->get('nazwaUslugi')->getData();
 
-            $filteredUslugi = $uslugi->createQueryBuilder('u')
-                ->where('u.nazwaUslugi LIKE :searchTerm')
-                ->setParameter('searchTerm', '%' . $searchTerm . '%')
-                ->getQuery()
-                ->getResult();
+            $queryBuilder 
+                ->andWhere('u.nazwaUslugi LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+
         }else{
             $searchTerm = "";
         }
+
+        $filteredUslugi = $queryBuilder->getQuery()->getResult();
 
         $form->get('nazwaUslugi')->setData($searchTerm);
 
@@ -251,6 +249,8 @@ class MainController extends AbstractController
         ]);
         $form->handleRequest($request);
 
+        
+
         $uslugiArray = array_map(function ($usluga) {
             return [
                 'id' => $usluga->getId(),
@@ -268,8 +268,14 @@ class MainController extends AbstractController
             ];
         }, $uslugiUzytkownika);
 
+        if($form->get('odKiedy')->getData() == "" && $request->request->has('zarezerwuj')){
+            $this->addFlash('error', 'Nie podałeś od kiedy chcesz zarezerować usługę!');
+            return $this->redirectToRoute('app_zarezerwuj_usluge', ['idUslugi' => $idUslugi]);
+        }
+
         if($form->isSubmitted() && $form->isValid()){
 
+            $rezerwacja->setOdKiedy($form->get('odKiedy')->getData());
             $rezerwacja->setUzytkownikId($this->getUser());
             $rezerwacja->setCzyAnulowana(false);
             $rezerwacja->setCzyPotwierdzona(false);
@@ -278,7 +284,6 @@ class MainController extends AbstractController
             $rezerwacja->setDataZlozenia(new \DateTime());
 
             $daneUzytkownika = $daneUzytkownika->findOneBy(['uzytkownik' => $this->getUser()]);
-            // $user = $user->findOneBy(['id' => $this->getUser()->getId()]);
 
             if($rezerwacja->getDoKiedy()){
                 $doKiedy = " do: " . $rezerwacja->getDoKiedy()->format('Y-m-d');
@@ -328,9 +333,11 @@ class MainController extends AbstractController
             $entityManager->persist($rezerwacja);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Rezerwacja złożona pomyślnie!');
             return $this->redirectToRoute('app_rezerwacje');
 
         }
+
 
         return $this->render('main/zarezerwuj_usluge.html.twig', [
             'rezerwacjaForm' => $form,
