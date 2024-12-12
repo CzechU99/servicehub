@@ -50,12 +50,26 @@
 
     </div>
 
+    <div class="alerts">
+  
+      {% for flash_msg in app.flashes('success') %}
+        <div class="success">{{ flash_msg|upper }}</div>
+      {% endfor %}
+
+      {% for flash_msg in app.flashes('error') %}
+        <div class="error">{{ flash_msg|upper }}</div>
+      {% endfor %}
+    
+    </div>
+
     <div id="list" class="{% if uslugi|length == 0 %}last{% endif %}">
         <div id="number">ZNALEZIONO {{ uslugi|length }} OGŁOSZEŃ</div>
         <div id="kreska"></div>
         <div id="reklama">REKLAMA</div>
         <div id="okno">MIEJSCE DLA REKLAMODAWCY</div>
     </div>
+
+    
 
     <div class="container">
     
@@ -83,7 +97,30 @@
               <div class="data">DODANO {{ usluga.dataDodania|date('d.m.Y') }}</div>
             </div>
             <div class="prawo">
+              
+              <div class="follow">
+                <a href="{{ path('app_follow', {idFollow: usluga.id}) }}">
+                  
+                  {% set found = false %}
+                  {% if obserwowane %}
+                    {% for obserwacja in obserwowane %}
+                      {% if obserwacja.usluga.id == usluga.id %}
+                        {% set found = true %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+
+                  {% if found %}
+                    <img class="followicon" src="{{ asset('images/unfollow.webp') }}">
+                  {% else %}
+                    <img class="followicon" src="{{ asset('images/follow.webp') }}">
+                  {% endif %}
+
+                </a>
+              </div>
+              
               <div class="cena">{{ usluga.cena }} PLN{% if usluga.czyStawkaGodzinowa %}/H{% endif %}</div>
+
             </div>
           </div>
         </a>

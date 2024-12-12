@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\DaneUzytkownika;
+use App\Entity\Obserwowane;
 use App\Entity\Uslugi;
 use App\Form\AddServiceFormType;
 use App\Repository\UslugiRepository;
@@ -10,8 +10,8 @@ use App\Form\SzybkieSzukanieFormType;
 use App\Repository\KategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
+use App\Repository\ObserwowaneRepository;
 use App\Repository\RezerwacjeRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,6 +26,7 @@ class UserServiceController extends AbstractController
         UslugiRepository $uslugi,
         Request $request,
         EntityManagerInterface $entityManager,
+        ObserwowaneRepository $obserwowane,
     ): Response
     {
 
@@ -56,10 +57,13 @@ class UserServiceController extends AbstractController
 
       $form = $this->createForm(SzybkieSzukanieFormType::class);
 
+      $obserwowanePrzezUzytkownika = $obserwowane->findBy(['uzytkownik' => $this->getUser()->getId(), 'usluga' => $usluga]);
+
       return $this->render('userservice/service_view.html.twig', [
         'szybkieSzukanieForm' => $form->createView(),
         'usluga' => $usluga,
-        'zdjecia' => $nazwyZdjec
+        'zdjecia' => $nazwyZdjec,
+        'obserwowane' => $obserwowanePrzezUzytkownika,
       ]);
       
     }

@@ -24,6 +24,18 @@
     
   </div>
 
+  <div class="alerts">
+  
+    {% for flash_msg in app.flashes('success') %}
+      <div class="success">{{ flash_msg|upper }}</div>
+    {% endfor %}
+
+    {% for flash_msg in app.flashes('error') %}
+      <div class="error">{{ flash_msg|upper }}</div>
+    {% endfor %}
+  
+  </div>
+
   <div id="serviceinfos">
   
     <div class="serviceinfo">
@@ -81,6 +93,16 @@
     <div class="kreskapion"></div>
 
     <div class="userinfo">
+
+      <div class="follow">
+        <a href="{{ path('app_follow', {idFollow: usluga.id}) }}">
+          {% if obserwowane %}
+            <img class="followicon" src="{{ asset('images/unfollow.webp') }}">
+          {% else %}
+            <img class="followicon" src="{{ asset('images/follow.webp') }}">
+          {% endif %}
+        </a>
+      </div>
     
       <div class="nazwauslugi">{{ usluga.nazwaUslugi }} </div>
 
@@ -106,11 +128,6 @@
           <div class="btn disabled">ZAREZERWUJ</div>
         {% endif %}
 
-      {# <div class="kreska2"></div> #}
-
-      {# <div class="btn">ZOBACZ PROFIL</div> #}
-
-    
     </div>
 
   </div>

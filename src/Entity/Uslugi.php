@@ -62,10 +62,17 @@ class Uslugi
     #[ORM\Column(nullable: true)]
     private ?int $wyswietlenia = null;
 
+    /**
+     * @var Collection<int, Obserwowane>
+     */
+    #[ORM\OneToMany(targetEntity: Obserwowane::class, mappedBy: 'usluga', orphanRemoval: true)]
+    private Collection $obserwowane;
+
     public function __construct()
     {
         $this->kategorie = new ArrayCollection();
         $this->rezerwacje = new ArrayCollection();
+        $this->obserwowane = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -265,6 +272,36 @@ class Uslugi
     public function incrementWyswietlenia(): void
     {
         $this->wyswietlenia++;
+    }
+
+    /**
+     * @return Collection<int, Obserwowane>
+     */
+    public function getObserwowane(): Collection
+    {
+        return $this->obserwowane;
+    }
+
+    public function addObserwowane(Obserwowane $obserwowane): static
+    {
+        if (!$this->obserwowane->contains($obserwowane)) {
+            $this->obserwowane->add($obserwowane);
+            $obserwowane->setUsluga($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObserwowane(Obserwowane $obserwowane): static
+    {
+        if ($this->obserwowane->removeElement($obserwowane)) {
+            // set the owning side to null (unless already changed)
+            if ($obserwowane->getUsluga() === $this) {
+                $obserwowane->setUsluga(null);
+            }
+        }
+
+        return $this;
     }
 
 }

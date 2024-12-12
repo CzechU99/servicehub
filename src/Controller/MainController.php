@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\DaneUzytkownika;
 use App\Entity\Rezerwacje;
+use App\Entity\Obserwowane;
 use App\Form\RezerwacjaFormType;
 use App\Service\GeocoderService;
 use Symfony\Component\Mime\Email;
@@ -11,10 +11,11 @@ use App\Form\WyszukiwanieFormType;
 use App\Repository\UserRepository;
 use App\Repository\UslugiRepository;
 use App\Form\SzybkieSzukanieFormType;
-use App\Repository\DaneUzytkownikaRepository;
 use App\Repository\KategorieRepository;
 use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ObserwowaneRepository;
+use App\Repository\DaneUzytkownikaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +57,8 @@ class MainController extends AbstractController
     public function skillsList(
         UslugiRepository $uslugi,
         Request $request,
-        KategorieRepository $kategorie
+        KategorieRepository $kategorie,
+        ObserwowaneRepository $obserwowane,
     ): Response
     {
 
@@ -69,7 +71,7 @@ class MainController extends AbstractController
         $userId = $user->getId();
 
         $queryBuilder  = $uslugi->createQueryBuilder('u')
-            ->where('u.uzytkownik != :userId')
+            ->andWhere('u.uzytkownik != :userId')
             ->setParameter('userId', $userId);
 
         $wszystkieKategorie = $kategorie->findAll();
@@ -87,6 +89,8 @@ class MainController extends AbstractController
 
         $filteredUslugi = $queryBuilder->getQuery()->getResult();
 
+        $obserwowanePrzezUzytkownika = $obserwowane->findBy(['uzytkownik' => $this->getUser()->getId()]);
+
         $form->get('nazwaUslugi')->setData($searchTerm);
 
         return $this->render('main/skills_list.html.twig', [
@@ -94,6 +98,7 @@ class MainController extends AbstractController
             'uslugi' => $filteredUslugi,
             'daneUzytkownika' => $searchTerm,
             'kategorie' => $wszystkieKategorie,
+            'obserwowane' => $obserwowanePrzezUzytkownika,
         ]);
 
     }
@@ -345,6 +350,49 @@ class MainController extends AbstractController
             'mojeUslugi' => $uslugiUzytkownika,
             'uslugiJson' => json_encode($uslugiArray)
         ]);
+
+    }
+
+    #[Route('/follow/{idFollow}', name: 'app_follow')]
+    public function follow(
+        UslugiRepository $uslugi,
+        ObserwowaneRepository $obserwowane,
+        EntityManagerInterface $entityManager,
+        int $idFollow,
+        Request $request,
+    ): Response
+    {
+
+        $userId = $this->getUser()->getId();
+
+        $obserwowane = $obserwowane->findOneBy(['uzytkownik' => $userId, 'usluga' => $idFollow]);
+
+        if($obserwowane){
+            $entityManager->remove($obserwowane);
+            $entityManager->flush();
+            $this->addFlash('success', 'Usunięto z ulubionych!');
+        }else{
+            $obserwowane = new Obserwowane();
+
+            $usluga = $uslugi->findOneBy(['id' => $idFollow]);
+
+            $obserwowane->setUzytkownik($this->getUser());
+            $obserwowane->setUsluga($usluga);
+
+            $entityManager->persist($obserwowane);
+            $entityManager->flush();
+            $this->addFlash('success', 'Dodano do ulubionych!');
+        }
+
+        $referer = $request->headers->get('referer');
+
+        if($referer && str_contains($referer, '/obserwowane')){
+            return $this->redirectToRoute('app_obserwowane');
+        }elseif($referer && str_contains($referer, '/service_view')){
+            return $this->redirectToRoute('app_service_view', ['idUslugi' => $idFollow]);
+        }else{
+            return $this->redirectToRoute('app_skills_list');
+        }
 
     }
 

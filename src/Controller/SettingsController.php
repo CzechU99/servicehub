@@ -11,6 +11,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use App\Repository\RezerwacjeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DaneUzytkownikaRepository;
+use App\Repository\ObserwowaneRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -500,6 +501,28 @@ class SettingsController extends AbstractController
       
       $this->addFlash('success', 'Rezerwacja została odrzucona!');
       return $this->redirectToRoute('app_rezerwacje');
+
+    }
+
+    #[Route('/obserwowane', name: 'app_obserwowane')]
+    #[IsGranted('ROLE_USER')]
+    public function obserwowane(
+      ObserwowaneRepository $obserwowane,
+      UslugiRepository $uslugi,
+    ): Response
+    {
+
+      $user = $this->getUser();
+
+      $obserwowaneUzytkownika = $obserwowane->findBy(['uzytkownik' => $user]);
+
+      $uslugiIds = array_map(fn($obserwacja) => $obserwacja->getUsluga()->getId(), $obserwowaneUzytkownika);
+
+      $obserwowaneUslugi = $uslugi->findBy(['id' => $uslugiIds]);
+
+      return $this->render('settings/obserwowane.html.twig', [
+        'obserwowaneUslugi' => $obserwowaneUslugi,
+      ]);
 
     }
 

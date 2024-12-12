@@ -1,4 +1,5 @@
 ZROBIĆ:
+1. zablokowanie zmiany kolejnosci zdjec podczas edytowania uslugi
 
 PROBLEMY:
 1. kolejnosc zdjec z edytowaniu

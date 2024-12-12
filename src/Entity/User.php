@@ -51,10 +51,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $resetTokenWaznosc = null;
 
+    /**
+     * @var Collection<int, Obserwowane>
+     */
+    #[ORM\OneToMany(targetEntity: Obserwowane::class, mappedBy: 'uzytkownik', orphanRemoval: true)]
+    private Collection $obserwowane;
+
     public function __construct()
     {
         $this->uslugi = new ArrayCollection();
         $this->rezerwacje = new ArrayCollection();
+        $this->obserwowane = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,6 +231,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetTokenWaznosc(?\DateTimeInterface $resetTokenWaznosc): static
     {
         $this->resetTokenWaznosc = $resetTokenWaznosc;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Obserwowane>
+     */
+    public function getObserwowane(): Collection
+    {
+        return $this->obserwowane;
+    }
+
+    public function addObserwowane(Obserwowane $obserwowane): static
+    {
+        if (!$this->obserwowane->contains($obserwowane)) {
+            $this->obserwowane->add($obserwowane);
+            $obserwowane->setUzytkownik($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObserwowane(Obserwowane $obserwowane): static
+    {
+        if ($this->obserwowane->removeElement($obserwowane)) {
+            // set the owning side to null (unless already changed)
+            if ($obserwowane->getUzytkownik() === $this) {
+                $obserwowane->setUzytkownik(null);
+            }
+        }
 
         return $this;
     }
