@@ -90,7 +90,7 @@
         <div class="ogloszenie">
 
           {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-          <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+          <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!"></div>
 
           <div class="opis">
             <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -141,7 +141,7 @@
         <div class="ogloszenie">
         
           {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-          <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+          <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!"></div>
 
           <div class="opis">
             <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -200,7 +200,7 @@
           <div class="moja_usluga">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uzytkownikId.id ~ '/' ~ rezerwacja.uslugaNaWymiane.id ~ '/' ~ rezerwacja.uslugaNaWymiane.glowneZdjecie %}
-            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaNaWymiane.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaNaWymiane.id}) }}"><div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!"></div>
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaNaWymiane.nazwaUslugi|upper }}</div>
@@ -222,7 +222,7 @@
           <div class="usluga_na_wymiane">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!"></div>
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -278,7 +278,7 @@
           <div class="moja_usluga">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaDoRezerwacji.uzytkownik.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.id ~ '/' ~ rezerwacja.uslugaDoRezerwacji.glowneZdjecie %}
-            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaDoRezerwacji.id}) }}"><div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!"></div>
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaDoRezerwacji.nazwaUslugi|upper }}</div>
@@ -300,7 +300,7 @@
           <div class="usluga_na_wymiane">
           
             {% set imagePath = 'zdjeciaUslug/' ~ rezerwacja.uslugaNaWymiane.uzytkownik.id ~ '/' ~ rezerwacja.uslugaNaWymiane.id ~ '/' ~ rezerwacja.uslugaNaWymiane.glowneZdjecie %}
-            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaNaWymiane.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!">
+            <a href="{{ path('app_service_view', {idUslugi: rezerwacja.uslugaNaWymiane.id}) }}"><div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" alt="Brak zdjęcia!"></div>
 
             <div class="opis">
               <div class="tytul">{{ rezerwacja.uslugaNaWymiane.nazwaUslugi|upper }}</div>

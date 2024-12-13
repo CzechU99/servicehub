@@ -144,4 +144,22 @@
   
   </div>
 
+  <script>
+  
+    function handShake(){
+      if (window.location.pathname === '/main') {
+        let z = document.getElementsByClassName('hand');
+        if (z.length > 0) {
+          z[0].classList.remove("animate__tada");
+          setTimeout(function(){
+            z[0].classList.add("animate__tada");
+          }, 2000);
+        }
+      }
+    }
+
+    setInterval(handShake, 10000);
+  
+  </script>
+
 {% endblock %}

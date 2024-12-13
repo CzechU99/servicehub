@@ -25,6 +25,7 @@ input{
   font-family: Jura;
   margin-left: 15px;
   padding-left: 10px;
+  text-align: center;
 }
 
 .mt-50{
@@ -230,17 +231,16 @@ input{
 }
 
 .wymiana{
-  width: 900px;
+  width: 100%;
   height: 460px;
   margin: auto;
   margin-top: 15px;
   box-sizing: border-box;
-  padding: 25px;
   margin-bottom: 150px;
 }
 
 .container{
-  width: 1500px;
+  width: 850px;
   margin: auto;
   min-height: 500px;
   clear: both;
@@ -277,7 +277,7 @@ input{
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
   transition: 0.5s scale;
   scale: 1;
-  margin-bottom: 100px;
+  margin-bottom: 150px;
 }
 
 .swal-custom-button {
@@ -478,4 +478,205 @@ input{
   line-height: 75px;
   font-weight: bold;
   font-size: 20px;
+}
+
+@media (max-width: 865px) {
+
+  .container{
+    width: 100%;
+  }
+
+  .opisrezerwacji{
+    width: 60%;
+    padding: 0px;
+  }
+
+  .wymiana{
+    height: 920px;
+  }
+
+  .opiswymiany{
+    width: 60%;
+    padding: 0px;
+  }
+
+  .ogloszenie{
+    width: 60%;
+    height: 450px;
+  }
+
+  .usluga_na_wymiane{
+    width: 60%;
+    height: 450px;
+    clear: both;
+    margin-bottom: 150px;
+  }
+
+  .twoja{
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0px;
+    text-align: center;
+  }
+
+  .moja_usluga{
+    width: 60%;
+    height: 310px;
+  }
+
+  .followicon{
+    margin-right: 10px;
+  }
+
+  .zdjecie{
+    width: auto;
+    border-radius: 0px;
+    height: 150px;
+    margin-top: 15px;
+  }
+
+  .opis{
+    width: 100%;
+    height: 120px;
+  }
+
+  .center{
+    margin: auto;
+    width: fit-content;
+    height: 165px;
+    display: block;
+  }
+
+  .tytul{
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: center;
+    height: 75px;
+    width: 100%;
+    margin-left: 0px;
+    box-sizing: border-box;
+    padding: 0px 10px;
+    --max-lines: 3;
+    position: relative;
+    max-height: calc(var(--lh) * var(--max-lines));
+    overflow: hidden;
+  }
+
+  .lokalizacja{
+    margin-top: 20px;
+  }
+
+  .prawo{
+    width: 100%;
+    height: 35px;
+    margin: 0px;
+    text-align: center;
+    clear: both;
+    float: left;
+    margin-top: 90px;
+
+  }
+
+  .cena{
+    border: 0px;
+    height: 30px;
+    width: 100px;
+    float: left;
+    line-height: 30px;
+    margin-top: 10px;
+    margin-left: 30px;
+  }
+
+  .follow{
+    width: 70px;
+    float: right;
+    position: relative;
+  }
+
+  .status{
+    width: 100%;
+    clear: both;
+    float: left;
+    height: 30px;
+    writing-mode:horizontal-tb;
+    position: fixed;
+    bottom: 0;
+  }
+
+  .usun{
+    margin: 0px;
+    width: 120px;
+    height: 35px;
+    line-height: 30px;
+    display: inline-block;
+    float: none;
+  }
+
+  .potwierdz{
+    margin: 0px;
+    width: 120px;
+    height: 35px;
+    line-height: 30px;
+    display: inline-block;
+    float: none;
+  }
+
+  .odrzuc{
+    margin: 0px;
+    width: 120px;
+    height: 35px;
+    line-height: 30px;
+    display: inline-block;
+    float: none;
+  }
+
+  .wiadomosc{
+    position: relative;
+    right: unset;
+    top: unset;
+    float: left;
+    margin-top: 10px;
+    margin-left: 30px;
+    min-height: unset;
+    min-width: unset;
+    width: 140px;
+    height: 35px;
+    bottom: unset;
+    padding: unset;
+    line-height: 22px;
+    height: 25px;
+    width: 120px;
+    text-align: center;
+    clear: both;
+  }
+
+  .uslugainfo{
+    height: 90px;
+    width: 100%;
+  }
+
+
+
+}
+
+@media (max-width: 653px) {
+
+  #menu{
+    height: 300px;
+  }
+
+  #setts{
+    height: 185px;
+  }
+
+  .kat{
+    width: 380px;
+    font-size: 20px;
+  }
+
+  .ustawienia{
+    text-align: center;
+    width: 560px;
+  }
+
 }

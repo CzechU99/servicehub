@@ -13,8 +13,6 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-        <script src="{{ asset('js/script.js') }}"></script>
-
         {% block css %}{% endblock %}
     
     </head>
@@ -35,6 +33,15 @@
                         <a href="{{path('app_login')}}"><div id="zaloguj" class="burst">ZALOGUJ</div></a>
                         <a href="{{path('app_skills_list')}}"><div id="lista" class="burst">LISTA USŁUG</div></a>
                     {% endif %}
+
+                    <div id="hamburger">
+                    
+                        <div class="ham"></div>
+                        <div class="ham"></div>
+                        <div class="ham"></div>
+                    
+                    </div>
+
                 </div>
             {% endblock %}
         
@@ -49,6 +56,54 @@
             {% endblock %}
 
         </div>
+
+        <script src="{{ asset('js/script.js') }}"></script>
+
+        <script>
+        
+            const hamburger = document.getElementById('hamburger');
+            const navbar = document.getElementById('navbar');
+            const dodaj = document.getElementById('dodaj');
+            const lista = document.getElementById('lista');
+            const konto = document.getElementById('konto');
+            const zaloguj = document.getElementById('zaloguj');
+
+            document.addEventListener('DOMContentLoaded', () => {
+                hamburger.addEventListener('click', () => {
+                    if(!navbar.classList.contains('opened')){
+                        navbar.classList.add('opened');
+                        navbar.style.height = '400px';
+                        setTimeout(() => {
+                            dodaj.style.display = 'block';
+                            lista.style.display = 'block';
+                            zaloguj.style.display = 'block';
+                            konto.style.display = 'block';
+                        }, 400);
+                    }else{
+                        navbar.classList.remove('opened');
+                        navbar.style.height = '100px';
+                        dodaj.style.display = 'none';
+                        lista.style.display = 'none';
+                        zaloguj.style.display = 'none';
+                        konto.style.display = 'none';
+                    }
+                });
+            });
+
+            function removeInlineStyle() {
+                if (window.innerWidth > 1335) {
+                    navbar.classList.remove('opened');
+                    navbar.removeAttribute('style');
+                    dodaj.removeAttribute('style');
+                    lista.removeAttribute('style');
+                    konto.removeAttribute('style');
+                    zaloguj.removeAttribute('style');
+                }
+            }
+            document.addEventListener('DOMContentLoaded', removeInlineStyle);
+            window.addEventListener('resize', removeInlineStyle);
+
+        </script>
         
     </body>
 </html>

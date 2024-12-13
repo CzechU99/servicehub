@@ -51,7 +51,7 @@
             {% endif %}">
             
             {% set imagePath = 'zdjeciaUslug/' ~ usluga.uzytkownik.id ~ '/' ~ usluga.id ~ '/' ~ usluga.glowneZdjecie %}
-            <a href="{{ path('app_service_view', {idUslugi: usluga.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!">
+            <div class="center"><a href="{{ path('app_service_view', {idUslugi: usluga.id}) }}"><img class="zdjecie" src="{{ asset(imagePath) }}" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!"></div>
 
             <div class="opis">
               <div class="tytul">{{ usluga.nazwaUslugi|upper }}</div>

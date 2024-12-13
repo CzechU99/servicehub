@@ -1,5 +1,4 @@
 ZROBIĆ:
-1. zablokowanie zmiany kolejnosci zdjec podczas edytowania uslugi
 
 PROBLEMY:
 1. kolejnosc zdjec z edytowaniu
@@ -10,7 +9,6 @@ PROBLEMY:
 MOŻLIWOŚCI:
 2. profil uzytkownika 
 3. oceny (jest w opisie pracy)?
-4. followania (jest w opisie pracy)?
 5. promowanie uslug
 6. lupa na zdjecie rezerwacji i podglad
 7. responsywność

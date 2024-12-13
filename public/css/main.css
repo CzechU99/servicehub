@@ -52,28 +52,6 @@ button {
   margin-top: 50px;
 }
 
-@media only screen and (max-width: 1800px) {
-  #handshake{
-    display: none;
-  }
-  #main{
-    float: left;
-    height: 700px;
-  }
-  #opis{
-    margin: auto;
-    margin-top: 80px;
-    float: none;
-    clear: both;
-  }
-  #opispierwszy{
-    text-align: left;
-  }
-  #opisdrugi{
-    text-align: left;
-  }
-}
-
 #wyszukaj{
   width: 1000px;
   height: 80px;
@@ -352,4 +330,227 @@ input {
   margin-top: 59px;
   background-color: white;
   display: inline-block;
+}
+
+@media (max-width: 1840px) {
+
+  #handshake{
+    display: none;
+  }
+
+  #opis{
+    width: 90%;
+    height: 350px;
+    float: none;
+    margin: auto;
+    margin-top: 30px;
+  }
+
+  #main{
+    height: 350px;
+  }
+
+  #opispierwszy{
+    width: 100%;
+    font-size: 38px;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  #opisdrugi{
+    width: 100%;
+    font-size: 20px;
+    padding: 0px 20px;
+    box-sizing: border-box;
+  }
+
+  #wyszukaj{
+    width: 90%;
+    height: 60px;
+    box-sizing: border-box;
+  }
+
+  .inputwyszukaj{
+    width: 75%;
+    height: 60px;
+    font-size: 20px;
+    padding: 0px 20px;
+  }
+
+  #btnwyszukaj{
+    width: 25%;
+    height: 60px;
+    font-size: 20px;
+    line-height: 60px;
+  }
+
+  #promowanenapis{
+    width: 100%;
+    text-align: center;
+  }
+
+  #kreskaczarna{
+    display: none;
+  }
+
+  #promowaneuslugi{
+    height: 700px;
+  }
+
+  #boxlewo{
+    width: 100%;
+    float: left;
+    clear: both;
+    height: 340px;
+  }
+
+  .uslugilewo{
+    width: 550px;
+    float: none;
+    margin: auto;
+    margin-top: 20px;
+    height: 150px;
+  }
+
+  .imgserviceleft{
+    width: 35%;
+    height: 150px;
+  }
+
+  .serivceopisleft{
+    width: 65%;
+    float: left;
+    height: 150px;
+  }
+
+  .serviceopis{
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
+    padding-right: 30px;
+  }
+
+  .textleft{
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .servicecena{
+    width: 100%;
+    margin-top: 0px;
+    text-align: right;
+    box-sizing: border-box;
+    padding-right: 30px;
+    margin-top: 20px;
+  }
+
+  .servicedata{
+    width: 100%;
+    margin-top: 0px;
+    height: 40px;
+    box-sizing: border-box;
+    padding-right: 30px;
+  }
+
+  #boxprawo{
+    width: 100%;
+    float: left;
+    clear: both;
+    height: 340px;
+  }
+
+  .uslugiprawo{
+    width: 550px;
+    float: none;
+    margin: auto;
+    margin-top: 20px;
+    height: 150px;
+  }
+
+  .imgserviceright{
+    width: 35%;
+    height: 150px;
+    float: left;
+    border-radius: 10px 0px 0px 10px;
+  }
+
+  .serivceopisright{
+    width: 65%;
+    float: left;
+    height: 150px;
+    text-align: left;
+  }
+
+  .serviceopis{
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
+    padding-right: 30px;
+  }
+
+  .textright{
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+  }
+
+  .servicecena{
+    width: 100%;
+    margin-top: 0px;
+    text-align: right;
+    box-sizing: border-box;
+    padding-right: 30px;
+    margin-top: 20px;
+  }
+
+  .servicedata{
+    width: 100%;
+    margin-top: 0px;
+    height: 40px;
+    box-sizing: border-box;
+    padding-right: 30px;
+  }
+
+  #statystyki{
+    height: 480px;
+  }
+
+  .statkreska{
+    display: none;
+  }
+
+  .stat{
+    width: 520px;
+    margin: auto;
+    margin-top: 30px;
+    float: none;
+    clear: both;
+    display: block;
+    scale: 0.8;
+  }
+
+  .stat2{
+    width: 520px;
+    margin: auto;
+    margin-top: 30px;
+    clear: both;
+    float: none;
+    display: block;
+    scale: 0.8;
+  }
+
+  .statnumber{
+    margin-top: 30px;
+    height: 40px;
+    line-height: 40px;
+    width: 300px;
+    float: left;
+  }
+
+  .statname{
+    font-size: 20px;
+    margin-top: 10px;
+  }
+
 }

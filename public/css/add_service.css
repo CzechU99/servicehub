@@ -323,3 +323,104 @@ input{
 .image-input:focus + label {
   transform: scale(1.02);
 }
+
+@media (max-width: 1200px) {
+
+  .box{
+    width: 90%;
+    display: block;
+    margin: auto;
+    float: none;
+    margin-top: 20px;
+  }
+
+  .inputs{
+    width: 100%;
+  }
+
+  .opis{
+    width: 100%;
+  }
+
+  .nazwauslugi{
+    width: 100%;
+  }
+
+  .label{
+    width: 100%;
+    margin: auto;
+  }
+
+  .opisuslugi{
+    width: 100%;
+    min-height: 200px;
+    height: unset;
+  }
+
+  .gallery-item{
+    width: 150px;
+    height: 150px;
+  }
+
+  #image-upload-container{
+    width: 90%;
+    margin: auto;
+    margin-top: 70px;
+  }
+
+  .mt-2{
+    width: 280px;
+    height: 400px;
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  .dodajForm{
+    margin: auto;
+    height: unset;
+    min-height: 1500px;
+  }
+
+  .opis2{
+    float: left;
+    width: 170px;
+    clear: both;
+    margin-left: 0px;
+    margin-top: 20px;
+  }
+
+  .cena{
+    float: left;
+    margin-top: 27px;
+  }
+
+  .checkbox{
+    float: left;
+    margin-top: 39px;
+    margin-left: 20px;
+  }
+
+  .ml{
+    clear: none;
+    margin-left: 0px;
+  }
+
+  .checkbox_all{
+    width: 320px;
+    margin: auto;
+  }
+
+  .box_check{
+    width: 70%;
+    height: unset;
+    min-height: 100px;
+    margin: auto;
+    float: unset;
+  }
+
+  .box_check > .opis{
+    padding-left: 0px;
+    text-align: center;
+  }
+
+}

@@ -152,6 +152,7 @@
       let imageFiles = []; 
       const maxFiles = 8; 
       const maxFileSizeMB = 5; 
+      const isEditing = {{ isEditing ? 'true' : 'false' | raw }};
 
       document.addEventListener('DOMContentLoaded', () => {
         const existingGalleryItems = gallery.querySelectorAll('.gallery-item');
@@ -249,22 +250,24 @@
         imageInput.files = dataTransfer.files;
       }
 
-      new Sortable(gallery, {
-        animation: 150,
-        ghostClass: 'draggable-ghost',
-        onEnd: () => {
-          const reorderedFiles = [];
-          Array.from(gallery.children).forEach(item => {
-            const filename = item.dataset.filename;
-            const file = imageFiles.find(f => f.name === filename);
-            if (file) {
-                reorderedFiles.push(file);
-            }
-          });
-          imageFiles = reorderedFiles;
-          updateInput(); 
-        }
-      });
+      if(!isEditing) {
+        new Sortable(gallery, {
+          animation: 150,
+          ghostClass: 'draggable-ghost',
+          onEnd: () => {
+            const reorderedFiles = [];
+            Array.from(gallery.children).forEach(item => {
+              const filename = item.dataset.filename;
+              const file = imageFiles.find(f => f.name === filename);
+              if (file) {
+                  reorderedFiles.push(file);
+              }
+            });
+            imageFiles = reorderedFiles;
+            updateInput(); 
+          }
+        });
+      }
 
     </script>
 

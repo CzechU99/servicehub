@@ -85,6 +85,8 @@
 
         {% if usluga.czyWymiana == 1 %}
           <div class="wiadomoscbox ml">WYMIANA: {{ form_widget(rezerwacjaForm.wymiana, {'attr': {'class': 'chck_msg event2'}}) }}</div>
+        {% else %}
+          <div class="wiadomoscbox ml display">WYMIANA: {{ form_widget(rezerwacjaForm.wymiana, {'attr': {'class': 'chck_msg event2 display'}}) }}</div>
         {% endif %}
 
         <div class="wiadomoscbox ml">UDOSTĘPNIJ NR TELEFONU: {{ form_widget(rezerwacjaForm.udostepnijTelefon, {'attr': {'class': 'chck_msg'}}) }}</div>
@@ -142,9 +144,12 @@
       if (this.checked) {
         trade.style.display = 'block';
         ogloszenietrade.style.display = 'block';
-        ogloszenie.style.float = "left";
-        ogloszenie.style.margin = "none";
         uslugi.style.display = 'block';
+
+        if (window.innerWidth > 1480) {
+          ogloszenie.style.float = "left";
+          ogloszenie.style.margin = "none";
+        }
 
       } else {
         trade.style.display = 'none';

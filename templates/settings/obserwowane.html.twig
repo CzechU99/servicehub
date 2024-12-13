@@ -50,7 +50,7 @@
           {% endif %}">
           
           {% set imagePath = 'zdjeciaUslug/' ~ obserwowanaUsluga.uzytkownik.id ~ '/' ~ obserwowanaUsluga.id ~ '/' ~ obserwowanaUsluga.glowneZdjecie %}
-          <img class="zdjecie" src="{{ asset(imagePath) }}" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!">
+          <div class="center"><img class="zdjecie" src="{{ asset(imagePath) }}" onerror="this.src='{{ asset("images/alt_image.jpg") }}'" alt="Brak zdjęcia!"></div>
 
           <div class="opis">
             <div class="tytul">{{ obserwowanaUsluga.nazwaUslugi|upper }}</div>

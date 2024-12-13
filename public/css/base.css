@@ -161,3 +161,113 @@ a, a:link, #logo a:visited, #logo a:active, #logo a:hover{
   box-shadow: 0 0 1.1rem 5px white;
   transform: translateY(-0.1rem);
 }
+
+#hamburger{
+  top: 20px;
+  right: 50px;
+  width: 70px;
+  height: 50px;
+  float: right;
+  padding-top: 5px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: 2px solid white;
+  display: none;
+  position: absolute;
+  
+}
+
+#hamburger:hover{
+  cursor: pointer;
+}
+
+.ham{
+  width: 40px;
+  background-color: white;
+  height: 3px;
+  margin: auto;
+  margin-top: 7px;
+}
+
+@media (min-width: 1335px) {
+  #hamburger{
+    display: none;
+  }
+
+  #navbar{
+    height: 100px;
+  }
+
+  #dodaj{
+    display: block;
+  }
+
+  #lista{
+    display: block;
+  }
+
+  #konto{
+    display: block;
+  }
+
+  #zaloguj{
+    display: block;
+  }
+}
+
+@media (max-width: 1335px) {
+  
+  #hamburger{
+    display: block;
+  }
+
+  #navbar{
+    height: 100px;
+    transition: height 0.5s ease-in-out;
+  }
+
+  #logo{
+    min-width: 100px;
+    text-align: center;
+    margin: auto;
+    margin-left: 100px;
+    clear: both;
+  }
+
+  #dodaj{
+    clear: both;
+    margin: auto;
+    float: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  #lista{
+    clear: both;
+    margin: auto;
+    float: none;
+    display: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  #konto{
+    clear: both;
+    margin: auto;
+    float: none;
+    margin-top: 20px;
+    display: none;
+    margin-bottom: 20px;
+  }
+
+  #zaloguj{
+    clear: both;
+    margin: auto;
+    float: none;
+    margin-top: 20px;
+    display: none;
+    margin-bottom: 20px;
+  }
+
+}

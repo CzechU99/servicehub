@@ -89,11 +89,14 @@ class UserServiceController extends AbstractController
 
       $categories = $kategorie->findAll();
 
-      $usluga = $idUslugi ? $uslugiRepository->findOneBy([
-        'id' => $idUslugi,
-        'uzytkownik' => $userId,
-      ])
-      : new Uslugi();
+      if($idUslugi){
+        $usluga = $uslugiRepository->findOneBy(['id' => $idUslugi, 'uzytkownik' => $userId]);
+        $isEditing = true;
+      }else{
+        $isEditing = false;
+        $usluga = new Uslugi();
+        dump($isEditing);
+      }
 
       $form = $this->createForm(AddServiceFormType::class, $usluga, [
           'categories' => $categories,
@@ -184,7 +187,14 @@ class UserServiceController extends AbstractController
         $entityManager->persist($usluga);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Usługa została dodana!');
+        $referer = $request->headers->get('referer');
+
+        if($referer && str_contains($referer, '/add_edit_service/')){
+          $this->addFlash('success', 'Usługa została edytowana!');
+        }else{
+          $this->addFlash('success', 'Usługa została dodana!');
+        }
+
         return $this->redirectToRoute('app_myservices');
 
       }
@@ -193,6 +203,7 @@ class UserServiceController extends AbstractController
         'dodajUslugeForm' => $form->createView(),
         'isEdit' => $idUslugi !== null,
         'existingImages' => $existingImages,
+        'isEditing' => $isEditing,
       ]);
     }
 
