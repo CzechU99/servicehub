@@ -103,19 +103,21 @@
               <div class="follow">
                 <a href="{{ path('app_follow', {idFollow: usluga.id}) }}">
                   
-                  {% set found = false %}
-                  {% if obserwowane %}
-                    {% for obserwacja in obserwowane %}
-                      {% if obserwacja.usluga.id == usluga.id %}
-                        {% set found = true %}
-                      {% endif %}
-                    {% endfor %}
-                  {% endif %}
+                  {% if app.user %}
+                    {% set found = false %}
+                    {% if obserwowane %}
+                      {% for obserwacja in obserwowane %}
+                        {% if obserwacja.usluga.id == usluga.id %}
+                          {% set found = true %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
 
-                  {% if found %}
-                    <img class="followicon" src="{{ asset('images/unfollow.webp') }}">
-                  {% else %}
-                    <img class="followicon" src="{{ asset('images/follow.webp') }}">
+                    {% if found %}
+                      <img class="followicon" src="{{ asset('images/unfollow.webp') }}">
+                    {% else %}
+                      <img class="followicon" src="{{ asset('images/follow.webp') }}">
+                    {% endif %}
                   {% endif %}
 
                 </a>

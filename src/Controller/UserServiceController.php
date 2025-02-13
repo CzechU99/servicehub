@@ -57,7 +57,12 @@ class UserServiceController extends AbstractController
 
       $form = $this->createForm(SzybkieSzukanieFormType::class);
 
-      $obserwowanePrzezUzytkownika = $obserwowane->findBy(['uzytkownik' => $this->getUser()->getId(), 'usluga' => $usluga]);
+      if($this->getUser()){
+        $obserwowanePrzezUzytkownika = $obserwowane->findBy(['uzytkownik' => $this->getUser()->getId(), 'usluga' => $usluga]);
+      }else{
+        $obserwowanePrzezUzytkownika = [];
+      }
+
 
       return $this->render('userservice/service_view.html.twig', [
         'szybkieSzukanieForm' => $form->createView(),

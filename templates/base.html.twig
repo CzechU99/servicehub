@@ -72,7 +72,11 @@
                 hamburger.addEventListener('click', () => {
                     if(!navbar.classList.contains('opened')){
                         navbar.classList.add('opened');
-                        navbar.style.height = '400px';
+                        if(konto){
+                            navbar.style.height = '400px';
+                        }else{
+                            navbar.style.height = '320px';
+                        }
                         setTimeout(() => {
                             dodaj.style.display = 'block';
                             lista.style.display = 'block';

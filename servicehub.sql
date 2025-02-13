@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2024 at 09:45 PM
+-- Generation Time: Sty 15, 2025 at 05:15 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `skillsplatform`
+-- Database: `servicehub`
 --
 
 -- --------------------------------------------------------
@@ -68,7 +68,10 @@ CREATE TABLE `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20241208151908', '2024-12-08 15:19:39', 232),
 ('DoctrineMigrations\\Version20241208200002', '2024-12-08 20:00:07', 12),
-('DoctrineMigrations\\Version20241208202939', '2024-12-08 20:29:46', 10);
+('DoctrineMigrations\\Version20241208202939', '2024-12-08 20:29:46', 10),
+('DoctrineMigrations\\Version20241211105725', '2024-12-11 10:57:38', 20),
+('DoctrineMigrations\\Version20241211130451', '2024-12-11 13:04:55', 14),
+('DoctrineMigrations\\Version20241212172850', '2024-12-12 17:28:54', 158);
 
 -- --------------------------------------------------------
 
@@ -137,12 +140,18 @@ CREATE TABLE `kategorie_uslugi` (
 --
 
 INSERT INTO `kategorie_uslugi` (`kategorie_id`, `uslugi_id`) VALUES
-(2, 44),
-(12, 1),
-(15, 1),
+(1, 1),
+(1, 46),
+(2, 45),
+(4, 46),
+(7, 46),
+(10, 46),
+(11, 45),
+(14, 45),
 (19, 43),
 (22, 43),
-(25, 43);
+(25, 43),
+(30, 1);
 
 -- --------------------------------------------------------
 
@@ -171,6 +180,26 @@ INSERT INTO `messenger_messages` (`id`, `body`, `headers`, `queue_name`, `create
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `obserwowane`
+--
+
+CREATE TABLE `obserwowane` (
+  `id` int(11) NOT NULL,
+  `uzytkownik_id` int(11) NOT NULL,
+  `usluga_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `obserwowane`
+--
+
+INSERT INTO `obserwowane` (`id`, `uzytkownik_id`, `usluga_id`) VALUES
+(16, 1, 43),
+(17, 1, 45);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `rezerwacje`
 --
 
@@ -194,12 +223,8 @@ CREATE TABLE `rezerwacje` (
 --
 
 INSERT INTO `rezerwacje` (`id`, `uzytkownik_id_id`, `usluga_do_rezerwacji_id`, `usluga_na_wymiane_id`, `wiadomosc`, `udostepnij_telefon`, `od_kiedy`, `do_kiedy`, `data_zlozenia`, `czy_potwierdzona`, `czy_anulowana`, `czy_odrzucona`) VALUES
-(2, 1, 43, 1, 'Siemka', 1, '2024-12-04 00:00:00', NULL, '2024-12-08 17:41:06', 0, 0, 0),
-(4, 1, 43, 1, NULL, 0, '2024-12-04 00:00:00', NULL, '2024-12-08 17:59:03', 0, 0, 0),
-(5, 1, 43, 1, NULL, 0, '2024-12-07 00:00:00', NULL, '2024-12-08 18:00:10', 0, 0, 0),
-(7, 1, 43, NULL, NULL, 0, '2024-12-04 00:00:00', NULL, '2024-12-08 18:11:45', 0, 0, 0),
-(9, 24, 1, NULL, NULL, NULL, '2024-12-08 21:09:19', '2024-12-25 21:09:19', '2024-12-08 21:09:19', 0, 0, 1),
-(10, 24, 1, NULL, NULL, NULL, '2024-12-08 21:09:19', '2024-12-25 21:09:19', '2024-12-08 21:09:19', 1, 0, 0);
+(53, 1, 43, 46, 'Dzień dobry, jestem zainteresowany rezerwacją usługi. Chciałbym ustalić szczegóły dotyczące: miejsca spotkania (czy możliwe są zajęcia online lub w wyznaczonej lokalizacji), materiałów, które są wykorzystywane podczas nauki, wszelkie dodatkowe szczegóły dotyczące współpracy. Z góry dziękuję za odpowiedź i liczę na owocną współpracę!', 1, '2025-01-21 00:00:00', NULL, '2025-01-15 16:16:17', 0, 0, 0),
+(54, 1, 45, NULL, NULL, 0, '2025-01-16 00:00:00', '2025-01-17 00:00:00', '2025-01-15 16:16:42', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -211,16 +236,18 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(180) NOT NULL,
   `roles` longtext NOT NULL COMMENT '(DC2Type:json)',
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `reset_token_waznosc` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
-(1, 'test@test.com', '[]', '$2y$13$PNyIEAAYqUhBfT8U7GU6L.Fpw5QGCoLWuJlF5Bq6wkyQOQdYt8Foy'),
-(24, 'd39052964@gmail.com', '[]', '$2y$13$bp0oCcnCh.Ar.yFPoOw5Ae9ZOMNNyA7EAmiWBF5D3VMDShKZClA/.');
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `reset_token`, `reset_token_waznosc`) VALUES
+(1, 'test@test.com', '[]', '$2y$13$l.Hh51hLw3dz8spyimwQNuWt6RdUbYaZDpz2wZ29V3x8Vjg52Ngvy', NULL, NULL),
+(24, 'd39052964@gmail.com', '[]', '$2y$13$1tY8tlNKSedGcR2bB1Rom.nIQnXFgzy4X1h6di5pkjrromfCUtPAG', '17042d3e07763f2dc440fdef2e1d369e67d2d3629738a56ebe154dff0560e54b', '2024-12-11 16:10:22');
 
 -- --------------------------------------------------------
 
@@ -239,17 +266,20 @@ CREATE TABLE `uslugi` (
   `do_negocjacji` tinyint(1) NOT NULL,
   `czy_firma` tinyint(1) NOT NULL,
   `czy_wymiana` tinyint(1) NOT NULL,
-  `czy_stawka_godzinowa` tinyint(1) NOT NULL
+  `czy_stawka_godzinowa` tinyint(1) NOT NULL,
+  `wyswietlenia` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `uslugi`
 --
 
-INSERT INTO `uslugi` (`id`, `uzytkownik_id`, `nazwa_uslugi`, `cena`, `data_dodania`, `glowne_zdjecie`, `opis_uslugi`, `do_negocjacji`, `czy_firma`, `czy_wymiana`, `czy_stawka_godzinowa`) VALUES
-(1, 1, 'Koszenie trawy, ogródków, rowów itd...', 50.99, '2024-12-03 18:36:02', '1_pobrane.jpeg', 'Oferuję profesjonalne koszenie trawy dla Twojego ogrodu, działki lub terenu firmowego. Zadbany trawnik to wizytówka każdej przestrzeni, a moje usługi pomogą Ci utrzymać go w idealnym stanie. Dzięki doświadczeniu i wykorzystaniu nowoczesnego sprzętu zapewniam precyzyjne i szybkie wykonanie zlecenia. Gwarantuję terminowość, dokładność i dostosowanie usługi do indywidualnych potrzeb klienta. Niezależnie od wielkości terenu, podejmuję się każdego wyzwania, zapewniając najwyższą jakość obsługi. Twój trawnik stanie się piękny i zdrowy, gotowy do odpoczynku lub podziwiania.', 1, 1, 0, 1),
-(43, 24, 'Testowa usługa robienia czegoś', 23, '2024-12-07 13:56:31', '1_IRO436_4_2024.jpg', 'orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, 1, 1, 1),
-(44, 1, 'USLUGA 2 TESTOWA', 23, '2024-12-08 14:16:06', '1_Neural_network.svg.png', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, 1, 1, 0);
+INSERT INTO `uslugi` (`id`, `uzytkownik_id`, `nazwa_uslugi`, `cena`, `data_dodania`, `glowne_zdjecie`, `opis_uslugi`, `do_negocjacji`, `czy_firma`, `czy_wymiana`, `czy_stawka_godzinowa`, `wyswietlenia`) VALUES
+(1, 1, 'Koszenie trawy, ogródków, rowów itd...', 30, '2024-12-03 18:36:02', '1_R.jpeg', 'Oferuję profesjonalne koszenie trawy, pielęgnację ogródków oraz utrzymanie rowów w czystości. Usługa obejmuje dokładne koszenie przy użyciu odpowiedniego sprzętu, dopasowanego do rodzaju terenu. Dzięki wieloletniemu doświadczeniu zapewniam precyzję, terminowość oraz wysoką jakość wykonania.', 1, 0, 1, 1, 3),
+(43, 24, 'Korepetycje z języka niemieckiego na poziomie B2.', 80, '2024-12-07 13:56:31', '1_OSK.jpeg', 'Oferuję korepetycje z języka niemieckiego na poziomie średnio zaawansowanym wyższym (B2). Moje zajęcia mają na celu rozwinięcie umiejętności komunikacyjnych, zrozumienia tekstu pisanego oraz poprawnego użycia gramatyki. Dzięki indywidualnemu podejściu pomagam w osiągnięciu biegłości językowej potrzebnej do pracy, studiów lub codziennego życia w niemieckojęzycznym środowisku.', 1, 1, 1, 1, 8),
+(45, 24, 'Kompleksowe sprzątanie domów, mieszkań, biur oraz innych lokali', 40, '2024-12-10 19:49:14', '1_sprzatanie-mieszkan.jpg', 'Świadczę usługi kompleksowego sprzątania różnego rodzaju lokali: domów, mieszkań, biur oraz przestrzeni użytkowych. Gwarantuję dokładność, rzetelność oraz dostosowanie zakresu prac do indywidualnych potrzeb klienta. Dzięki profesjonalnemu podejściu zapewniam czystość i porządek w każdej przestrzeni.', 0, 1, 0, 1, 4),
+(46, 1, 'Nauka języka angielskiego. Poziom C1', 120, '2024-12-11 19:00:37', '1_OIP.jpeg', 'Oferuję profesjonalne lekcje języka angielskiego na poziomie zaawansowanym (C1). Zajęcia są dostosowane do indywidualnych potrzeb ucznia, skupiając się na rozwijaniu umiejętności komunikacyjnych, gramatyki oraz płynności wypowiedzi. Dzięki skutecznym metodom nauczania, pomagam osiągnąć wysoki poziom biegłości językowej.', 1, 0, 1, 1, 0),
+(52, 24, 'Oferuję opiekę nad zwierzętami, spacery, karmienie itd...', 25.99, '2025-01-03 15:37:02', '1_f-113590-opieka-nas-zwierzetami-podczas-nieobecnosci-wlasciciela-jakie-mamy-rozwiazania.jpg', 'Jeśli potrzebujesz pomocy w opiece nad swoim pupilem, jestem do Twojej dyspozycji! Oferuję kompleksową opiekę nad zwierzętami, w tym spacery, karmienie, a także towarzystwo w czasie Twojej nieobecności. Zapewniam troskę, bezpieczeństwo i indywidualne podejście do każdego zwierzaka, niezależnie od jego potrzeb.', 0, 0, 0, 1, 2);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -290,6 +320,14 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
   ADD KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
+
+--
+-- Indeksy dla tabeli `obserwowane`
+--
+ALTER TABLE `obserwowane`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_2375A0BB31D6FDE9` (`uzytkownik_id`),
+  ADD KEY `IDX_2375A0BB589399BD` (`usluga_id`);
 
 --
 -- Indeksy dla tabeli `rezerwacje`
@@ -337,10 +375,16 @@ ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `obserwowane`
+--
+ALTER TABLE `obserwowane`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `rezerwacje`
 --
 ALTER TABLE `rezerwacje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -352,7 +396,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `uslugi`
 --
 ALTER TABLE `uslugi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- Constraints for dumped tables
@@ -370,6 +414,13 @@ ALTER TABLE `dane_uzytkownika`
 ALTER TABLE `kategorie_uslugi`
   ADD CONSTRAINT `FK_9C7254249D27B152` FOREIGN KEY (`uslugi_id`) REFERENCES `uslugi` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_9C725424BAF991D3` FOREIGN KEY (`kategorie_id`) REFERENCES `kategorie` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `obserwowane`
+--
+ALTER TABLE `obserwowane`
+  ADD CONSTRAINT `FK_2375A0BB31D6FDE9` FOREIGN KEY (`uzytkownik_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `FK_2375A0BB589399BD` FOREIGN KEY (`usluga_id`) REFERENCES `uslugi` (`id`);
 
 --
 -- Constraints for table `rezerwacje`

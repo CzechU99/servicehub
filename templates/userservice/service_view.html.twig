@@ -94,15 +94,19 @@
 
     <div class="userinfo">
 
-      <div class="follow">
-        <a href="{{ path('app_follow', {idFollow: usluga.id}) }}">
-          {% if obserwowane %}
-            <img class="followicon" src="{{ asset('images/unfollow.webp') }}">
-          {% else %}
-            <img class="followicon" src="{{ asset('images/follow.webp') }}">
-          {% endif %}
-        </a>
-      </div>
+      {% if app.user %}
+
+        <div class="follow">
+          <a href="{{ path('app_follow', {idFollow: usluga.id}) }}">
+            {% if obserwowane %}
+              <img class="followicon" src="{{ asset('images/unfollow.webp') }}">
+            {% else %}
+              <img class="followicon" src="{{ asset('images/follow.webp') }}">
+            {% endif %}
+          </a>
+        </div>
+
+      {% endif %}
     
       <div class="nazwauslugi">{{ usluga.nazwaUslugi }} </div>
 

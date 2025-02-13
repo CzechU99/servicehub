@@ -68,11 +68,13 @@ class MainController extends AbstractController
         $szybkiFormularz->handleRequest($request);
 
         $user = $this->getUser(); 
-        $userId = $user->getId();
-
-        $queryBuilder  = $uslugi->createQueryBuilder('u')
-            ->andWhere('u.uzytkownik != :userId')
-            ->setParameter('userId', $userId);
+        $queryBuilder  = $uslugi->createQueryBuilder('u');
+        if($user){
+            $userId = $user->getId();
+            $queryBuilder
+                ->andWhere('u.uzytkownik != :userId')
+                ->setParameter('userId', $userId);
+        }
 
         $wszystkieKategorie = $kategorie->findAll();
 
@@ -89,7 +91,12 @@ class MainController extends AbstractController
 
         $filteredUslugi = $queryBuilder->getQuery()->getResult();
 
-        $obserwowanePrzezUzytkownika = $obserwowane->findBy(['uzytkownik' => $this->getUser()->getId()]);
+        if($user){
+            $obserwowanePrzezUzytkownika = $obserwowane->findBy(['uzytkownik' => $this->getUser()->getId()]);
+        }else{
+            $obserwowanePrzezUzytkownika = [];
+        }
+
 
         $form->get('nazwaUslugi')->setData($searchTerm);
 
@@ -354,6 +361,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/follow/{idFollow}', name: 'app_follow')]
+    #[IsGranted('ROLE_USER')]
     public function follow(
         UslugiRepository $uslugi,
         ObserwowaneRepository $obserwowane,

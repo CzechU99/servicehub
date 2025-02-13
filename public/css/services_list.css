@@ -472,7 +472,7 @@ input{
   }
 
   .done{
-    width: 25%;
+    width: 24%;
     height: 120px;
     float: right;
     font-size: 20px;
@@ -655,7 +655,8 @@ input{
   .cena{
     border: 0px;
     height: 30px;
-    width: 100px;
+    width: unset;
+    min-width: 50px;
     float: left;
     line-height: 30px;
     margin-top: 10px;
