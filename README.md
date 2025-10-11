@@ -93,7 +93,7 @@ Aby uruchomić aplikację **ServiceHUB** na własnym środowisku, należy wykona
 
 **a) Skonfiguruj połączenie z bazą danych**  
      - W pliku `.env` uzupełnij dane dostępowe do swojej bazy MySQL:
-       ```env
+       ```sh
        DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
        ```
 
