@@ -93,36 +93,36 @@ Aby uruchomić aplikację **ServiceHUB** na własnym środowisku, należy wykona
 
 **a) Skonfiguruj połączenie z bazą danych**  
      - W pliku `.env` uzupełnij dane dostępowe do swojej bazy MySQL:
-       ```
-       DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
-       ```
+        ```env
+        DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
+        ```
 
 **b) W pliku .env skonfiguruj połączenie Mailer’a z zewnętrzną skrzynką pocztową (SMTP):**
-     ```
-     MAILER_DSN=smtp://user:password@smtp.example.com:587
-     ```
+      ```env
+      MAILER_DSN=smtp://user:password@smtp.example.com:587
+      ```
 
 **c) Zaimportuj plik servicehub.sql do swojej bazy danych, aby utworzyć wymagane tabele i dane początkowe.**
 
 **d) Upewnij się, że posiadasz zainstalowanego Composera.**
 
 **e) W katalogu projektu zaktualizuj zależności przy pomocy:**
-     ```
-     composer install
-     ```
+      ```env
+      composer install
+      ```
    
 **f) Domyślnie aplikacja działa w trybie produkcyjnym (APP_ENV=prod). Aby uruchomić tryb developerski, w pliku .env zmień:**
-     ```
-     APP_ENV=dev
-     ```
+      ```env
+      APP_ENV=dev
+      ```
    
 **g) Wszystkie pliki projektu umieść na swoim serwerze lokalnym.**
 
 **Dane przykładowego konta użytkownika:**
-   ```
+   ```env
    Email: test@test.com
    ```
-   ```
+   ```env
    Pasword: 1234567
    ```
 
