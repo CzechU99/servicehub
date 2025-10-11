@@ -71,10 +71,10 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 | Widok | Podgląd |
 |-------|----------|
 | Strona główna | <img src="./public/images/główna.png" alt="Strona główna" width="400"> |
-| Lista usług | ![Lista usług](./img/screen-list.png) |
-| Widok szczegółów usługi | ![Szczegóły usługi](./img/screen-details.png) |
-| Panel użytkownika | ![Panel użytkownika](./img/screen-profile.png) |
-| Wiadomości | ![Wiadomości](./img/screen-messages.png) |
+| Lista usług | <img src="./public/images/lista uslug.png" alt="Lista usług" width="400"> |
+| Widok szczegółów usługi | <img src="./public/images/podglad.png" alt="Podgląd usługi" width="400"> |
+| Logowanie | <img src="./public/images/logowanie.png" alt="Panel logowania" width="400"> |
+| Rezerwowanie | <img src="./public/images/rezerwacja.png" alt="Rezerwowanie" width="400"> |
 
 ---
 
