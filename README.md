@@ -121,6 +121,8 @@ g) **Wszystkie pliki projektu umieść na swoim serwerze lokalnym.**
 **Dane przykładowego konta użytkownika:**
    ```env
    Email: test@test.com
+   ```
+   ```env
    Hasło: 1234567
    ```
 
