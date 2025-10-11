@@ -93,9 +93,9 @@ Aby uruchomić aplikację **ServiceHUB** na własnym środowisku, należy wykona
 
 **a) Skonfiguruj połączenie z bazą danych**  
      - W pliku `.env` uzupełnij dane dostępowe do swojej bazy MySQL:
-        ```env
+```env
         DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
-        ```
+```
 
 **b) W pliku .env skonfiguruj połączenie Mailer’a z zewnętrzną skrzynką pocztową (SMTP):**
       ```env
