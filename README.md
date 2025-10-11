@@ -12,8 +12,6 @@
       <img alt="Symfony" src="https://img.shields.io/badge/Symfony-000000?logo=symfony&logoColor=white">
       <img alt="Twig" src="https://img.shields.io/badge/Twig-68A063?logo=twig&logoColor=white">
       <img alt="MySQL" src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white">
-      <img alt="HTML" src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white">
-      <img alt="CSS" src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white">
       <img alt="API Nominatim" src="https://img.shields.io/badge/Nominatim_API-0A66C2?logo=openstreetmap&logoColor=white">
       <img alt="SortableJS" src="https://img.shields.io/badge/SortableJS-FFCA28?logo=javascript&logoColor=black">
       <img alt="Animate.css" src="https://img.shields.io/badge/Animate.css-FF69B4?logo=css3&logoColor=white">
@@ -56,7 +54,6 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 
 ### Inne funkcje:
 - **Powiadomienia e-mail** (np. o rezerwacjach i wiadomościach)  
-- **System wiadomości prywatnych**  
 - **Wyszukiwarka usług z filtrami**  
 - **Bezpieczny system logowania i rejestracji**
 
@@ -80,8 +77,6 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 
 ## 📸 Zrzuty ekranu
 
-> Poniżej wklej przykładowe obrazy z aplikacji – np. widok strony głównej, formularz dodawania usługi, czat, panel użytkownika.
-
 | Widok | Podgląd |
 |-------|----------|
 | Strona główna | ![Strona główna](./img/screen-home.png) |
@@ -92,21 +87,25 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 
 ---
 
-## 💡 Architektura logiczna
-
-- `User` → dane użytkownika, profil, powiadomienia  
-- `Service` → ogłoszenie usługi (nazwa, opis, cena, lokalizacja)  
-- `Reservation` → rezerwacja danej usługi  
-- `Message` → system wiadomości między użytkownikami  
-- `Favorite` → lista obserwowanych ogłoszeń  
-
----
-
 ## 🔧 Instrukcja uruchomienia
 
 Aby uruchomić aplikację **ServiceHUB** na własnym środowisku, należy wykonać poniższe kroki konfiguracyjne:
 
-1. **Skonfiguruj połączenie z bazą danych**  
+a) **Skonfiguruj połączenie z bazą danych**  
    W pliku `.env` uzupełnij dane dostępowe do swojej bazy MySQL:
-   ```bash
    DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
+
+b) W pliku .env skonfiguruj połączenie Mailer’a z zewnętrzną skrzynką pocztową (SMTP):
+   MAILER_DSN=smtp://user:password@smtp.example.com:587
+
+c) Zaimportuj plik servicehub.sql do swojej bazy danych, aby utworzyć wymagane tabele i dane początkowe.
+d) Upewnij się, że posiadasz zainstalowanego Composera.
+e) W katalogu projektu zaktualizuj zależności przy pomocy:
+   composer install
+f) Domyślnie aplikacja działa w trybie produkcyjnym (APP_ENV=prod). Aby uruchomić tryb developerski, w pliku .env zmień:
+   APP_ENV=dev
+g) Wszystkie pliki projektu umieść na swoim serwerze lokalnym.
+
+Dane przykładowego konta użytkownika:
+   Email: test@test.com
+   Hasło: 1234567
