@@ -11,6 +11,7 @@
       <img alt="API Nominatim" src="https://img.shields.io/badge/Nominatim_API-0A66C2?logo=openstreetmap&logoColor=white">
       <img alt="SortableJS" src="https://img.shields.io/badge/SortableJS-FFCA28?logo=javascript&logoColor=black">
       <img alt="Animate.css" src="https://img.shields.io/badge/Animate.css-FF69B4?logo=css3&logoColor=white">
+      <img alt="Composer" src="https://img.shields.io/badge/Composer-88563A?logo=composer&logoColor=white">
     </p>
 </div>
 
