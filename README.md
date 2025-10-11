@@ -70,7 +70,7 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 
 | Widok | Podgląd |
 |-------|----------|
-| Strona główna | ![Strona główna](./img/screen-home.png) |
+| Strona główna | ![Strona główna](./public/images/główna.png) |
 | Lista usług | ![Lista usług](./img/screen-list.png) |
 | Widok szczegółów usługi | ![Szczegóły usługi](./img/screen-details.png) |
 | Panel użytkownika | ![Panel użytkownika](./img/screen-profile.png) |
