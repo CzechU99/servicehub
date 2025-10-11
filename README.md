@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./img/logo.png" alt="ServiceHUB logo" width="180"/>
-</p>
-
 <h2 align="center"><strong>ServiceHUB – Platforma ogłoszeń i wymiany usług</strong></h2>
 
 <div align="center">
@@ -137,11 +133,7 @@ Aplikacja **ServiceHUB** ma charakter **prywatny**. Dostęp do wersji demonstrac
 
 ## 👨‍💻 Autorzy
 
-Aplikacja opracowana jako projekt dyplomowy
-
-Autor: Denis Czech
-
-Rok: 2025
+![contributors badge](https://readme-contribs.as93.net/contributors/CzechU99/servicehUB)
 
 ---
 
