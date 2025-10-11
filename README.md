@@ -118,6 +118,7 @@ Aby uruchomić aplikację **ServiceHUB** na własnym środowisku, należy wykona
    
 **g) Wszystkie pliki projektu umieść na swoim serwerze lokalnym.**
 
+
 **Dane przykładowego konta użytkownika:**
    ```env
    Email: test@test.com
