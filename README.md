@@ -91,39 +91,39 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 
 Aby uruchomić aplikację **ServiceHUB** na własnym środowisku, należy wykonać poniższe kroki konfiguracyjne:
 
-a) **Skonfiguruj połączenie z bazą danych**  
-   - W pliku `.env` uzupełnij dane dostępowe do swojej bazy MySQL:
+**a) Skonfiguruj połączenie z bazą danych**  
+     - W pliku `.env` uzupełnij dane dostępowe do swojej bazy MySQL:
+       ```env
+       DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
+       ```
+
+**b) W pliku .env skonfiguruj połączenie Mailer’a z zewnętrzną skrzynką pocztową (SMTP):**
      ```env
-     DATABASE_URL="mysql://user:password@127.0.0.1:3306/nazwa_bazy"
+     MAILER_DSN=smtp://user:password@smtp.example.com:587
      ```
 
-b) **W pliku .env skonfiguruj połączenie Mailer’a z zewnętrzną skrzynką pocztową (SMTP):**
-   ```env
-   MAILER_DSN=smtp://user:password@smtp.example.com:587
-   ```
+**c) Zaimportuj plik servicehub.sql do swojej bazy danych, aby utworzyć wymagane tabele i dane początkowe.**
 
-c) **Zaimportuj plik servicehub.sql do swojej bazy danych, aby utworzyć wymagane tabele i dane początkowe.**
+**d) Upewnij się, że posiadasz zainstalowanego Composera.**
 
-d) **Upewnij się, że posiadasz zainstalowanego Composera.**
-
-e) **W katalogu projektu zaktualizuj zależności przy pomocy:**
-   ```env
-   composer install
-   ```
+**e) W katalogu projektu zaktualizuj zależności przy pomocy:**
+     ```env
+     composer install
+     ```
    
-f) **Domyślnie aplikacja działa w trybie produkcyjnym (APP_ENV=prod). Aby uruchomić tryb developerski, w pliku .env zmień:**
-   ```env
-   APP_ENV=dev
-   ```
+**f) Domyślnie aplikacja działa w trybie produkcyjnym (APP_ENV=prod). Aby uruchomić tryb developerski, w pliku .env zmień:**
+     ```env
+     APP_ENV=dev
+     ```
    
-g) **Wszystkie pliki projektu umieść na swoim serwerze lokalnym.**
+**g) Wszystkie pliki projektu umieść na swoim serwerze lokalnym.**
 
 **Dane przykładowego konta użytkownika:**
    ```env
    Email: test@test.com
    ```
    ```env
-   Hasło: 1234567
+   Pasword: 1234567
    ```
 
 ---
@@ -144,6 +144,6 @@ Rok: 2025
 
 ---
 
-© 2025 **ServiceHUB** – Platforma ogłoszeń i wymiany usług
+> © 2025 **ServiceHUB** – Platforma ogłoszeń i wymiany usług
 
 
