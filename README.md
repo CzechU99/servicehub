@@ -48,11 +48,6 @@ Aplikacja łączy prostotę obsługi z wszechstronnością zastosowań, dzięki 
 - **Animate.css** – animacje interfejsu  
 - **SortableJS** – interaktywne sortowanie elementów  
 
-### Inne funkcje:
-- **Powiadomienia e-mail** (np. o rezerwacjach i wiadomościach)  
-- **Wyszukiwarka usług z filtrami**  
-- **Bezpieczny system logowania i rejestracji**
-
 ---
 
 ## 🧩 Moduły i funkcjonalności
