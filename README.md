@@ -132,4 +132,6 @@ Rok: 2025
 
 ---
 
+© 2025 **ServiceHUB** – Platforma ogłoszeń i wymiany usług
+
 
