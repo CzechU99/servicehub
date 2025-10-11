@@ -99,13 +99,37 @@ b) W pliku .env skonfiguruj połączenie Mailer’a z zewnętrzną skrzynką poc
    MAILER_DSN=smtp://user:password@smtp.example.com:587
 
 c) Zaimportuj plik servicehub.sql do swojej bazy danych, aby utworzyć wymagane tabele i dane początkowe.
+
 d) Upewnij się, że posiadasz zainstalowanego Composera.
+
 e) W katalogu projektu zaktualizuj zależności przy pomocy:
    composer install
+   
 f) Domyślnie aplikacja działa w trybie produkcyjnym (APP_ENV=prod). Aby uruchomić tryb developerski, w pliku .env zmień:
    APP_ENV=dev
+   
 g) Wszystkie pliki projektu umieść na swoim serwerze lokalnym.
 
 Dane przykładowego konta użytkownika:
    Email: test@test.com
    Hasło: 1234567
+
+---
+
+## 🔐 Dostęp i licencja
+
+Aplikacja **ServiceHUB** ma charakter **prywatny**. Dostęp do wersji demonstracyjnej lub kodu źródłowego można uzyskać **po indywidualnym uzgodnieniu z autorem**.
+
+---
+
+## 👨‍💻 Autorzy
+
+Aplikacja opracowana jako projekt dyplomowy
+
+Autor: Denis Czech
+
+Rok: 2025
+
+---
+
+
